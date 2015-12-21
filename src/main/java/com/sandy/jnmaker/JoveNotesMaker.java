@@ -2,6 +2,7 @@ package com.sandy.jnmaker ;
 
 import org.apache.log4j.Logger ;
 
+import com.sandy.common.bus.EventBus ;
 import com.sandy.common.objfactory.SpringObjectFactory ;
 import com.sandy.common.util.Configurator ;
 import com.sandy.common.util.WorkspaceManager ;
@@ -27,6 +28,10 @@ public class JoveNotesMaker {
         objFactory.addResourcePath( "classpath:com/sandy/jnmaker/objfactory.xml" ) ;
         objFactory.initialize() ;
         setObjectFactory( objFactory ) ;
+        
+        // Create the event bus and register it with the object repository
+        EventBus eventBus = new EventBus() ;
+        setBus( eventBus ) ;
         
         // Initialize the workspace
         WorkspaceManager wkspMgr = new WorkspaceManager( APP_ID ) ;
