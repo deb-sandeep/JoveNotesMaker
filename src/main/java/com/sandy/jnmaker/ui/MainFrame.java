@@ -22,6 +22,10 @@ import com.sandy.jnmaker.ui.panels.RawTextPanel ;
 public class MainFrame extends AbstractMainFrame {
 
     private static final long serialVersionUID = -793491630867632079L;
+    
+    private RawTextPanel   rawTextPanel = null ;
+    private ImagePanel     imagePanel   = null ;
+    private JoveNotesPanel jnPanel      = null ;
 
     public MainFrame() throws Exception {
         super( "JoveNotes Maker", getIcon( "app_icon" ) ) ;
@@ -56,11 +60,14 @@ public class MainFrame extends AbstractMainFrame {
     
     private JSplitPane createBottomScrollPane() {
         
+        this.rawTextPanel = new RawTextPanel() ;
+        this.jnPanel      = new JoveNotesPanel() ;
+        
         JSplitPane splitPane = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT ) ;
         
         splitPane.setDividerLocation( (int)(0.5 * getScreenWidth()) ) ;
-        splitPane.add( new RawTextPanel() ) ;
-        splitPane.add( new JoveNotesPanel() ) ;
+        splitPane.add( this.rawTextPanel ) ;
+        splitPane.add( this.jnPanel ) ;
         setCommonScrollPaneAttributes( splitPane ) ;
         
         return splitPane ;
@@ -68,10 +75,12 @@ public class MainFrame extends AbstractMainFrame {
     
     private JSplitPane createBaseScrollPane( Component bottomComponent ) {
         
+        this.imagePanel = new ImagePanel() ;
+        
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
         
         splitPane.setDividerLocation( (int)(0.3 * getScreenHeight()) ) ;
-        splitPane.add( new ImagePanel() ) ;
+        splitPane.add( this.imagePanel ) ;
         splitPane.add( bottomComponent ) ;
         setCommonScrollPaneAttributes( splitPane ) ;
         
@@ -83,5 +92,29 @@ public class MainFrame extends AbstractMainFrame {
         sp.setOneTouchExpandable( true ) ; 
         sp.setDividerSize( 7 ) ;
         sp.setContinuousLayout( true ) ;
+    }
+
+    public RawTextPanel getRawTextPanel() {
+        return this.rawTextPanel;
+    }
+
+    public void setRawTextPanel( RawTextPanel rawTextPanel ) {
+        this.rawTextPanel = rawTextPanel;
+    }
+
+    public ImagePanel getImagePanel() {
+        return this.imagePanel;
+    }
+
+    public void setImagePanel( ImagePanel imagePanel ) {
+        this.imagePanel = imagePanel;
+    }
+
+    public JoveNotesPanel getJnPanel() {
+        return this.jnPanel;
+    }
+
+    public void setJnPanel( JoveNotesPanel jnPanel ) {
+        this.jnPanel = jnPanel;
     }
 }

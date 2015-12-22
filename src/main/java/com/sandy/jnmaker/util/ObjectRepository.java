@@ -2,6 +2,7 @@ package com.sandy.jnmaker.util;
 
 import com.sandy.common.bus.EventBus ;
 import com.sandy.common.objfactory.SpringObjectFactory ;
+import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.JoveNotesMaker ;
 import com.sandy.jnmaker.ui.MainFrame ;
@@ -13,7 +14,16 @@ public class ObjectRepository {
     private static EventBus            bus        = null ;
     private static MainFrame           mainFrame  = null ;
     private static JoveNotesMaker      app        = null ;
+    private static StateManager        stateMgr   = null ;
     
+    public static StateManager getStateMgr() {
+        return stateMgr;
+    }
+
+    public static void setStateMgr( StateManager stateMgr ) {
+        ObjectRepository.stateMgr = stateMgr;
+    }
+
     public static JoveNotesMaker getApp() {
         return app;
     }

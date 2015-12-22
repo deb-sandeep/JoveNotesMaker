@@ -1,10 +1,6 @@
 package com.sandy.jnmaker ;
 
-import static com.sandy.jnmaker.util.ObjectRepository.setApp ;
-import static com.sandy.jnmaker.util.ObjectRepository.setBus ;
-import static com.sandy.jnmaker.util.ObjectRepository.setMainFrame ;
-import static com.sandy.jnmaker.util.ObjectRepository.setObjectFactory ;
-import static com.sandy.jnmaker.util.ObjectRepository.setWkspManager ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import org.apache.log4j.Logger ;
 
@@ -12,6 +8,7 @@ import com.sandy.common.bus.EventBus ;
 import com.sandy.common.objfactory.SpringObjectFactory ;
 import com.sandy.common.ui.SwingUtils ;
 import com.sandy.common.util.Configurator ;
+import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.util.ConfiguratorBuilder ;
@@ -25,12 +22,13 @@ public class JoveNotesMaker {
     
     public void launch( String[] args ) throws Exception {
         
-        initialize( args ) ;
+        preInitialize( args ) ;
         SwingUtils.setNimbusLookAndFeel() ;
         setUpAndShowMainFrame() ;
+        postInitialize() ;
     }
     
-    private void initialize( String[] args ) throws Exception {
+    private void preInitialize( String[] args ) throws Exception {
         
         // Process command line
         JNMCommandLine cmdLine = new JNMCommandLine() ;
@@ -55,12 +53,30 @@ public class JoveNotesMaker {
         Configurator configurator = builder.createConfigurator() ;
         configurator.initialize() ;
         
+    }
+    
+    private void postInitialize() throws Exception {
         // Initialize the event bus registrations
+
+        // Initialize the state manager
+        initializeStateManager() ;
+    }
+    
+    private void initializeStateManager() throws Exception {
+        
+        StateManager stateManager = new StateManager( this, getWkspManager() ) ;
+        stateManager.registerObject( "ImagePanel",   getMainFrame().getImagePanel() ) ;
+        stateManager.registerObject( "RawTextPanel", getMainFrame().getRawTextPanel() ) ;
+        stateManager.initialize() ;
+        stateManager.loadState() ;
+        
+        setStateMgr( stateManager ) ;
     }
     
     private void setUpAndShowMainFrame() throws Exception {
         
         MainFrame mainFrame = new MainFrame() ;
+        mainFrame.setUp() ;
         setMainFrame( mainFrame ) ;
         mainFrame.setVisible( true ) ;
     }

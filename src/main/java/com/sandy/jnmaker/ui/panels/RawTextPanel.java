@@ -6,6 +6,8 @@ import java.awt.BorderLayout ;
 import java.awt.Font ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.MouseAdapter ;
+import java.awt.event.MouseEvent ;
 import java.io.File ;
 import java.io.IOException ;
 import java.nio.file.Files ;
@@ -22,6 +24,10 @@ import javax.swing.filechooser.FileFilter ;
 import org.apache.commons.io.FileUtils ;
 import org.apache.log4j.Logger ;
 
+import com.sandy.common.util.StringUtil ;
+
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
+
 public class RawTextPanel extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = -6820796056331113968L ;
@@ -33,13 +39,14 @@ public class RawTextPanel extends JPanel implements ActionListener {
     private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
     private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
     
-    private File lastOpenedDirectory = new File( System.getProperty( "user.home" ) ) ;
     private JFileChooser fileChooser = new JFileChooser() ;
-    private JTextArea textArea       = new JTextArea() ;
+    private JTextArea    textArea    = new JTextArea() ;
     
-    private int    fontSize     = 12 ;
     private String originalText = null ;
-    private File   currentFile  = null ;
+    
+    private int  fontSize    = 12 ;
+    private File currentFile = null ;
+    private File currentDir  = new File( System.getProperty( "user.home" ) ) ;
     
     public RawTextPanel() {
         setUpUI() ;
@@ -76,6 +83,13 @@ public class RawTextPanel extends JPanel implements ActionListener {
         textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) );
         textArea.setWrapStyleWord( true ) ;
         textArea.setLineWrap( true ) ;
+        textArea.addMouseListener( new MouseAdapter() {
+            public void mouseClicked( MouseEvent e ) {
+                if( e.getButton() == MouseEvent.BUTTON3 ) {
+                    handleMakeNotesTrigger( e ) ;
+                }
+            }
+        } ) ;
     }
     
     private void setUpFileChooser() {
@@ -141,9 +155,11 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 this.textArea.setText( content ) ;
                 this.originalText = content ;
                 this.currentFile = file ;
+                this.currentDir = file.getParentFile() ;
+                getStateMgr().saveState() ;
             }
-            catch( IOException e ) {
-                logger.error( "Could not read file contents", e ) ;
+            catch( Exception e ) {
+                logger.error( "Error while opening file.", e ) ;
                 JOptionPane.showConfirmDialog( this, 
                                    "Could not open file. " + e.getMessage() ) ;
             }
@@ -172,10 +188,10 @@ public class RawTextPanel extends JPanel implements ActionListener {
         
         File selectedFile = null ;
         
-        fileChooser.setCurrentDirectory( this.lastOpenedDirectory ) ;
+        fileChooser.setCurrentDirectory( this.currentDir ) ;
         int userChoice = fileChooser.showOpenDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
-            this.lastOpenedDirectory = fileChooser.getCurrentDirectory() ;
+            this.currentDir = fileChooser.getCurrentDirectory() ;
             selectedFile = fileChooser.getSelectedFile() ;
         }
         
@@ -191,6 +207,14 @@ public class RawTextPanel extends JPanel implements ActionListener {
         }
         this.textArea.setText( "" ) ;
         this.currentFile = null ;
+        try {
+            getStateMgr().saveState() ;
+        }
+        catch( Exception e ) {
+            logger.error( "Error while closing file.", e ) ;
+            JOptionPane.showConfirmDialog( this, 
+                               "Could not close file. " + e.getMessage() ) ;
+        }
     }
     
     private void saveFile() {
@@ -219,6 +243,48 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 this.fontSize = 8 ;
             }
         }
-        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) );
+        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        try {
+            getStateMgr().saveState() ;
+        }
+        catch( Exception e ) {
+            logger.error( "Could not save state", e ) ;
+        }
+    }
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize( int fontSize ) {
+        this.fontSize = fontSize;
+        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+    }
+
+    public File getCurrentFile() {
+        return currentFile;
+    }
+
+    public void setCurrentFile( File file ) {
+        this.currentFile = file ;
+        try {
+            String content = FileUtils.readFileToString( file ) ;
+            this.textArea.setText( content ) ;
+            this.originalText = content ;
+            this.currentFile  = file ;
+            this.currentDir   = file.getParentFile() ;
+        }
+        catch( Exception e ) {
+            logger.error( "Error while opening file.", e ) ;
+            JOptionPane.showConfirmDialog( this, 
+                               "Could not open file. " + e.getMessage() ) ;
+        }
+    }
+    
+    private void handleMakeNotesTrigger( MouseEvent e ) {
+        String selectedText = textArea.getSelectedText() ;
+        if( StringUtil.isNotEmptyOrNull( selectedText ) ) {
+            // TODO: Make and show popup menu
+        }
     }
 }
