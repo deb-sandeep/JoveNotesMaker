@@ -3,13 +3,33 @@ package com.sandy.jnmaker.util;
 import com.sandy.common.bus.EventBus ;
 import com.sandy.common.objfactory.SpringObjectFactory ;
 import com.sandy.common.util.WorkspaceManager ;
+import com.sandy.jnmaker.JoveNotesMaker ;
+import com.sandy.jnmaker.ui.MainFrame ;
 
 public class ObjectRepository {
 
     private static SpringObjectFactory objFactory = null ;
     private static WorkspaceManager    wkspMgr    = null ;
     private static EventBus            bus        = null ;
+    private static MainFrame           mainFrame  = null ;
+    private static JoveNotesMaker      app        = null ;
     
+    public static JoveNotesMaker getApp() {
+        return app;
+    }
+
+    public static void setApp( JoveNotesMaker app ) {
+        ObjectRepository.app = app;
+    }
+
+    public static MainFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public static void setMainFrame( MainFrame mainFrame ) {
+        ObjectRepository.mainFrame = mainFrame;
+    }
+
     public static void setObjectFactory( SpringObjectFactory obj ) {
         objFactory = obj ;
     }
