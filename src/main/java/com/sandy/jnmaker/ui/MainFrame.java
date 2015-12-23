@@ -16,6 +16,7 @@ import com.sandy.common.ui.statusbar.ClockSBComponent ;
 import com.sandy.common.ui.statusbar.StatusBar ;
 import com.sandy.common.ui.statusbar.StatusBar.Direction ;
 import com.sandy.jnmaker.NoteType ;
+import com.sandy.jnmaker.ui.dialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.ui.panels.ImagePanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.RawTextPanel ;
@@ -27,9 +28,12 @@ public class MainFrame extends AbstractMainFrame {
     private RawTextPanel   rawTextPanel = null ;
     private ImagePanel     imagePanel   = null ;
     private JoveNotesPanel jnPanel      = null ;
+    
+    private NotesCreatorDialog notesCreator = null ;
 
     public MainFrame() throws Exception {
         super( "JoveNotes Maker", getIcon( "app_icon" ) ) ;
+        notesCreator = new NotesCreatorDialog() ;
     }
 
     @Override
@@ -121,5 +125,6 @@ public class MainFrame extends AbstractMainFrame {
     }
     
     public void createNote( String selectedText, NoteType noteType ) {
+        notesCreator.createNote( selectedText, noteType, jnPanel ) ;
     }
 }
