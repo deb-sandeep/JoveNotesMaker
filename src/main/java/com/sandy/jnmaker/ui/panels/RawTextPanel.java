@@ -4,7 +4,6 @@ import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
 import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
-import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
@@ -142,7 +141,6 @@ public class RawTextPanel extends JPanel implements ActionListener {
         textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) );
         textArea.setWrapStyleWord( true ) ;
         textArea.setLineWrap( true ) ;
-        textArea.setForeground( Color.GRAY ) ;
         textArea.addMouseListener( new MouseAdapter() {
             public void mouseClicked( MouseEvent e ) {
                 if( e.getButton() == MouseEvent.BUTTON3 ) {
