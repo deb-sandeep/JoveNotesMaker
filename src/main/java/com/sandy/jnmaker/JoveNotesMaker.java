@@ -65,8 +65,9 @@ public class JoveNotesMaker {
     private void initializeStateManager() throws Exception {
         
         StateManager stateManager = new StateManager( this, getWkspManager() ) ;
-        stateManager.registerObject( "ImagePanel",   getMainFrame().getImagePanel() ) ;
-        stateManager.registerObject( "RawTextPanel", getMainFrame().getRawTextPanel() ) ;
+        stateManager.registerObject( "ImagePanel",     getMainFrame().getImagePanel() ) ;
+        stateManager.registerObject( "RawTextPanel",   getMainFrame().getRawTextPanel() ) ;
+        stateManager.registerObject( "JoveNotesPanel", getMainFrame().getJnPanel() ) ;
         stateManager.initialize() ;
         stateManager.loadState() ;
         

@@ -1,5 +1,7 @@
 package com.sandy.jnmaker.ui;
 
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 
@@ -8,8 +10,6 @@ import javax.swing.JPopupMenu ;
 import javax.swing.JTextArea ;
 
 import com.sandy.jnmaker.NoteType ;
-
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
 

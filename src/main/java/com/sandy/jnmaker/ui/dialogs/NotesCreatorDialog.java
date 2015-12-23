@@ -54,12 +54,17 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
     public void actionPerformed( ActionEvent e ) {
         
         if( e.getActionCommand().equals( AC_OK ) ) {
-            String fmtNote = centerPanel.getFormattedNote() ;
-            if( !StringUtil.isEmptyOrNull( fmtNote ) ) {
-                this.jnPanel.addNote( fmtNote ) ;
-            }
+            okPressed() ;
         }
         else {
+            setVisible( false ) ;
+        }
+    }
+    
+    public void okPressed() {
+        String fmtNote = centerPanel.getFormattedNote() ;
+        if( !StringUtil.isEmptyOrNull( fmtNote ) ) {
+            this.jnPanel.addNote( fmtNote ) ;
             setVisible( false ) ;
         }
     }
@@ -72,7 +77,6 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
         contentPane.add( getButtonPanel(), BorderLayout.SOUTH ) ;
         
         super.setAlwaysOnTop( true ) ;
-        super.setUndecorated( true ) ;
         
         SwingUtils.centerOnScreen( this, 600, 400 ) ;
     }
@@ -138,6 +142,11 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
                 JOptionPane.showConfirmDialog( this, "Not implemented" ) ;
                 break ;
         }
+        
+        if( panel != null ) {
+            panel.setParentDialog( this ) ;
+        }
+        
         return panel ;
     }
 }

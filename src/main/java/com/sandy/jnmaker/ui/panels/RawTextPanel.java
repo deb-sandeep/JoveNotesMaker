@@ -1,11 +1,15 @@
 package com.sandy.jnmaker.ui.panels;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
+import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
+import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
 import java.awt.event.MouseAdapter ;
 import java.awt.event.MouseEvent ;
 import java.io.File ;
@@ -26,8 +30,6 @@ import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.MakeNotesPopupMenu ;
-
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 public class RawTextPanel extends JPanel implements ActionListener {
 
@@ -140,6 +142,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) );
         textArea.setWrapStyleWord( true ) ;
         textArea.setLineWrap( true ) ;
+        textArea.setForeground( Color.GRAY ) ;
         textArea.addMouseListener( new MouseAdapter() {
             public void mouseClicked( MouseEvent e ) {
                 if( e.getButton() == MouseEvent.BUTTON3 ) {
@@ -147,6 +150,14 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 }
             }
         } ) ;
+        textArea.addKeyListener( new KeyAdapter() {
+            @Override public void keyPressed( KeyEvent e ) {
+                if( e.getKeyCode()   == KeyEvent.VK_S && 
+                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
+                    saveFile() ;
+                }
+            }
+        } );
     }
     
     private void setUpFileChooser() {
@@ -202,7 +213,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         }
     }
     
-    private boolean isEditorDirty() {
+    public boolean isEditorDirty() {
         
         boolean isDirty = false ;
         if( this.currentFile != null ) {
@@ -213,7 +224,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         return isDirty ;
     }
     
-    private boolean userConsentToDiscardChanges() {
+    public boolean userConsentToDiscardChanges() {
         
         int choice = JOptionPane.showConfirmDialog( this,  
                                  "There are unsaved changes. Ok to discard?" ) ;
@@ -252,6 +263,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
             if( isEditorDirty() ) {
                 try {
                     FileUtils.write( this.currentFile, this.textArea.getText() ) ;
+                    this.originalText = this.textArea.getText() ;
                 }
                 catch( IOException e ) {
                     logger.error( "Could not save file contents", e ) ;

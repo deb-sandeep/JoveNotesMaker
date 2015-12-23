@@ -47,7 +47,18 @@ public class MainFrame extends AbstractMainFrame {
 
     @Override
     protected void handleWindowClosing() {
-        super.handleWindowClosing();
+        if( rawTextPanel.isEditorDirty() ) {
+            if( !rawTextPanel.userConsentToDiscardChanges() ) {
+                return ;
+            }
+        }
+        
+        if( jnPanel.isEditorDirty() ) {
+            if( !jnPanel.userConsentToDiscardChanges() ) {
+                return ;
+            }
+        }
+        super.handleWindowClosing() ;
     }
 
     @Override
@@ -85,7 +96,7 @@ public class MainFrame extends AbstractMainFrame {
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
         
-        splitPane.setDividerLocation( (int)(0.3 * getScreenHeight()) ) ;
+        splitPane.setDividerLocation( (int)(0.1 * getScreenHeight()) ) ;
         splitPane.add( this.imagePanel ) ;
         splitPane.add( bottomComponent ) ;
         setCommonScrollPaneAttributes( splitPane ) ;

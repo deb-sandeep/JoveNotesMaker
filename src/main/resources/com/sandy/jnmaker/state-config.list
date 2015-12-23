@@ -4,3 +4,5 @@ RawTextPanel.fontSize
 RawTextPanel.currentFile
 ImagePanel.currentDir
 ImagePanel.openedFiles
+JoveNotesPanel.fontSize
+JoveNotesPanel.currentFile

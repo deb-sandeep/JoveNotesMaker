@@ -1,7 +1,7 @@
 package com.sandy.jnmaker.ui.panels;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
 import java.awt.Component ;
@@ -22,9 +22,9 @@ import javax.swing.filechooser.FileFilter ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
+import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.util.StringUtil ;
-import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
 
 public class ImagePanel extends JPanel 
     implements ActionListener, TabCloseListener {
