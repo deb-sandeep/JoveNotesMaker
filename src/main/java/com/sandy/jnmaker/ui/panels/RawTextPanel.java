@@ -25,6 +25,7 @@ import org.apache.commons.io.FileUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.MakeNotesPopupMenu ;
 
 import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
@@ -42,6 +43,8 @@ public class RawTextPanel extends JPanel implements ActionListener {
     private JFileChooser fileChooser = new JFileChooser() ;
     private JTextArea    textArea    = new JTextArea() ;
     
+    private MakeNotesPopupMenu popup = new MakeNotesPopupMenu( textArea ) ;
+    
     private String originalText = null ;
     
     private int  fontSize    = 12 ;
@@ -53,13 +56,66 @@ public class RawTextPanel extends JPanel implements ActionListener {
         setUpFileChooser() ;
     }
     
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize( int fontSize ) {
+        this.fontSize = fontSize;
+        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+    }
+
+    public File getCurrentFile() {
+        return currentFile;
+    }
+
+    public void setCurrentFile( File file ) {
+        
+        try {
+            String content = FileUtils.readFileToString( file ) ;
+            this.textArea.setText( content ) ;
+            this.originalText = content ;
+            this.currentFile  = file ;
+            this.currentDir   = file.getParentFile() ;
+        }
+        catch( Exception e ) {
+            logger.error( "Error while opening file.", e ) ;
+            JOptionPane.showConfirmDialog( this, 
+                               "Could not open file. " + e.getMessage() ) ;
+        }
+    }
+    
+    @Override
+    public void actionPerformed( ActionEvent e ) {
+        
+        switch( e.getActionCommand() ) {
+            case AC_OPEN_FILE:
+                openFile() ;
+                break ;
+            case AC_CLOSE_FILE :
+                closeFile() ;
+                break ;
+            case AC_SAVE_FILE :
+                saveFile() ;
+                break ;
+            case AC_ZOOM_IN :
+                zoom( true ) ;
+                break ;
+            case AC_ZOOM_OUT :
+                zoom( false ) ;
+                break ;
+        }
+    }
+    
     private void setUpUI() {
+        
         setLayout( new BorderLayout() ) ;
         add( getToolbar(), BorderLayout.WEST ) ;
         add( getDocumentEditorPanel(), BorderLayout.CENTER ) ;
     }
     
     private JComponent getToolbar() {
+        
         JPanel panel = new JPanel() ;
         panel.setLayout( new BoxLayout(panel, BoxLayout.Y_AXIS) ) ;
         panel.add( getActionBtn( "file_open",  AC_OPEN_FILE,  this ) ) ;
@@ -71,14 +127,15 @@ public class RawTextPanel extends JPanel implements ActionListener {
     }
     
     private JComponent getDocumentEditorPanel() {
+        
         configureTextArea() ;
-        JScrollPane sp = new JScrollPane( textArea, 
-                                          JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
-                                          JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) ;
-        return sp ;
+        return new JScrollPane( textArea, 
+                                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+                                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) ;
     }
     
     private void configureTextArea() {
+        
         textArea.setEditable( true ) ;
         textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) );
         textArea.setWrapStyleWord( true ) ;
@@ -119,27 +176,6 @@ public class RawTextPanel extends JPanel implements ActionListener {
         } );
     }
     
-    public void actionPerformed( ActionEvent e ) {
-        String actionCmd = e.getActionCommand() ;
-        switch( actionCmd ) {
-            case AC_OPEN_FILE:
-                openFile() ;
-                break ;
-            case AC_CLOSE_FILE :
-                closeFile() ;
-                break ;
-            case AC_SAVE_FILE :
-                saveFile() ;
-                break ;
-            case AC_ZOOM_IN :
-                zoom( true ) ;
-                break ;
-            case AC_ZOOM_OUT :
-                zoom( false ) ;
-                break ;
-        }
-    }
-    
     private void openFile() {
         
         if( isEditorDirty() ) {
@@ -156,7 +192,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 this.originalText = content ;
                 this.currentFile = file ;
                 this.currentDir = file.getParentFile() ;
-                getStateMgr().saveState() ;
+                saveState() ;
             }
             catch( Exception e ) {
                 logger.error( "Error while opening file.", e ) ;
@@ -207,14 +243,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         }
         this.textArea.setText( "" ) ;
         this.currentFile = null ;
-        try {
-            getStateMgr().saveState() ;
-        }
-        catch( Exception e ) {
-            logger.error( "Error while closing file.", e ) ;
-            JOptionPane.showConfirmDialog( this, 
-                               "Could not close file. " + e.getMessage() ) ;
-        }
+        saveState() ;
     }
     
     private void saveFile() {
@@ -234,6 +263,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
     }
     
     private void zoom( boolean zoomIn ) {
+        
         if( zoomIn ) {
             this.fontSize += 1 ;
         }
@@ -244,6 +274,11 @@ public class RawTextPanel extends JPanel implements ActionListener {
             }
         }
         this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        saveState() ;
+    }
+
+    private void saveState() {
+        
         try {
             getStateMgr().saveState() ;
         }
@@ -251,40 +286,11 @@ public class RawTextPanel extends JPanel implements ActionListener {
             logger.error( "Could not save state", e ) ;
         }
     }
-
-    public int getFontSize() {
-        return fontSize;
-    }
-
-    public void setFontSize( int fontSize ) {
-        this.fontSize = fontSize;
-        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
-    }
-
-    public File getCurrentFile() {
-        return currentFile;
-    }
-
-    public void setCurrentFile( File file ) {
-        this.currentFile = file ;
-        try {
-            String content = FileUtils.readFileToString( file ) ;
-            this.textArea.setText( content ) ;
-            this.originalText = content ;
-            this.currentFile  = file ;
-            this.currentDir   = file.getParentFile() ;
-        }
-        catch( Exception e ) {
-            logger.error( "Error while opening file.", e ) ;
-            JOptionPane.showConfirmDialog( this, 
-                               "Could not open file. " + e.getMessage() ) ;
-        }
-    }
     
     private void handleMakeNotesTrigger( MouseEvent e ) {
         String selectedText = textArea.getSelectedText() ;
         if( StringUtil.isNotEmptyOrNull( selectedText ) ) {
-            // TODO: Make and show popup menu
+            popup.show( selectedText, e.getX(), e.getY() ) ;
         }
     }
 }

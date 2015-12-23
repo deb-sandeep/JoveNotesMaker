@@ -15,13 +15,14 @@ import com.sandy.common.ui.AbstractMainFrame ;
 import com.sandy.common.ui.statusbar.ClockSBComponent ;
 import com.sandy.common.ui.statusbar.StatusBar ;
 import com.sandy.common.ui.statusbar.StatusBar.Direction ;
+import com.sandy.jnmaker.NoteType ;
 import com.sandy.jnmaker.ui.panels.ImagePanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.RawTextPanel ;
 
 public class MainFrame extends AbstractMainFrame {
 
-    private static final long serialVersionUID = -793491630867632079L;
+    private static final long serialVersionUID = -793491630867632079L ;
     
     private RawTextPanel   rawTextPanel = null ;
     private ImagePanel     imagePanel   = null ;
@@ -52,6 +53,7 @@ public class MainFrame extends AbstractMainFrame {
 
     @Override
     protected StatusBar getStatusBar() {
+        
         StatusBar statusBar = new StatusBar() ;
         statusBar.addStatusBarComponent( new ClockSBComponent(), Direction.EAST ) ;
         statusBar.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
@@ -116,5 +118,8 @@ public class MainFrame extends AbstractMainFrame {
 
     public void setJnPanel( JoveNotesPanel jnPanel ) {
         this.jnPanel = jnPanel;
+    }
+    
+    public void createNote( String selectedText, NoteType noteType ) {
     }
 }
