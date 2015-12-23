@@ -34,15 +34,15 @@ public class QAPanel extends QAPanelUI implements KeyListener {
         
         StringBuilder buffer = new StringBuilder() ;
         buffer.append( "@qa \"" )
-              .append( escapeQuotes( questionText ) )
+              .append( formatText( questionText ) )
               .append( "\"\n" )
               .append( "\"" )
-              .append( escapeQuotes( answerText ) )
+              .append( formatText( answerText ) ) 
               .append( "\"\n\n" ) ; 
         
         return buffer.toString() ;
     }
-
+    
     @Override
     public void keyPressed( KeyEvent e ) {
         

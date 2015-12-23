@@ -300,7 +300,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
     private void handleMakeNotesTrigger( MouseEvent e ) {
         String selectedText = textArea.getSelectedText() ;
         if( StringUtil.isNotEmptyOrNull( selectedText ) ) {
-            popup.show( selectedText, e.getX(), e.getY() ) ;
+            popup.show( selectedText.trim(), e.getX(), e.getY() ) ;
         }
     }
 }

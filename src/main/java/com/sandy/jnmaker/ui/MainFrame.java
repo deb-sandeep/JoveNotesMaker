@@ -1,6 +1,5 @@
 package com.sandy.jnmaker.ui;
 
-import static com.sandy.common.ui.SwingUtils.getScreenHeight ;
 import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
 
@@ -96,7 +95,7 @@ public class MainFrame extends AbstractMainFrame {
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
         
-        splitPane.setDividerLocation( (int)(0.1 * getScreenHeight()) ) ;
+        splitPane.setDividerLocation( 0.0d ) ;
         splitPane.add( this.imagePanel ) ;
         splitPane.add( bottomComponent ) ;
         setCommonScrollPaneAttributes( splitPane ) ;

@@ -19,6 +19,7 @@ import javax.swing.border.EtchedBorder ;
 import com.sandy.common.ui.SwingUtils ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.NoteType ;
+import com.sandy.jnmaker.ui.dialogs.fib.FIBPanel ;
 import com.sandy.jnmaker.ui.dialogs.qa.QAPanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 
@@ -136,8 +137,10 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
             case QA:
                 panel = new QAPanel( selectedText ) ;
                 break ;
-            case DEFINITION:
             case FIB:
+                panel = new FIBPanel( selectedText ) ;
+                break ;
+            case DEFINITION:
             case TRUE_FALSE:
                 JOptionPane.showConfirmDialog( this, "Not implemented" ) ;
                 break ;

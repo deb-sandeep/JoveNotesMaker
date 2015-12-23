@@ -5,6 +5,7 @@ import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
 import java.awt.Component ;
+import java.awt.Dimension ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import java.io.File ;
@@ -63,6 +64,7 @@ public class ImagePanel extends JPanel
         panel.add( getActionBtn( "zoom_in",   AC_ZOOM_IN,    this ) ) ;
         panel.add( getActionBtn( "zoom_out",  AC_ZOOM_OUT,   this ) ) ;
         panel.add( getActionBtn( "close_all", AC_CLOSE_ALL,  this ) ) ;
+        panel.setMinimumSize( new Dimension( 0, 0 ) ) ;
         return panel ;
     }
     
@@ -70,6 +72,7 @@ public class ImagePanel extends JPanel
         
         tabbedPane = new CloseableTabbedPane() ;
         tabbedPane.addTabCloseListener( this ) ;
+        tabbedPane.setMinimumSize( new Dimension( 0, 0 ) ) ;
         return tabbedPane ;
     }
     
