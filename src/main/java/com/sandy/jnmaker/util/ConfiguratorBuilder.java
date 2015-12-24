@@ -1,8 +1,7 @@
 package com.sandy.jnmaker.util;
 
 import static com.sandy.common.util.ReflectionUtil.getResource ;
-import static com.sandy.jnmaker.util.ObjectRepository.getApp ;
-import static com.sandy.jnmaker.util.ObjectRepository.getWkspManager ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.net.URL;
 
@@ -38,6 +37,7 @@ public class ConfiguratorBuilder {
         throws Exception {
         
         configurator.registerConfigurableObject( "JoveNotesMaker", getApp() );
+        configurator.registerConfigurableObject( "WordnicAdapter", getWordnicAdapter() );
     }
     
     private void registerConfigProperties( Configurator configurator ) {

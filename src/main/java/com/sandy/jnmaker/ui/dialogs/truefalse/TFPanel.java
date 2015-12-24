@@ -1,8 +1,5 @@
 package com.sandy.jnmaker.ui.dialogs.truefalse;
 
-import java.awt.event.KeyAdapter ;
-import java.awt.event.KeyEvent ;
-
 import javax.swing.event.ChangeEvent ;
 import javax.swing.event.ChangeListener ;
 
@@ -11,17 +8,6 @@ import com.sandy.common.util.StringUtil ;
 public class TFPanel extends TFPanelUI {
 
     private static final long serialVersionUID = 3769022621138588835L ;
-    
-    private class TFKeyAdapter extends KeyAdapter {
-
-        @Override
-        public void keyPressed( KeyEvent e ) {
-            if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
-                e.getModifiers() == KeyEvent.CTRL_MASK ) {
-                TFPanel.this.parent.okPressed() ;
-            }            
-        }
-    }
     
     private String savedJustification = null ;
 
@@ -33,7 +19,7 @@ public class TFPanel extends TFPanelUI {
         
         savedJustification = selectedText ;
         initComponents( selectedText ) ;
-        setUpListeners( selectedText ) ;
+        initListeners( selectedText ) ;
     }
     
     private void initComponents( String selectedText ) {
@@ -43,11 +29,11 @@ public class TFPanel extends TFPanelUI {
         justTextArea.setEnabled( false ) ;
     }
     
-    private void setUpListeners( String selectedText ) {
+    private void initListeners( String selectedText ) {
 
-        TFKeyAdapter keyAdapter = new TFKeyAdapter() ;
-        stmtTextArea.addKeyListener( keyAdapter ) ;
-        justTextArea.addKeyListener( keyAdapter ) ;
+        bindOkPressEventCapture( stmtTextArea ) ;
+        bindOkPressEventCapture( justTextArea ) ;
+        
         trueFalseCheckBox.addChangeListener( new ChangeListener() {
             @Override
             public void stateChanged( ChangeEvent e ) {

@@ -22,6 +22,7 @@ import com.sandy.jnmaker.NoteType ;
 import com.sandy.jnmaker.ui.dialogs.fib.FIBPanel ;
 import com.sandy.jnmaker.ui.dialogs.qa.QAPanel ;
 import com.sandy.jnmaker.ui.dialogs.truefalse.TFPanel ;
+import com.sandy.jnmaker.ui.dialogs.wm.WMPanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 
 public class NotesCreatorDialog extends JDialog implements ActionListener {
@@ -128,6 +129,9 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
             case TRUE_FALSE:
                 titleText = "Make true/false (@true_false) note." ;
                 break ;
+            case WORD_MEANING:
+                titleText = "Make word meaning (@wm) note." ;
+                break ;
         }
         return titleText ;
     }
@@ -144,6 +148,9 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
                 break ;
             case TRUE_FALSE:
                 panel = new TFPanel( selectedText ) ;
+                break ;
+            case WORD_MEANING:
+                panel = new WMPanel( selectedText ) ;
                 break ;
             case DEFINITION:
                 JOptionPane.showConfirmDialog( this, "Not implemented" ) ;

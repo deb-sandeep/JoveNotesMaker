@@ -1,0 +1,18 @@
+X question_answer
+X fib
+X true_false
+word_meaning
+
+spellbee
+definition
+event
+
+character
+teacher_note
+matching
+chem_equation
+chem_compound
+image_label
+equation
+rtc
+multi_choice

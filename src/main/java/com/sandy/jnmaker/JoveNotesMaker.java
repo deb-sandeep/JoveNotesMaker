@@ -13,6 +13,7 @@ import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.util.ConfiguratorBuilder ;
 import com.sandy.jnmaker.util.JNMCommandLine ;
+import com.sandy.jnmaker.util.WordnicAdapter ;
 
 public class JoveNotesMaker {
     
@@ -47,6 +48,10 @@ public class JoveNotesMaker {
         // Initialize the workspace
         WorkspaceManager wkspMgr = new WorkspaceManager( APP_ID ) ;
         setWkspManager( wkspMgr ) ;
+        
+        // Initialize the wordnicAdapter
+        WordnicAdapter wordnicAdapter = new WordnicAdapter() ;
+        setWordnicAdapter( wordnicAdapter ) ;
         
         // Configure the system components
         ConfiguratorBuilder builder = new ConfiguratorBuilder( APP_ID, cmdLine ) ;

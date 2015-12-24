@@ -1,6 +1,11 @@
 package com.sandy.jnmaker.ui.dialogs;
 
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
+
+import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
+import javax.swing.text.JTextComponent ;
 
 import org.apache.commons.lang.WordUtils ;
 
@@ -35,10 +40,31 @@ public abstract class AbstractNotePanel extends JPanel {
                 buffer.append( line ) ;
                 
                 if( i < (lines.length - 1) ) {
-                    buffer.append( "\n\n" ) ;
+                    buffer.append( "  \n" ) ;
                 }
+            }
+            else {
+                buffer.append( "\n" ) ;
             }
         }
         return buffer.toString() ;
+    }
+    
+    protected void bindOkPressEventCapture( JTextComponent textArea ) {
+        
+        textArea.addKeyListener( new KeyAdapter() {
+            @Override
+            public void keyPressed( KeyEvent e ) {
+                if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
+                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
+                    parent.okPressed() ;
+                }            
+            }
+        });
+    }
+    
+    protected void showErrorMsg( String msg ) {
+        JOptionPane.showMessageDialog( this, msg, "Input error", 
+                                       JOptionPane.ERROR_MESSAGE ) ; 
     }
 }

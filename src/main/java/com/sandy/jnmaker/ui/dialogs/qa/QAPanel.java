@@ -3,8 +3,6 @@ package com.sandy.jnmaker.ui.dialogs.qa;
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 
-import javax.swing.JOptionPane ;
-
 import com.sandy.common.util.StringUtil ;
 
 public class QAPanel extends QAPanelUI implements KeyListener {
@@ -26,9 +24,7 @@ public class QAPanel extends QAPanelUI implements KeyListener {
         if( StringUtil.isEmptyOrNull( questionText ) || 
             StringUtil.isEmptyOrNull( answerText ) ) {
         
-            JOptionPane.showMessageDialog( this, 
-                    "Question or Answer can't be empty.", 
-                    "Invalid entry", JOptionPane.ERROR_MESSAGE ) ;
+            showErrorMsg( "Question or Answer can't be empty." ) ;
             return null ;
         }
         

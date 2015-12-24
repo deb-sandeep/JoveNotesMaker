@@ -35,5 +35,10 @@
           <artifactId>commons-lang</artifactId>
           <version>2.6</version>
       </dependency>
+      <dependency>
+          <groupId>com.wordnik</groupId>
+          <artifactId>wordnik-java-client</artifactId>
+          <version>1.0.0</version>
+      </dependency>
   </dependencies>
 </project>

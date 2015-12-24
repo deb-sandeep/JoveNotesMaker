@@ -9,13 +9,22 @@ import com.sandy.jnmaker.ui.MainFrame ;
 
 public class ObjectRepository {
 
-    private static SpringObjectFactory objFactory = null ;
-    private static WorkspaceManager    wkspMgr    = null ;
-    private static EventBus            bus        = null ;
-    private static MainFrame           mainFrame  = null ;
-    private static JoveNotesMaker      app        = null ;
-    private static StateManager        stateMgr   = null ;
+    private static SpringObjectFactory objFactory     = null ;
+    private static WorkspaceManager    wkspMgr        = null ;
+    private static EventBus            bus            = null ;
+    private static MainFrame           mainFrame      = null ;
+    private static JoveNotesMaker      app            = null ;
+    private static StateManager        stateMgr       = null ;
+    private static WordnicAdapter      wordnicAdapter = null ;
     
+    public static WordnicAdapter getWordnicAdapter() {
+        return wordnicAdapter;
+    }
+
+    public static void setWordnicAdapter( WordnicAdapter wordnicAdapter ) {
+        ObjectRepository.wordnicAdapter = wordnicAdapter;
+    }
+
     public static StateManager getStateMgr() {
         return stateMgr;
     }
