@@ -1,9 +1,9 @@
 X question_answer
 X fib
 X true_false
-word_meaning
+X word_meaning
+X spellbee
 
-spellbee
 definition
 event
 

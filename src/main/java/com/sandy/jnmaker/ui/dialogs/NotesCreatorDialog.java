@@ -21,6 +21,7 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.NoteType ;
 import com.sandy.jnmaker.ui.dialogs.fib.FIBPanel ;
 import com.sandy.jnmaker.ui.dialogs.qa.QAPanel ;
+import com.sandy.jnmaker.ui.dialogs.spellbee.SpellbeePanel ;
 import com.sandy.jnmaker.ui.dialogs.truefalse.TFPanel ;
 import com.sandy.jnmaker.ui.dialogs.wm.WMPanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
@@ -132,6 +133,9 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
             case WORD_MEANING:
                 titleText = "Make word meaning (@wm) note." ;
                 break ;
+            case SPELLBEE:
+                titleText = "Make spellbee (@spellbee) note." ;
+                break ;
         }
         return titleText ;
     }
@@ -151,6 +155,9 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
                 break ;
             case WORD_MEANING:
                 panel = new WMPanel( selectedText ) ;
+                break ;
+            case SPELLBEE:
+                panel = new SpellbeePanel( selectedText ) ;
                 break ;
             case DEFINITION:
                 JOptionPane.showConfirmDialog( this, "Not implemented" ) ;

@@ -36,8 +36,9 @@ public class ConfiguratorBuilder {
     private void registerConfigurableObjects( Configurator configurator ) 
         throws Exception {
         
-        configurator.registerConfigurableObject( "JoveNotesMaker", getApp() );
-        configurator.registerConfigurableObject( "WordnicAdapter", getWordnicAdapter() );
+        configurator.registerConfigurableObject( "JoveNotesMaker", getApp() ) ;
+        configurator.registerConfigurableObject( "WordnicAdapter", getWordnicAdapter() ) ;
+        configurator.registerConfigurableObject( "AppConfig",      getAppConfig() );
     }
     
     private void registerConfigProperties( Configurator configurator ) {
@@ -50,14 +51,14 @@ public class ConfiguratorBuilder {
 
         // Secondly load the bundled properties if any. Bundled property is
         // stored in a folder accessible to the classpath
-        String defPropPath = "/" + appId + ".properties";
+        String defPropPath = "/" + appId + "-config.properties";
         URL defPropURL = getResource( defPropPath );
         if( defPropURL != null ) {
             configurator.registerConfigResourceURL( defPropURL );
         }
 
         // Lastly we check in the workspace directory
-        URL userPropURL = wkspUtil.getFileURL( appId + ".properties" );
+        URL userPropURL = wkspUtil.getFileURL( appId + "-config.properties" );
         if( userPropURL != null ) {
             configurator.registerConfigResourceURL( userPropURL );
         }

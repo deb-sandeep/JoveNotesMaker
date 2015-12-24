@@ -16,7 +16,16 @@ public class ObjectRepository {
     private static JoveNotesMaker      app            = null ;
     private static StateManager        stateMgr       = null ;
     private static WordnicAdapter      wordnicAdapter = null ;
+    private static AppConfig           appConfig      = null ;
     
+    public static AppConfig getAppConfig() {
+        return appConfig;
+    }
+
+    public static void setAppConfig( AppConfig appConfig ) {
+        ObjectRepository.appConfig = appConfig;
+    }
+
     public static WordnicAdapter getWordnicAdapter() {
         return wordnicAdapter;
     }

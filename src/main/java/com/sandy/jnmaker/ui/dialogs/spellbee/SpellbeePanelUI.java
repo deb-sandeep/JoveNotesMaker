@@ -1,12 +1,12 @@
-package com.sandy.jnmaker.ui.dialogs.wm ;
+package com.sandy.jnmaker.ui.dialogs.spellbee;
 
 import com.sandy.jnmaker.ui.dialogs.AbstractNotePanel;
 
-public abstract class WMPanelUI extends AbstractNotePanel {
+public abstract class SpellbeePanelUI extends AbstractNotePanel {
 
-    private static final long serialVersionUID = 9015449326144115519L;
- 
-    public WMPanelUI() {
+    private static final long serialVersionUID = 1L;
+
+    public SpellbeePanelUI() {
         initComponents();
     }
 
@@ -20,8 +20,9 @@ public abstract class WMPanelUI extends AbstractNotePanel {
 
         javax.swing.JLabel wordLabel = new javax.swing.JLabel();
         wordTF = new javax.swing.JTextField();
-        getMeaningBtn = new javax.swing.JButton();
-        meaningLabel = new javax.swing.JLabel();
+        downloadBtn = new javax.swing.JButton();
+        playBtn = new javax.swing.JButton();
+        javax.swing.JLabel meaningLabel = new javax.swing.JLabel();
         javax.swing.JScrollPane sp1 = new javax.swing.JScrollPane();
         meaningTF = new javax.swing.JTextArea();
         msgLabel = new javax.swing.JLabel();
@@ -35,8 +36,11 @@ public abstract class WMPanelUI extends AbstractNotePanel {
 
         wordTF.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
 
-        getMeaningBtn.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
-        getMeaningBtn.setText("Get meaning");
+        downloadBtn.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        downloadBtn.setText("Download");
+
+        playBtn.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        playBtn.setText("Play");
 
         meaningLabel.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
         meaningLabel.setText("Meaning");
@@ -50,7 +54,8 @@ public abstract class WMPanelUI extends AbstractNotePanel {
         sp1.setViewportView(meaningTF);
 
         msgLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
-        msgLabel.setForeground(new java.awt.Color(39, 121, 241));
+        msgLabel.setForeground(java.awt.Color.blue);
+        msgLabel.setText("message");
 
         pronunciationLabel.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
         pronunciationLabel.setText("Pronunciation");
@@ -66,19 +71,20 @@ public abstract class WMPanelUI extends AbstractNotePanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sp1)
                     .addComponent(msgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(meaningLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(meaningLabel)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pronunciationLabel)
-                            .addComponent(wordLabel))
-                        .addGap(18, 18, 18)
+                            .addComponent(wordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pronunciationLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(wordTF, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(wordTF, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(getMeaningBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                                .addComponent(downloadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(playBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(pronunciationTF))))
                 .addContainerGap())
         );
@@ -89,15 +95,16 @@ public abstract class WMPanelUI extends AbstractNotePanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(wordLabel)
                     .addComponent(wordTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(getMeaningBtn))
-                .addGap(8, 8, 8)
+                    .addComponent(downloadBtn)
+                    .addComponent(playBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pronunciationLabel)
                     .addComponent(pronunciationTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(meaningLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sp1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addComponent(sp1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(msgLabel)
                 .addContainerGap())
@@ -106,10 +113,10 @@ public abstract class WMPanelUI extends AbstractNotePanel {
 
 
     // Variables declaration - do not modify                     
-    protected javax.swing.JButton getMeaningBtn;
-    protected javax.swing.JLabel meaningLabel;
+    protected javax.swing.JButton downloadBtn;
     protected javax.swing.JTextArea meaningTF;
     protected javax.swing.JLabel msgLabel;
+    protected javax.swing.JButton playBtn;
     protected javax.swing.JTextField pronunciationTF;
     protected javax.swing.JTextField wordTF;
     // End of variables declaration                   
