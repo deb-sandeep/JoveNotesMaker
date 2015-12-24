@@ -27,6 +27,10 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
     
     public FIBPanel( String selectedText ) {
         
+        if( !selectedText.endsWith( "." ) ) {
+            selectedText += "." ;
+        }
+        
         this.textArea.setText( selectedText ) ;
         setUpPopupMenu() ;
         setUpListeners() ;
@@ -70,10 +74,8 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         for( String blankTxt : blankTextList ) {
             buffer.append( "\"" )
                   .append( escapeQuotes( blankTxt ) )
-                  .append( "\"\n" ) ;
+                  .append( "\"" ) ;
         }
-        
-        buffer.append( "\n" ) ;
         
         return buffer.toString() ;
     }

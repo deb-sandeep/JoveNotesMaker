@@ -21,6 +21,7 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.NoteType ;
 import com.sandy.jnmaker.ui.dialogs.fib.FIBPanel ;
 import com.sandy.jnmaker.ui.dialogs.qa.QAPanel ;
+import com.sandy.jnmaker.ui.dialogs.truefalse.TFPanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 
 public class NotesCreatorDialog extends JDialog implements ActionListener {
@@ -65,6 +66,7 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
     public void okPressed() {
         String fmtNote = centerPanel.getFormattedNote() ;
         if( !StringUtil.isEmptyOrNull( fmtNote ) ) {
+            fmtNote += "\n\n" ;
             this.jnPanel.addNote( fmtNote ) ;
             setVisible( false ) ;
         }
@@ -140,8 +142,10 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
             case FIB:
                 panel = new FIBPanel( selectedText ) ;
                 break ;
-            case DEFINITION:
             case TRUE_FALSE:
+                panel = new TFPanel( selectedText ) ;
+                break ;
+            case DEFINITION:
                 JOptionPane.showConfirmDialog( this, "Not implemented" ) ;
                 break ;
         }

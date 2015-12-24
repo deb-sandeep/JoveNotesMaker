@@ -38,7 +38,7 @@ public class QAPanel extends QAPanelUI implements KeyListener {
               .append( "\"\n" )
               .append( "\"" )
               .append( formatText( answerText ) ) 
-              .append( "\"\n\n" ) ; 
+              .append( "\"" ) ; 
         
         return buffer.toString() ;
     }
