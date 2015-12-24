@@ -33,6 +33,9 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
         add( createMenuItem( "@wm",         NoteType.WORD_MEANING ) ) ;
         add( createMenuItem( "@spellbee",   NoteType.SPELLBEE ) ) ;
         add( createMenuItem( "@definition", NoteType.DEFINITION ) ) ;
+        add( createMenuItem( "@event",      NoteType.EVENT ) ) ;
+        add( new Separator() ) ;
+        add( createMenuItem( "// comment",  NoteType.COMMENT ) ) ;
     }
     
     private JMenuItem createMenuItem( String label, NoteType noteType ) {

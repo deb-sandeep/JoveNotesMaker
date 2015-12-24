@@ -39,7 +39,7 @@ public abstract class AbstractNotePanel extends JPanel {
         return input.replaceAll( "\"", "\\\"" ) ;
     }
 
-    protected String formatText( String input ) {
+    protected String formatText( String input, boolean escapeQuote ) {
         
         StringBuilder buffer = new StringBuilder() ;
         String[] lines = input.split( "\n" ) ;
@@ -47,7 +47,9 @@ public abstract class AbstractNotePanel extends JPanel {
         for( int i=0; i<lines.length; i++ ) {
             String line = lines[i] ;
             if( !StringUtil.isEmptyOrNull( line ) ) {
-                line = escapeQuotes( line ) ;
+                if( escapeQuote ) {
+                    line = escapeQuotes( line ) ;
+                }
                 line = WordUtils.wrap( line, 80, "\n", false ) ;
                 buffer.append( line ) ;
                 
@@ -60,6 +62,10 @@ public abstract class AbstractNotePanel extends JPanel {
             }
         }
         return buffer.toString() ;
+    }
+    
+    protected String formatText( String input ) {
+        return formatText( input, true ) ;
     }
     
     protected void bindOkPressEventCapture( JTextComponent textArea ) {

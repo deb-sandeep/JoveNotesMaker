@@ -18,7 +18,9 @@ import javax.swing.border.EtchedBorder ;
 import com.sandy.common.ui.SwingUtils ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.NoteType ;
+import com.sandy.jnmaker.ui.dialogs.comment.CommentPanel ;
 import com.sandy.jnmaker.ui.dialogs.definition.DefinitionPanel ;
+import com.sandy.jnmaker.ui.dialogs.event.EventPanel ;
 import com.sandy.jnmaker.ui.dialogs.fib.FIBPanel ;
 import com.sandy.jnmaker.ui.dialogs.qa.QAPanel ;
 import com.sandy.jnmaker.ui.dialogs.spellbee.SpellbeePanel ;
@@ -136,6 +138,12 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
             case SPELLBEE:
                 titleText = "Make spellbee (@spellbee) note." ;
                 break ;
+            case COMMENT:
+                titleText = "Make a comment note." ;
+                break ;
+            case EVENT:
+                titleText = "Make event (@event) note." ;
+                break ;
         }
         return titleText ;
     }
@@ -161,6 +169,12 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
                 break ;
             case DEFINITION:
                 panel = new DefinitionPanel( selectedText ) ;
+                break ;
+            case COMMENT:
+                panel = new CommentPanel( selectedText ) ;
+                break ;
+            case EVENT:
+                panel = new EventPanel( selectedText ) ;
                 break ;
         }
         

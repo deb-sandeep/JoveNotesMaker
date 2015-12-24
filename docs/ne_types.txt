@@ -4,9 +4,9 @@ X true_false
 X word_meaning
 X spellbee
 X definition
+X comment
+X event
 
-event
-comment
 teacher_note
 
 character
