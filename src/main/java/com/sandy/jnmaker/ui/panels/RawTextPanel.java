@@ -5,6 +5,7 @@ import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
 import java.awt.Font ;
+import java.awt.Rectangle ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import java.awt.event.KeyAdapter ;
@@ -23,6 +24,7 @@ import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTextArea ;
 import javax.swing.filechooser.FileFilter ;
+import javax.swing.text.Document ;
 
 import org.apache.commons.io.FileUtils ;
 import org.apache.log4j.Logger ;
@@ -78,6 +80,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
             this.originalText = content ;
             this.currentFile  = file ;
             this.currentDir   = file.getParentFile() ;
+            scrollToLastOpPosition() ;
         }
         catch( Exception e ) {
             logger.error( "Error while opening file.", e ) ;
@@ -130,9 +133,10 @@ public class RawTextPanel extends JPanel implements ActionListener {
     private JComponent getDocumentEditorPanel() {
         
         configureTextArea() ;
-        return new JScrollPane( textArea, 
+        JScrollPane sp = new JScrollPane( textArea, 
                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) ;
+        return sp ;
     }
     
     private void configureTextArea() {
@@ -196,11 +200,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         File file = getSelectedFile() ;
         if( file != null ) {
             try {
-                String content = FileUtils.readFileToString( file ) ;
-                this.textArea.setText( content ) ;
-                this.originalText = content ;
-                this.currentFile = file ;
-                this.currentDir = file.getParentFile() ;
+                setCurrentFile( file ) ;
                 saveState() ;
             }
             catch( Exception e ) {
@@ -290,7 +290,9 @@ public class RawTextPanel extends JPanel implements ActionListener {
     private void saveState() {
         
         try {
-            getStateMgr().saveState() ;
+            if( getStateMgr() != null ) {
+                getStateMgr().saveState() ;
+            }
         }
         catch( Exception e ) {
             logger.error( "Could not save state", e ) ;
@@ -301,6 +303,26 @@ public class RawTextPanel extends JPanel implements ActionListener {
         String selectedText = textArea.getSelectedText() ;
         if( StringUtil.isNotEmptyOrNull( selectedText ) ) {
             popup.show( selectedText.trim(), e.getX(), e.getY() ) ;
+        }
+    }
+    
+    public void scrollToLastOpPosition() {
+        
+        String find = "// here" ;
+        Document document = textArea.getDocument() ;
+        
+        try {
+            int pos = document.getText( 0, document.getLength() )
+                              .toLowerCase()
+                              .indexOf( find ) ;
+            if( pos > -1 ){
+                Rectangle viewRect = textArea.modelToView( pos ) ;
+                viewRect.y += textArea.getHeight() ;
+                textArea.scrollRectToVisible( viewRect ) ;
+            }
+        } 
+        catch ( Exception exp ) {
+            exp.printStackTrace() ;
         }
     }
 }
