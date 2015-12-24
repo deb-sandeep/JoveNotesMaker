@@ -289,7 +289,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog( this, "Please load a source file first" );
         }
         else {
-            textArea.append( fmtNote ) ;
+            textArea.insert( fmtNote, textArea.getCaretPosition() ) ;
         }
     }
 }
