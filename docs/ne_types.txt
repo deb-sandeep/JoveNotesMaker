@@ -3,12 +3,13 @@ X fib
 X true_false
 X word_meaning
 X spellbee
+X definition
 
-definition
 event
+comment
+teacher_note
 
 character
-teacher_note
 matching
 chem_equation
 chem_compound
