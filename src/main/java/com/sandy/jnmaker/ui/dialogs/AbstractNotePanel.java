@@ -36,7 +36,7 @@ public abstract class AbstractNotePanel extends JPanel {
     }
     
     protected String escapeQuotes( String input ) {
-        return input.replaceAll( "\"", "\\\"" ) ;
+        return input.replaceAll( "\\\"", "\\\\\"" ) ;
     }
 
     protected String formatText( String input, boolean escapeQuote ) {

@@ -74,7 +74,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         for( String blankTxt : blankTextList ) {
             buffer.append( "\"" )
                   .append( escapeQuotes( blankTxt ) )
-                  .append( "\"" ) ;
+                  .append( "\"\n" ) ;
         }
         
         return buffer.toString() ;
