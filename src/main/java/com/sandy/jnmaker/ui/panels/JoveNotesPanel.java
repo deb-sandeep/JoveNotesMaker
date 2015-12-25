@@ -4,6 +4,7 @@ import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
 import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
+import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
@@ -18,12 +19,15 @@ import javax.swing.JFileChooser ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
-import javax.swing.JTextArea ;
 import javax.swing.filechooser.FileFilter ;
+import javax.swing.text.BadLocationException ;
 import javax.swing.text.DefaultCaret ;
+import javax.swing.text.Document ;
 
 import org.apache.commons.io.FileUtils ;
 import org.apache.log4j.Logger ;
+
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class JoveNotesPanel extends JPanel implements ActionListener {
 
@@ -36,8 +40,8 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
     private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
     private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
     
-    private JFileChooser fileChooser = new JFileChooser() ;
-    private JTextArea    textArea    = new JTextArea() ;
+    private JFileChooser      fileChooser = new JFileChooser() ;
+    private JoveNotesTextPane textPane    = new JoveNotesTextPane() ;
     
     private String originalText = null ;
     
@@ -56,7 +60,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
 
     public void setFontSize( int fontSize ) {
         this.fontSize = fontSize;
-        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
     }
 
     public File getCurrentFile() {
@@ -67,11 +71,11 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
         
         try {
             String content = FileUtils.readFileToString( file ) ;
-            this.textArea.setText( content ) ;
+            this.textPane.setText( content ) ;
             this.originalText = content ;
             this.currentFile  = file ;
             this.currentDir   = file.getParentFile() ;
-            this.textArea.setEnabled( true ) ;
+            this.textPane.setEnabled( true ) ;
         }
         catch( Exception e ) {
             logger.error( "Error while opening file.", e ) ;
@@ -107,6 +111,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
         setLayout( new BorderLayout() ) ;
         add( getToolbar(), BorderLayout.WEST ) ;
         add( getDocumentEditorPanel(), BorderLayout.CENTER ) ;
+        UIUtil.setPanelBackground( Color.BLACK, this ) ;
     }
     
     private JComponent getToolbar() {
@@ -118,25 +123,29 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
         panel.add( getActionBtn( "file_save",  AC_SAVE_FILE,  this ) ) ;
         panel.add( getActionBtn( "zoom_in",    AC_ZOOM_IN,    this ) ) ;
         panel.add( getActionBtn( "zoom_out",   AC_ZOOM_OUT,   this ) ) ;
+        
+        UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, panel ) ;
+        
         return panel ;
     }
     
     private JComponent getDocumentEditorPanel() {
         
         configureTextArea() ;
-        return new JScrollPane( textArea, 
+        JScrollPane sp = new JScrollPane( textPane, 
                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) ;
+        UIUtil.setScrollBarBackground( UIUtil.EDITOR_BG_COLOR, 
+                                       sp.getVerticalScrollBar() ) ;
+        return sp ;
     }
     
     private void configureTextArea() {
         
-        textArea.setEditable( true ) ;
-        textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) );
-        textArea.setWrapStyleWord( true ) ;
-        textArea.setLineWrap( true ) ;
-        textArea.setEnabled( false ) ;
-        textArea.addKeyListener( new KeyAdapter() {
+        textPane.setEditable( true ) ;
+        textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        textPane.setEnabled( false ) ;
+        textPane.addKeyListener( new KeyAdapter() {
             @Override public void keyPressed( KeyEvent e ) {
                 if( e.getKeyCode()   == KeyEvent.VK_S && 
                     e.getModifiers() == KeyEvent.CTRL_MASK ) {
@@ -145,7 +154,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
             }
         } );
         
-        DefaultCaret caret = ( DefaultCaret )textArea.getCaret() ;
+        DefaultCaret caret = ( DefaultCaret )textPane.getCaret() ;
         caret.setUpdatePolicy( DefaultCaret.ALWAYS_UPDATE ) ;    
     }
     
@@ -182,11 +191,11 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
         if( file != null ) {
             try {
                 String content = FileUtils.readFileToString( file ) ;
-                this.textArea.setText( content ) ;
+                this.textPane.setText( content ) ;
                 this.originalText = content ;
                 this.currentFile = file ;
                 this.currentDir = file.getParentFile() ;
-                this.textArea.setEnabled( true ) ;
+                this.textPane.setEnabled( true ) ;
                 saveState() ;
             }
             catch( Exception e ) {
@@ -201,7 +210,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
         
         boolean isDirty = false ;
         if( this.currentFile != null ) {
-            if( !this.textArea.getText().equals( this.originalText ) ) {
+            if( !this.textPane.getText().equals( this.originalText ) ) {
                 isDirty = true ;
             }
         }
@@ -236,8 +245,8 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
                 return ;
             }
         }
-        this.textArea.setText( "" ) ;
-        this.textArea.setEnabled( false ) ;
+        this.textPane.setText( "" ) ;
+        this.textPane.setEnabled( false ) ;
         this.currentFile = null ;
         saveState() ;
     }
@@ -247,8 +256,8 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
         if( this.currentFile != null ) {
             if( isEditorDirty() ) {
                 try {
-                    FileUtils.write( this.currentFile, this.textArea.getText() ) ;
-                    this.originalText = this.textArea.getText() ;
+                    FileUtils.write( this.currentFile, this.textPane.getText() ) ;
+                    this.originalText = this.textPane.getText() ;
                 }
                 catch( IOException e ) {
                     logger.error( "Could not save file contents", e ) ;
@@ -270,7 +279,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
                 this.fontSize = 8 ;
             }
         }
-        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
         saveState() ;
     }
 
@@ -289,7 +298,13 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog( this, "Please load a source file first" );
         }
         else {
-            textArea.insert( fmtNote, textArea.getCaretPosition() ) ;
+            try {
+                Document doc = textPane.getDocument() ;
+                doc.insertString( textPane.getCaretPosition(), fmtNote, null ) ;
+            }
+            catch( BadLocationException e ) {
+                e.printStackTrace();
+            }
         }
     }
 }

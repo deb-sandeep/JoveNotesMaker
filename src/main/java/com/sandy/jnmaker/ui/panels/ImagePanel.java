@@ -26,6 +26,7 @@ import com.sandy.common.ui.CloseableTabbedPane ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class ImagePanel extends JPanel 
     implements ActionListener, TabCloseListener {
@@ -54,6 +55,8 @@ public class ImagePanel extends JPanel
         setLayout( new BorderLayout() ) ;
         add( getToolbar(), BorderLayout.WEST ) ;
         add( getTabbedPane(), BorderLayout.CENTER ) ;
+        
+        UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, this ) ;
     }
     
     private JComponent getToolbar() {
@@ -65,6 +68,9 @@ public class ImagePanel extends JPanel
         panel.add( getActionBtn( "zoom_out",  AC_ZOOM_OUT,   this ) ) ;
         panel.add( getActionBtn( "close_all", AC_CLOSE_ALL,  this ) ) ;
         panel.setMinimumSize( new Dimension( 0, 0 ) ) ;
+        
+        UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, panel ) ;
+        
         return panel ;
     }
     

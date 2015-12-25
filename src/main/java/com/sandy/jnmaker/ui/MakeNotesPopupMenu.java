@@ -7,7 +7,7 @@ import java.awt.event.ActionListener ;
 
 import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
-import javax.swing.JTextArea ;
+import javax.swing.JTextPane ;
 
 import com.sandy.jnmaker.NoteType ;
 
@@ -15,13 +15,13 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
 
     private static final long serialVersionUID = -7265818723778988508L ;
 
-    private JTextArea rawTextArea  = null ;
+    private JTextPane rawTextArea  = null ;
     private String    selectedText = null ;
     
-    public MakeNotesPopupMenu( JTextArea rawTextArea ) {
+    public MakeNotesPopupMenu( JTextPane rawTextPane ) {
         
         super( "Make notes" ) ;
-        this.rawTextArea = rawTextArea ;
+        this.rawTextArea = rawTextPane ;
         setUpUI() ;
     }
     

@@ -4,6 +4,7 @@ import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
 import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
+import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.Rectangle ;
 import java.awt.event.ActionEvent ;
@@ -22,7 +23,8 @@ import javax.swing.JFileChooser ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
-import javax.swing.JTextArea ;
+import javax.swing.JTextPane ;
+import javax.swing.SwingUtilities ;
 import javax.swing.filechooser.FileFilter ;
 import javax.swing.text.Document ;
 
@@ -31,6 +33,7 @@ import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.MakeNotesPopupMenu ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class RawTextPanel extends JPanel implements ActionListener {
 
@@ -44,9 +47,9 @@ public class RawTextPanel extends JPanel implements ActionListener {
     private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
     
     private JFileChooser fileChooser = new JFileChooser() ;
-    private JTextArea    textArea    = new JTextArea() ;
+    private JTextPane    textPane    = new JTextPane() ;
     
-    private MakeNotesPopupMenu popup = new MakeNotesPopupMenu( textArea ) ;
+    private MakeNotesPopupMenu popup = new MakeNotesPopupMenu( textPane ) ;
     
     private String originalText = null ;
     
@@ -65,7 +68,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
 
     public void setFontSize( int fontSize ) {
         this.fontSize = fontSize;
-        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
     }
 
     public File getCurrentFile() {
@@ -76,11 +79,16 @@ public class RawTextPanel extends JPanel implements ActionListener {
         
         try {
             String content = FileUtils.readFileToString( file ) ;
-            this.textArea.setText( content ) ;
+            this.textPane.setText( content ) ;
             this.originalText = content ;
             this.currentFile  = file ;
             this.currentDir   = file.getParentFile() ;
-            scrollToLastOpPosition() ;
+            SwingUtilities.invokeLater( new Runnable() {
+                @Override
+                public void run() {
+                    scrollToLastOpPosition() ;
+                }
+            } );
         }
         catch( Exception e ) {
             logger.error( "Error while opening file.", e ) ;
@@ -116,6 +124,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         setLayout( new BorderLayout() ) ;
         add( getToolbar(), BorderLayout.WEST ) ;
         add( getDocumentEditorPanel(), BorderLayout.CENTER ) ;
+        UIUtil.setPanelBackground( Color.BLACK, this ) ;
     }
     
     private JComponent getToolbar() {
@@ -127,32 +136,37 @@ public class RawTextPanel extends JPanel implements ActionListener {
         panel.add( getActionBtn( "file_save",  AC_SAVE_FILE,  this ) ) ;
         panel.add( getActionBtn( "zoom_in",    AC_ZOOM_IN,    this ) ) ;
         panel.add( getActionBtn( "zoom_out",   AC_ZOOM_OUT,   this ) ) ;
+        
+        UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, panel ) ;
+        
         return panel ;
     }
     
     private JComponent getDocumentEditorPanel() {
         
         configureTextArea() ;
-        JScrollPane sp = new JScrollPane( textArea, 
+        JScrollPane scrollPane = new JScrollPane( textPane, 
                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) ;
-        return sp ;
+        
+        scrollPane.getVerticalScrollBar().setUnitIncrement( 5 ) ;
+        UIUtil.setScrollBarBackground( UIUtil.EDITOR_BG_COLOR, 
+                                       scrollPane.getVerticalScrollBar() ) ;
+        return scrollPane ;
     }
     
     private void configureTextArea() {
         
-        textArea.setEditable( true ) ;
-        textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) );
-        textArea.setWrapStyleWord( true ) ;
-        textArea.setLineWrap( true ) ;
-        textArea.addMouseListener( new MouseAdapter() {
+        textPane.setEditable( true ) ;
+        textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        textPane.addMouseListener( new MouseAdapter() {
             public void mouseClicked( MouseEvent e ) {
                 if( e.getButton() == MouseEvent.BUTTON3 ) {
                     handleMakeNotesTrigger( e ) ;
                 }
             }
         } ) ;
-        textArea.addKeyListener( new KeyAdapter() {
+        textPane.addKeyListener( new KeyAdapter() {
             @Override public void keyPressed( KeyEvent e ) {
                 if( e.getKeyCode()   == KeyEvent.VK_S && 
                     e.getModifiers() == KeyEvent.CTRL_MASK ) {
@@ -160,6 +174,9 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 }
             }
         } );
+        
+        UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
+        textPane.setForeground( UIUtil.STRING_COLOR ) ;
     }
     
     private void setUpFileChooser() {
@@ -215,7 +232,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         
         boolean isDirty = false ;
         if( this.currentFile != null ) {
-            if( !this.textArea.getText().equals( this.originalText ) ) {
+            if( !this.textPane.getText().equals( this.originalText ) ) {
                 isDirty = true ;
             }
         }
@@ -250,7 +267,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 return ;
             }
         }
-        this.textArea.setText( "" ) ;
+        this.textPane.setText( "" ) ;
         this.currentFile = null ;
         saveState() ;
     }
@@ -260,8 +277,8 @@ public class RawTextPanel extends JPanel implements ActionListener {
         if( this.currentFile != null ) {
             if( isEditorDirty() ) {
                 try {
-                    FileUtils.write( this.currentFile, this.textArea.getText() ) ;
-                    this.originalText = this.textArea.getText() ;
+                    FileUtils.write( this.currentFile, this.textPane.getText() ) ;
+                    this.originalText = this.textPane.getText() ;
                 }
                 catch( IOException e ) {
                     logger.error( "Could not save file contents", e ) ;
@@ -283,7 +300,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 this.fontSize = 8 ;
             }
         }
-        this.textArea.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
         saveState() ;
     }
 
@@ -300,7 +317,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
     }
     
     private void handleMakeNotesTrigger( MouseEvent e ) {
-        String selectedText = textArea.getSelectedText() ;
+        String selectedText = textPane.getSelectedText() ;
         if( StringUtil.isNotEmptyOrNull( selectedText ) ) {
             popup.show( selectedText.trim(), e.getX(), e.getY() ) ;
         }
@@ -309,16 +326,16 @@ public class RawTextPanel extends JPanel implements ActionListener {
     public void scrollToLastOpPosition() {
         
         String find = "// here" ;
-        Document document = textArea.getDocument() ;
+        Document document = textPane.getDocument() ;
         
         try {
             int pos = document.getText( 0, document.getLength() )
                               .toLowerCase()
                               .indexOf( find ) ;
             if( pos > -1 ){
-                Rectangle viewRect = textArea.modelToView( pos ) ;
-                viewRect.y += textArea.getHeight() ;
-                textArea.scrollRectToVisible( viewRect ) ;
+                Rectangle viewRect = textPane.modelToView( pos ) ;
+                viewRect.y += textPane.getVisibleRect().height - 20 ;
+                textPane.scrollRectToVisible( viewRect ) ;
             }
         } 
         catch ( Exception exp ) {

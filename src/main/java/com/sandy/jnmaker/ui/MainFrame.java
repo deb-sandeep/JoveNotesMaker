@@ -3,19 +3,15 @@ package com.sandy.jnmaker.ui;
 import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
 
+import java.awt.Color ;
 import java.awt.Component ;
 
-import javax.swing.BorderFactory ;
-import javax.swing.JMenuBar ;
 import javax.swing.JSplitPane ;
-import javax.swing.border.BevelBorder ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
-import com.sandy.common.ui.statusbar.ClockSBComponent ;
-import com.sandy.common.ui.statusbar.StatusBar ;
-import com.sandy.common.ui.statusbar.StatusBar.Direction ;
 import com.sandy.jnmaker.NoteType ;
 import com.sandy.jnmaker.ui.dialogs.NotesCreatorDialog ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.panels.ImagePanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.RawTextPanel ;
@@ -38,8 +34,8 @@ public class MainFrame extends AbstractMainFrame {
     @Override
     protected Component getCenterComponent() {
         
-        JSplitPane bottomSP = createBottomScrollPane() ;
-        JSplitPane baseSP   = createBaseScrollPane( bottomSP ) ; 
+        JSplitPane bottomSP = createBottomSplitPane() ;
+        JSplitPane baseSP   = createBaseSplitPane( bottomSP ) ; 
         
         return baseSP ;
     }
@@ -60,21 +56,7 @@ public class MainFrame extends AbstractMainFrame {
         super.handleWindowClosing() ;
     }
 
-    @Override
-    protected JMenuBar getFrameMenu() {
-        return super.getFrameMenu();
-    }
-
-    @Override
-    protected StatusBar getStatusBar() {
-        
-        StatusBar statusBar = new StatusBar() ;
-        statusBar.addStatusBarComponent( new ClockSBComponent(), Direction.EAST ) ;
-        statusBar.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-        return statusBar ;
-    }
-    
-    private JSplitPane createBottomScrollPane() {
+    private JSplitPane createBottomSplitPane() {
         
         this.rawTextPanel = new RawTextPanel() ;
         this.jnPanel      = new JoveNotesPanel() ;
@@ -89,7 +71,7 @@ public class MainFrame extends AbstractMainFrame {
         return splitPane ;
     }
     
-    private JSplitPane createBaseScrollPane( Component bottomComponent ) {
+    private JSplitPane createBaseSplitPane( Component bottomComponent ) {
         
         this.imagePanel = new ImagePanel() ;
         
@@ -108,6 +90,7 @@ public class MainFrame extends AbstractMainFrame {
         sp.setOneTouchExpandable( true ) ; 
         sp.setDividerSize( 7 ) ;
         sp.setContinuousLayout( true ) ;
+        UIUtil.setSplitPaneBackground( Color.BLACK, sp ) ;
     }
 
     public RawTextPanel getRawTextPanel() {

@@ -1,0 +1,1180 @@
+subject "Chemistry"
+chapterNumber 5.0
+chapterName "Physical and Chemical changes"
+
+@definition "Physical changes"
+"Physical changes are those changes which are associated with the object's physical
+properties.
+
+E.g. tearing paper, washing clothes etc"
+
+@definition "Chemical change"
+"A chemical change depends upon the change in the composition of substances. The
+new substances formed after the change is different from it's original reactants.
+
+E.g. Burning of paper, ripening of a fruit, rusting of iron etc."
+ 
+@definition "Differentiate between physical and chemical changes"
+"
+Physical change                                  | Chemical change
+-------------------------------------------------|--------------------------------------
+Mostly Reversible                                | Mostly irreversible
+Change is temporary                              | Change is Permanent
+The composition remains unaltered                | The composition is altered
+No gain or loss of energy                        | Energy is either absorbed or evolved
+The mass of the substance remains the same       | The mass of the substance changes
+"
+
+@qa "Write the conditions required for chemical change"
+"
+* Close Physical Contact
+* Application of energy
+    * Light
+    * Heat
+    * Sound
+    * Electricity
+    * Catalyst
+    * Pressure
+"
+
+@multi_choice hide "Choose the type of change.\n\n### Sublimation of Iodine" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Magnetising of Iron" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Glowing of an electric bulb" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Breaking of glass" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Bending of glass tube" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Drying of wet clothes" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Melting of solids" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Sublimation of Camphor" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Formation of dew" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Evaporation of water" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Glowing of a tube light" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Ringing of an electric bell" {
+    @options {
+        "Physical change" correct,
+        "Chemical change"
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Burning of wood" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Making of curd from milk" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Electrolysis of water" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Heating of sugar" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Rusting of iron" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Ripening of fruit" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Digestion of food" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Decaying of organic matter" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Baking of cake" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+@multi_choice hide "Choose the type of change.\n\n### Clotting of blood" {
+    @options {
+        "Physical change",
+        "Chemical change" correct
+    }
+}
+
+@fib "Energy is either absorbed or evolved during a {0} change." "chemical"
+
+@definition "Endothermic change"
+"When a chemical change takes place with absorption of heat energy, the change
+is said to be Endothermic change."
+
+@definition "Exothermic change"
+"When a chemical change takes place with release of heat energy, the change
+is said to be Endothermic change."
+
+@qa "When does a chemical reaction between two substances take place?"
+"A chemical reaction between two substances takes place when the particles of
+the two substances come together in close contact or by supplying energy to the
+mixture of substances."
+
+@qa "Why do powdered substances react more vigorously?"
+"Powdered substances have significantly more surface area and hence larger number
+of particles come in contact with one another, leading to a vigorous reaction."
+
+@qa "How can reactions triggered by close contact be accelerated?"
+"Reactions involving close contact can be accelerated by:
+
+1. Grinding the substances into powdered form before being mixed
+2. Mixing the substances, or at least one of the substances in solution form"
+
+@rtc {
+    context "Give reasons why"
+    
+    @qa "Heating accelerates chemical reactions."
+    "Heating initiates the reacting particles to move faster and collide more
+     frequently and hence accelerates the reaction."
+     
+    @qa "Some reactions are influenced by the presence of light."
+    "Molecules of certain substances upon absorbing light energy become activated
+     and react rapidly."
+     
+    @qa "Many reactions are brought about by passage of electric current."
+    "Electricity directs the charged particles [ions] to opposite electrodes,
+     thus severing the chemical bonds and causing chemical changes."
+     
+    @qa "Some chemical reactions takes place on subjecting the reactants to pressure."
+    "Reacting molecules agglomerate under sudden high pressure or heat due to
+     friction, leading to a chemical reaction."
+}
+
+@qa "Give example of a chemical change (equation) which is influenced by heat."
+"
+$$\\ce{ N2 + O2 ->[3000 ^\\circ C] 2NO }$$
+$$\\ce{ 2Pb3O4 ->[\\Delta] 6PbO + O2 }$$"
+
+@qa "Give example of a chemical change (equation) which is influenced by light."
+"
+$$ \\ce{ 6CO2 + 12H2O ->[chlorophyll][sunlight] C6H12O6 + 6H2O + 6O2 } $$
+$$ \\ce{ H2 + Cl2 ->[sunlight] 2HCl } $$
+$$ \\ce{ 4AgBr ->[sunlight] 2Ag2Br + Br2 } $$
+"
+
+@qa "Give example of a chemical change (equation) which is influenced by electricity."
+"
+$$
+\\ce{ 
+$\\underset{\\text{[acidified]}}{\\ce{2H2O}}$ 
+<=>[electric][current]
+$\\underset{\\text{[cathode]}}{\\ce{2H2}}$ +
+$\\underset{\\text{[anode]}}{\\ce{O2}}$  
+}$$
+"
+
+@qa "Give example of a chemical change (equation) which is influenced by pressure."
+"$$ \\ce{ N2 + 3H2 ->[Fe - 450 ^\\circ C][\\text{200 atmospheres}] 2NH3 } $$"
+
+@qa "Give example of a chemical change (equation) which is influenced by catalyst."
+"$$ \\ce{ 4NH3 + 5O2 ->[Pt][800 ^\\circ C] 4NO + 6H2O } $$"
+
+@qa "Give example of a chemical change (equation) which is influenced by sound."
+"$$ \\ce{ $\\underset{\\text{[acetylene]}}{\\ce{C2H2}}$  <=>[sound][energy] 2C + H2 } $$"
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ PbO2 + SO2 -> PbSO4 } $$" {
+    @options {
+        "Combination" correct,
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ CaCO3 ->[\\Delta] CaO + CO2 } $$" {
+    @options {
+        "Combination",
+        "Decomposition" correct,
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible",
+        "Thermal" correct
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ Cl2 + 2 KBr -> 2KCl + Br2 } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement" correct,
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ $\\underset{\\text{[aq]}}{\\ce{KNO3}}$ + $\\underset{\\text{[aq]}}{\\ce{H2SO4}}$ -> $\\underset{\\text{[volatile]}}{\\ce{HNO3}}$v + $\\underset{\\text{[aq]}}{\\ce{KHSO4}}$ } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition" correct,
+        "Catalytic",
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ 2H2O2 ->[\\ce{H3PO4}] 2H2O + O2 } $$" {
+    @options {
+        "Combination",
+        "Decomposition" correct,
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic" correct,
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ CaCO3 + H2O + CO2 <=>[\\text{in cold}][\\text{heat}] Ca(HCO3)2 } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible" correct,
+        "Thermal" correct        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ N2O4 (g) <=>[\\text{heat 140$^\\circ$C}][\\text{cool 20$^\\circ$C}] 2NO2 (g) } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible" correct,
+        "Thermal" correct
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ Fe + S -> FeS } $$" {
+    @options {
+        "Combination" correct,
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ 2HgO ->[\\Delta] 2Hg + O2 } $$" {
+    @options {
+        "Combination",
+        "Decomposition" correct,
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible",
+        "Thermal" correct
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ Zn + CuSO4 -> ZnSO4 + Cu } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement" correct,
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ $\\underset{\\text{[aq]}}{\\ce{AgNO3}}$ + $\\underset{\\text{[aq]}}{\\ce{KCl}}$ -> $\\underset{\\text{[ppt]}}{\\ce{AgCl}}$v + $\\underset{\\text{[aq]}}{\\ce{KNO3}}$ } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition" correct,
+        "Catalytic",
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ 2KClO3 ->[\\ce{MnO2}] 2KCl + 3O2 } $$" {
+    @options {
+        "Combination",
+        "Decomposition" correct,
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic" correct,
+        "Reversible",
+        "Thermal"        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ 3Fe + \\underset{[steam]}{$\\ce{4H2O}$} <=>[\\text{red hot}] Fe3O4 + 4H2 } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible" correct,
+        "Thermal" correct        
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@multi_choice hide "Identify the type(s) of reaction below.\n\n 
+### $$ \\ce{ NH4Cl (s) <=>[\\text{in cold}][heat] NH3 + HCl (g) } $$" {
+    @options {
+        "Combination",
+        "Decomposition",
+        "Displacement",
+        "Double Decomposition",
+        "Catalytic",
+        "Reversible" correct,
+        "Thermal" correct
+    }
+    @numOptionsToShow 4
+    @numOptionsPerRow 2
+}
+
+@qa "Give two examples of Catalytic reaction."
+"$$ \\ce{ 2H2O2 ->[\\ce{H3PO4}] 2H2O + O2 } $$
+$$ \\ce{ 2KClO3 ->[\\ce{MnO2}] 2KCl + 3O2 } $$"
+
+@qa "Give two examples of Combination reaction."
+"$$ \\ce{ Fe + S -> FeS } $$
+$$ \\ce{ PbO2 + SO2 -> PbSO4 } $$"
+
+@qa "Give two examples of Decomposition reaction."
+"$$ \\ce{ 2HgO ->[\\Delta] 2Hg + O2 } $$
+$$ \\ce{ CaCO3 ->[\\Delta] CaO + CO2 } $$"
+
+@qa "Give two examples of Displacement reaction."
+"$$ \\ce{ Cl2 + 2 KBr -> 2KCl + Br2 } $$
+$$ \\ce{ Zn + CuSO4 -> ZnSO4 + Cu } $$"
+
+@qa "Give two examples of Double Decomposition reaction."
+"$$ \\ce{ $\\underset{\\text{[aq]}}{\\ce{AgNO3}}$ + $\\underset{\\text{[aq]}}{\\ce{KCl}}$ -> $\\underset{\\text{[ppt]}}{\\ce{AgCl}}$v + $\\underset{\\text{[aq]}}{\\ce{KNO3}}$ } $$
+$$ \\ce{ $\\underset{\\text{[aq]}}{\\ce{KNO3}}$ + $\\underset{\\text{[aq]}}{\\ce{H2SO4}}$ -> $\\underset{\\text{[volatile]}}{\\ce{HNO3}}$v + $\\underset{\\text{[aq]}}{\\ce{KHSO4}}$ } $$"
+
+@qa "Give two examples of Reversible reaction."
+"$$ \\ce{ 3Fe + \\underset{[steam]}{$\\ce{4H2O}$} <=>[\\text{red hot}] Fe3O4 + 4H2 } $$
+$$ \\ce{ CaCO3 + H2O + CO2 <=>[\\text{in cold}][\\text{heat}] Ca(HCO3)2 } $$"
+
+@qa "Give two examples of Thermal reaction."
+"$$ \\ce{ N2O4 (g) <=>[\\text{heat 140$^\\circ$C}][\\text{cool 20$^\\circ$C}] 2NO2 (g) } $$
+$$ \\ce{ NH4Cl (s) <=>[\\text{in cold}][heat] NH3 + HCl (g) } $$"
+
+@qa "What is a **Direct Combination Reaction**?"
+"A chemical reaction in which two or more elements or compounds react to form one
+new compound as product is called Direct Combination Reaction."
+
+@qa "What is a **Decomposition Reaction**?"
+"A chemical reaction in which a checmical compound decomposes or splits up into
+two or more simpler substances is called a Decomposition Reaction."
+
+@qa "What is a **Displacement Reaction**?"
+"A chemical reaction which takes place when an element [or radical] has
+replaced another element in a compound is called a Displacement Reaction."
+
+@qa "What is a **Double Decomposition Reaction**?"
+"A chemical reaction in which two reactants are both decomposed to form new 
+substances by exchanging their radicals is called a Double Decomposition Reaction."
+
+@qa "What is a **Catalytic Reaction**?"
+"A chemical reaction which employs a catalyst to alter the rate of the reaction
+ is called a Catalytic Reaction."
+ 
+@qa "What are **Promoters** and **Inhibitors** in a catalytic reaction?"
+"Promoters are catalytic substances which influence hte rate of reaction by 
+improving the efficiency of a catalyst.
+
+Inhibitors are catalytic substances which act as catalytic poisons and retard
+the efficiency of a catalyst."
+
+@qa "What is a **Reversible Reaction**?"
+"A chemical reaction in which the products formed react to form the original
+reactants depending on condition of the reaction is called a Reversible Reaction."
+
+@qa "What is a **Thermal Disassociation Reaction**?"
+"A chemical reaction in which a substance dissociates into two or more simpler
+substances on application of heat is called a Thermal Disassociation Reaction"
+
+@match hide skip_reverse_question "Arrange in descending order of reactivity" {
+    
+    "Potassium" = "1"
+    "Sodium"    = "2"
+    "Calcium"   = "3"
+    "Magnesium" = "4"
+    "Aluminium" = "5"
+    "Zinc"      = "6"
+}
+
+@match hide skip_reverse_question "Arrange in descending order of reactivity" {
+    
+    "Iron"      = "1"
+    "Lead"      = "2"
+    "Hydrogen"  = "3"
+    "Copper"    = "4"
+    "Mercury"   = "5"
+    "Silver"    = "6"
+    "Platinum"  = "7"
+    "Gold"      = "8"    
+}
+
+@match hide skip_reverse_question "Arrange in descending order of reactivity" {
+    
+    "Magnesium" = "1"
+    "Aluminium" = "2"
+    "Zinc"      = "3"
+    "Iron"      = "4"
+    "Lead"      = "5"
+    "Hydrogen"  = "6"
+}
+
+@match hide skip_reverse_question "Arrange in descending order of reactivity" {
+    
+    "Potassium" = "1"
+    "Sodium"    = "2"
+    "Calcium"   = "3"
+    "Mercury"   = "4"
+    "Silver"    = "5"
+    "Platinum"  = "6"
+    "Gold"      = "7"    
+}
+
+@match hide skip_reverse_question "Arrange in descending order of reactivity" {
+    
+    "Potassium" = "1"
+    "Sodium"    = "2"
+    "Calcium"   = "3"
+    "Magnesium" = "4"
+    "Aluminium" = "5"
+    "Zinc"      = "6"
+    "Iron"      = "7"
+    "Lead"      = "8"
+    "Hydrogen"  = "9"
+    "Copper"    = "10"
+    "Mercury"   = "11"
+    "Silver"    = "12"
+    "Platinum"  = "13"
+    "Gold"      = "14"    
+}
+
+@true_false "Copper is more reactive than Magnesium" false
+"Magnesium is more reactive than Copper."
+
+@true_false "Hydrogen is more reactive than Zinc" false
+"Zinc is more reactive than Hydrogen."
+
+@true_false "Iron is more reactive than Platinum" true
+
+@true_false "Mercury is more reactive than Lead" false
+"Lead is more reactive than Mercury."
+
+@true_false "Silver is more reactive than Potassium" false
+"Potassium is more reactive than Silver."
+
+@true_false "Gold is more reactive than Sodium" false
+"Sodium is more reactive than Gold."
+
+@true_false "Calcium is more reactive than Aluminium" true
+
+@match hide skip_reverse_question "Arrange in descending order of reactivity" {
+    
+    "Fluorine" = "1"
+    "Chlorine" = "2"
+    "Bromine"  = "3"
+    "Iodine"   = "4"
+}
+
+@definition "Oxidation reaction"
+"A reaction which involves any of the following on a reacting substance is 
+called an oxidation reaction.
+
+1. Addition of Oxygen
+2. Removal of Hydrogen
+3. Addition of electronegative element
+4. Removal of electropositive element
+5. Loss of electron from atom or ion
+"
+
+@definition "Reduction reaction"
+"A reaction which involves any of the following on a reacting substance is 
+called an reduction reaction.
+
+1. Removal of Oxygen
+2. Addition of Hydrogen
+3. Removal of electronegative element
+4. Addition of electropositive element
+5. Gain of electron from atom or ion
+"
+
+@definition "Redox reaction"
+"Reactions in which oxidation and reduction happen simultaneously is called 
+a redox reaction. For example
+$$ \\ce{ Zn + Cu^{2+}SO4^{2-} -> Zn^{2+}SO4^{2-} + Cu }$$
+
+1. \\( \\ce{ Zn - 2e- -> Zn^2+ [Oxidation] } \\)
+2. \\( \\ce{ Cu^2+ + 2e- -> Cu [Reduction] } \\)"
+
+@qa "Give an example of oxidation reaction by **addition of Oxygen to a substance**."
+"$$ \\ce{ 2Cu + O2 -> 2CuO } $$
+Copper gains oxygen, thus oxidation of copper to copper oxide takes place."
+
+@qa "Give an example of oxidation reaction by **removal of Hydrogen from a substance**."
+"$$ \\ce{ H2S + Cl2 -> 2HCl + S } $$
+Sulphur is oxidized by the removal of hydrogen."
+
+@qa "Give an example of oxidation reaction by **addition of electronegative element**."
+"$$ \\ce{ FeCl2 + Cl2 -> 2FeCl3 } $$
+Iron [II] Chloride gains electronegative radical chlorine and is therefore
+oxidized to Iron [III] Chloride."
+
+@qa "Give an example of oxidation reaction by **removal of electropositive element**."
+"$$ \\ce{ 2KI + H2O2 -> 2KOH + I2 } $$
+Potassium Iodide loses electropositive radical Potassium and is therefore oxidized
+to Iodine."
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ 2Cu + O2 -> 2CuO } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ O2 } \\)"
+    "Reducing agent"  = "\\( \\ce{ Cu } \\)"
+    "Oxidized product"= "\\( \\ce{ CuO } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ 4HCl + O2 -> 2H2O + 2Cl2 } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ O2 } \\)"
+    "Reducing agent"  = "\\( \\ce{ HCl } \\)"
+    "Oxidized product"= "\\( \\ce{ H2O } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ 2H2S + SO2 -> 2H2O + 2S } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ SO2 } \\)"
+    "Reducing agent"  = "\\( \\ce{ H2S } \\)"
+    "Oxidized product"= "\\( \\ce{ H2O } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ H2S + Cl2 -> 2HCl + S } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ Cl2 } \\)"
+    "Reducing agent"  = "\\( \\ce{ H2S } \\)"
+    "Oxidized product"= "\\( \\ce{ S } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ H2S + 2HNO3 -> 2H2O + 2NO2 + S } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ HNO3 } \\)"
+    "Reducing agent"  = "\\( \\ce{ H2S } \\)"
+    "Oxidized product"= "\\( \\ce{ S } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ H2S + 2FeCl3 -> 2FeCl2 + 2HCl + S } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ FeCl3 } \\)"
+    "Reducing agent"  = "\\( \\ce{ H2S } \\)"
+    "Oxidized product"= "\\( \\ce{ S } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ 2FeCl2 + Cl2 -> 2FeCl3 } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ Cl2 } \\)"
+    "Reducing agent"  = "\\( \\ce{ FeCl2 } \\)"
+    "Oxidized product"= "\\( \\ce{ FeCl3 } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ Zn + H2SO4 -> ZnSO4 + H2 } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ H2SO4 } \\)"
+    "Reducing agent"  = "\\( \\ce{ Zn } \\)"
+    "Oxidized product"= "\\( \\ce{ ZnSO4 } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ 2KI + H2O2 -> I2 + 2KOH } $$" {
+    
+    "Oxidizing agent" = "\\( \\ce{ H2O2 } \\)"
+    "Reducing agent"  = "\\( \\ce{ KI } \\)"
+    "Oxidized product"= "\\( \\ce{ I2 } \\)"
+}
+
+@qa "Give an example of reduction reaction by **removal of Oxygen from a compound**."
+"$$ \\ce{ CuO + H2 -> Cu + H2O } $$
+Copper oxide loses oxygen, thus reduction of copper oxide to copper takes place."
+
+@qa "Give an example of reduction reaction by **addition of Hydrogen to a compound**."
+"$$ \\ce{ Cl2 + H2S -> 2HCl + S } $$
+Chlorine gains hydrogen from Hydrogen Sulphide and is reduced to Hydrogen Chloride."
+
+@qa "Give an example of reduction reaction by **removal of electronegative element**."
+"$$ \\ce{ 2FeCl3 + H2S -> 2FeCl2 + 2HCl + S } $$
+Iron [III] Chloride loses electronegative radical chlorine to form - Iron [III] chloride."
+
+@qa "Give an example of reduction reaction by **addition of electropositive element**."
+"$$ \\ce{ 2HgCl2 + SnCl2 -> Hg2Cl2 + SnCl4 } $$
+Mercury [II] Chloride gains electropositve radical mercury to form - Mercury [I] chloride."
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ CuO + H2 -> Cu + H2O } $$" {
+    
+    "Reducing agent"  = "\\( \\ce{ H2 } \\)"
+    "Reduced product" = "\\( \\ce{ Cu } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ ZnO + C -> Zn + CO } $$" {
+    
+    "Reducing agent"  = "\\( \\ce{ C } \\)"
+    "Reduced product" = "\\( \\ce{ Zn } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ Cl2 + H2S -> 2HCl + S } $$" {
+    
+    "Reducing agent"  = "\\( \\ce{ H2S } \\)"
+    "Reduced product" = "\\( \\ce{ HCl } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ Br2 + H2S -> 2HBr + S } $$" {
+    
+    "Reducing agent"  = "\\( \\ce{ H2S } \\)"
+    "Reduced product" = "\\( \\ce{ HBr } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ 2FeCl3 + H2S -> 2FeCl2 + 2HCl + S } $$" {
+    
+    "Reducing agent"  = "\\( \\ce{ H2S } \\)"
+    "Reduced product" = "\\( \\ce{ FeCl2 } \\)"
+}
+
+@match skip_reverse_question "Match the following with respect to the reaction
+#### $$ \\ce{ 2HgCl2 + SnCl2 -> Hg2Cl2 + SnCl4 } $$" {
+    
+    "Reducing agent"  = "\\( \\ce{ SnCl2 } \\)"
+    "Reduced product" = "\\( \\ce{ Hg2Cl2 } \\)"
+}
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ F2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ C12H22O11 } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ K } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ Cl2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ O2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ H2S } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ conc HNO3 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ CO } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ HBr } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ H2SO3 } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ HF } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ KNO3 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ Na } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ HNO2 } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ HI } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ NH3 } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ H2O2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ SO2 } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ K2Cr2O7 [acidified] } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ O3 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ MnO2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ CaOCl2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ PbO2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ conc H2SO4 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ Ca } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ Pb3O4 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ KClO3 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ HgCl2 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ Bromine } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ Carbon [coke] } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ NaNO3 } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ H2 } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ HCl } $$"
+{ @options { "Oxidizing", "Reducing" correct } }
+
+@multi_choice hide "Choose the type of agent.\n\n#### $$ \\ce{ HClO } $$"
+{ @options { "Oxidizing" correct, "Reducing" } }
+
+@qa "Write a few differences between oxidizing and reducing agents."
+"
+Characteristics                             | Oxidizing agents | Reducing agents
+--------------------------------------------|------------------|----------------
+Oxygen or electronegative radical.          | Loses            | Gains
+Hydrogen or electropositive radicals        | Gains            | Loses
+Electrons                                   | Accepts          | Donates
+"
+
+@qa "Give some examples of **gaseous** oxidizing agents." 
+"
+* \\( \\ce{ O2 } \\)
+* \\( \\ce{ O3 } \\)
+* \\( \\ce{ Cl2 } \\)
+* \\( \\ce{ F2 } \\)
+"
+
+@qa "Give some examples of **gaseous** reducing agents." 
+"
+* \\( \\ce{ H2 } \\)
+* \\( \\ce{ CO } \\)
+* \\( \\ce{ SO2 } \\)
+* \\( \\ce{ H2S } \\)
+* \\( \\ce{ NH3 } \\)
+* \\( \\ce{ HCl } \\)
+"
+
+@qa "Give some examples of **liquid** oxidizing agents." 
+"
+* \\( \\ce{ H2O2 } \\)
+* \\( \\ce{ K2Cr2O7 } \\)
+* \\( \\ce{ HClO } \\)
+* conc. \\( \\ce{ HNO3 } \\)
+* conc. \\( \\ce{ H2SO4 } \\)
+* Bromine
+"
+
+@qa "Give some examples of **liquid** reducing agents." 
+"
+* \\( \\ce{ HCl } \\)
+* \\( \\ce{ HF } \\)
+* \\( \\ce{ HBr } \\)
+* \\( \\ce{ HI } \\)
+* \\( \\ce{ H2SO3 } \\)
+* \\( \\ce{ HNO2 } \\)
+"
+
+@fib "\\( \\ce{ H2SO3 } \\) is an {0} agent, while conc. \\( \\ce{ H2SO4 } \\) is 
+a {1} agent." 
+"reducing" "oxidizing"
+
+@fib "\\( \\ce{ H2SO4 } \\) is an {0} agent, while \\( \\ce{ HCl } \\) is 
+a {1} agent." 
+"oxidizing" "reducing"
+
+@fib "\\( \\ce{ HNO2 } \\) is an {0} agent, while conc. \\( \\ce{ HNO3 } \\) is 
+a {1} agent." 
+"reducing" "oxidizing"
+
+@qa "Give some examples of **solid** oxidizing agents." 
+"
+* \\( \\ce{ MnO2 } \\)
+* \\( \\ce{ HgCl2 } \\)
+* \\( \\ce{ CaOCl2 } \\)
+* \\( \\ce{ PbO2 } \\)
+* \\( \\ce{ Pb3O4 } \\)
+* \\( \\ce{ NaNO3 } \\)
+* \\( \\ce{ KNO3 } \\)
+* \\( \\ce{ KClO3 } \\)
+"
+
+@qa "Give some examples of **solid** reducing agents." 
+"
+* Carbon [coke]
+* \\( \\ce{ C12H22O11 } \\)
+* Metals - \\( \\ce{ K } \\), \\( \\ce{ Na } \\), \\( \\ce{ Ca } \\)
+"
+
+@fib "Metals like \\( \\ce{ K } \\), \\( \\ce{ Na } \\), \\( \\ce{ Ca } \\) 
+are {0} agents." "reducing"
+
+@qa "Oxidizing agents decompose to give a gas which rekindles a glowing splint.
+What gas is given out?"
+"Oxygen"
+
+@fib "Oxidizing agents liberates {0} on heating with conc. HCl." "chlorine"
+
+@fib "Oxidizing agents reacts with KBr solution to give {0} color, due to 
+liberated {1}"
+"reddish" "Bromine"
+
+@fib "Oxidizing agents reacts with KI solution to give {0} color, due to 
+liberated {1}"
+"yellowish brown" "Iodine"
+
+@fib "Bromine is {0} in color." "reddish"
+
+@fib "Iodine is {0} in color." "yellowish brown"
+
+@fib "Reducing agents on reacting with Iron [III] salts, changes color from 
+{0} to {1}."
+"yellowish brown" "light green."
+
+@fib "Reducing agents liberates {0} on heating with conc. \\( \\ce{ HNO3 } \\)." 
+"Nitrogen Oxide"
+
+@fib "Reducing agents on reacting with acidified \\( \\ce{ KMnO4 } \\) solution, 
+changes color of the solution from {0} to {1}."
+"purple or pink" "colourless."
+
+@fib "Reducing agents on reacting with \\( \\ce{ K2Cr2O4 } \\) solution, 
+changes color of the solution from {0} to {1}."
+"orange" "green."
+
+@definition "Chemical Energy"
+"Every substance has a stored amount of energy in it i.e. potential or latent 
+energy. This energy is commonly known as **chemical energy**."
+
+@qa "Why is a chemical change associated with evolution or absorption of energy?"
+"A chemical change is associated with evolution or absorption of energy which
+is required to break or form different bonds between the molecules of the 
+reactants and products. This energy is in the form of heat, light or electricity."
+
+@true_false "An endothermic reaction can be sustained without supply of 
+external energy." false
+"An endothermic reaction cannot be sustained without supply of external energy."
+
+@qa "Give three examples of **exothermic** reactions."
+"
+$$ \\ce{ N2 + 3H2 <=>[\\Delta] 2NH3 + \\Delta T } $$
+$$ \\ce{ 2H2 + O2 <=>[\\Delta] 2H2O + \\Delta T } $$
+$$ \\ce{ 4NH3 + 5O2 ->[\\Delta] 4NO + 6H2O + \\Delta T } $$
+"
+
+@qa "Give three examples of **endothermic** reactions."
+"
+$$ \\ce{ N2 + O2 ->[\\Delta] 2NO - \\Delta T } $$
+$$ \\ce{ C + H2O ->[\\Delta] CO + H2 - \\Delta T } $$
+$$ \\ce{ CaCO3 <=>[\\Delta] CaO + CO2 - \\Delta T } $$
+"
+
+@definition "Photochemical reaction"
+"A chemical reaction which proceeds with absorption of light energy is called a 
+photochemical reaction.
+
+Examples:
+$$ \\ce{ 6CO2 + 12H2O ->[chlorophyll][sunlight] C6H12O6 + 6H2O + 6O2 } $$
+$$ \\ce{ H2 + Cl2 ->[sunlight] 2HCl } $$
+$$ \\ce{ 4AgBr ->[sunlight] 2Ag2Br + Br2 } $$
+"
+
+@qa "How is the reaction between Hydrogen and Chlorine influenced by sunlight?"
+"$$ \\ce{ H2 + Cl2 ->[light] 2HCl } $$
+In presence of diffused light the reaction is slow, while in presence of 
+direct sunlight this is an explosive reaction."
+
+@qa "Why are silver salts kept in dark coloured bottles?"
+"Silver salts are decomposed by light energy and hence to prevent light from
+reaching the salts, they are kept in dark coloured bottles.
+$$ \\ce{ 4AgBr ->[sunlight] 2Ag2Br + Br2 } $$
+"
+
+@definition "Electrochemical reaction"
+"A chemical reaction which proceeds with absorption of electrical energy is called
+electrochemical reaction.
+
+Examples:
+$$
+\\ce{ 
+$\\underset{\\text{[acidified]}}{\\ce{2H2O}}$ 
+->[electric][current]
+$\\underset{\\text{[cathode]}}{\\ce{2H2}}$ +
+$\\underset{\\text{[anode]}}{\\ce{O2}}$  
+}$$
+$$
+\\ce{ 
+$\\underset{\\text{[fused]}}{\\ce{NaCl}}$ 
+<=>[electric][current]
+$\\underset{\\text{[ion]}}{\\ce{Na^{1+}}}$ +
+$\\underset{\\text{[ion]}}{\\ce{Cl^{1-}}}$  
+}$$
+"
+
+@definition "Burning or Combustion"
+"Burning or Combustion is a chemical reaction involving oxidation i.e. combination
+of substances with oxygen or air, generally accompanied by the production of heat
+and light."
+
+@qa "Why is burning or combustion considered a chemical change?"
+"Burining or combustion is considered a chemical change because:
+
+1. New substances are produced
+2. The change is permanent
+3. The mass of the burning substance changes
+4. Energy in the form of heat and light is released"
+
+@qa "What are the conditions required for burning?"
+"
+1. A combustible substance
+2. An environment which is a supporter of combustion
+3. Appropriate ignition temperature"
+
+@definition "Combustible substance"
+"A substance which can burn in air or oxygen is called a combustible substance.
+
+Example - coal, coke, wood, petrol, phosphorus, alcohol, paper."
+
+@definition "Non combustible substance"
+"A substance which cannot burn in air or oxygen is called a non combustible subtance.
+
+Example - sand, stone, gold, lead bromide"
+
+@true_false "Combustion can happen without oxygen." true
+"Combustion can happen in an environment which is a supporter of combustion.
+An environment of Chlorine is also a supporter of combustion and hence burning
+can happen without oxygen." 
+
+@qa "Name some environments which are non-supporters of combustion."
+"
+1. Hydrogen
+2. Nitrogen
+3. Carbon di-oxide
+4. Carbon mono-oxide
+5. Hydrogen Chloride"
+
+@qa "What are **acid anhydrides**?"
+"Non-metals combine with oxygen to form their respective oxides. For example
+$$ \\ce{ C + O2 -> CO2 } $$
+These oxides are called acid anhydrides because they form acids when hydrated
+(dissolved in water).
+$$ \\ce{ CO2 + H2O -> H2CO3 } $$"
+
+@qa "Why does Magnesium gain weight when burnt in air?"
+"Magnesium combines with oxygen in air to form Magnesium Oxide and hence gains
+the extra mass of oxygen.
+$$ \\ce{ Mg + O2 -> 2MgO } $$"
+
+@qa "Why does the resultant weight of candle increase when burnt?"
+"{{@cmap
+Hydrocarbon >on burning> Melts, Vapourizes, Decomposes;
+Decomposes >into> Hydrogen, Carbon >combine with> Atmospheric Oxygen;
+Atmospheric Oxygen >to produce> Water, Carbon-di-oxide;
+}}"
+"When a candle burns the mass of the products are greater than the mass of the 
+original candle wax. Therefore there is a gain the mass when a candle burns in
+air."
+
+@qa "What is **respiration**?"
+"Respiration is the process whereby living things use oxygen from air to 
+oxidize food substances [mainly glucose] in their body cells and release energy
+in the form of heat, along with carbon dioxide and water vapour.
+
+$$ \\ce{ C6H12O6 + 6O2 -> 6CO2 + 6H2O + energy } $$"
+
+@qa "Why is respiration a chemical change?"
+"Respiration is a chemical change because:
+
+1. New substances like \\( \\ce{ CO2 } \\), \\( \\ce{ H2O } \\) are produced.
+2. The change is permanent.
+3. Heat is evolved"
+
+@qa "Write a comparison of respiration and burning."
+"{{@table
+@th Burning [combustion]
+@th Respiration
+
+@td Oxidation of carbon and hydrogen present in cabon compounds, eg - hydrocarbons
+@td Oxidation of carbon and hydrogen present in food materials, eg - glucose
+
+@td Heat and light energy maybe evolved
+@td Heat energy evolved
+
+@td Rapid process, occurs at high temperature
+@td Slow process, occurs at body temperature  
+}}"
+
+@qa "What is Carbon Cycle?"
+"Large amounts of both Oxygen and Carbon dioxide are added to and removed from
+the atmosphere via various natural and man made processes, example:
+
+* Addition
+    - Oxygen - Photosynthesis
+    - Carbon dioxide - Respiration, Burning, Organic decay
+* Removal
+    - Oxygen - Respiration, Burning, Organic decay, Rusting
+    - Carbon dioxide - Photosynthesis, Setting of mortar
+
+As a result the %age of CO2 and O2 remain practically constant due to the never
+ending cycle. This cycle is called the **Carbon Cycle**."
