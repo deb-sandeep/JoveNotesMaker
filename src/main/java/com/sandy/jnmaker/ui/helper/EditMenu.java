@@ -49,13 +49,21 @@ public class EditMenu extends JMenu implements ActionListener {
         
         @Override
         public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
+            
+            boolean textSelected = StringUtil.isNotEmptyOrNull( editor.getSelectedText() ) ; 
+            
             undoMI.setEnabled( undoManager.canUndo() ) ;
             redoMI.setEnabled( undoManager.canRedo() ) ;
-            cutMI .setEnabled( StringUtil.isNotEmptyOrNull( editor.getSelectedText() ) ) ;
-            copyMI.setEnabled( StringUtil.isNotEmptyOrNull( editor.getSelectedText() ) ) ;
+            cutMI .setEnabled( textSelected ) ;
+            copyMI.setEnabled( textSelected ) ;
             
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard() ;
             pasteMI.setEnabled( clipboard.getContents( null ) != null ) ;
+            
+            mathMI.setEnabled( textSelected ) ;
+            iMathMI.setEnabled( textSelected ) ;
+            chemMI.setEnabled( textSelected ) ;
+            iChemMI.setEnabled( textSelected ) ;
         }
         
         @Override
@@ -79,6 +87,11 @@ public class EditMenu extends JMenu implements ActionListener {
     private JMenuItem boldMI    = new JMenuItem() ;
     private JMenuItem italicsMI = new JMenuItem() ;
     
+    private JMenuItem mathMI  = new JMenuItem() ;
+    private JMenuItem iMathMI = new JMenuItem() ;
+    private JMenuItem chemMI  = new JMenuItem() ;
+    private JMenuItem iChemMI = new JMenuItem() ;
+    
     public EditMenu( JPopupMenu popupMenu, JTextComponent textComponent ) {
         
         super( "Edit" ) ;
@@ -101,6 +114,11 @@ public class EditMenu extends JMenu implements ActionListener {
         addSeparator() ;
         add( prepareMenuItem( boldMI,    "Bold"    ) ) ;
         add( prepareMenuItem( italicsMI, "Italics" ) ) ;
+        addSeparator() ;
+        add( prepareMenuItem( mathMI,  "{{@math  ..}}" ) ) ;
+        add( prepareMenuItem( iMathMI, "{{@imath ..}}" ) ) ;
+        add( prepareMenuItem( chemMI,  "{{@chem  ..}}" ) ) ;
+        add( prepareMenuItem( iChemMI, "{{@ichem ..}}" ) ) ;
     }
     
     private JMenuItem prepareMenuItem( JMenuItem mi, String label ) {
@@ -149,6 +167,10 @@ public class EditMenu extends JMenu implements ActionListener {
             else if( src == redoMI    ) { doRedo() ;         }
             else if( src == boldMI    ) { doBold( sel ) ;    }
             else if( src == italicsMI ) { doItalics( sel ) ; }
+            else if( src == mathMI    ) { encapsulateMath(  sel ) ; }
+            else if( src == iMathMI   ) { encapsulateIMath( sel ) ; }
+            else if( src == chemMI    ) { encapsulateChem(  sel ) ; }
+            else if( src == iChemMI   ) { encapsulateIChem( sel ) ; }
         }
         catch( Exception e1 ) {
             logger.error( "Error performing edit action.", e1 ) ;
@@ -188,10 +210,33 @@ public class EditMenu extends JMenu implements ActionListener {
         }
     }
 
-    private void doItalics( SelectedContent sel ) throws Exception  {
+    private void doItalics( SelectedContent sel ) throws Exception {
         if( StringUtil.isNotEmptyOrNull( sel.content ) ) {
             replaceContent( sel, "_" + sel.content + "_" ) ;
         }
+    }
+    
+    private void encapsulateMath( SelectedContent sel ) throws Exception {
+        encapsulate( sel, "{{@math ", "}}" ) ;
+    }
+    
+    private void encapsulateIMath( SelectedContent sel ) throws Exception {
+        encapsulate( sel, "{{@imath ", "}}" ) ;
+    }
+    
+    private void encapsulateChem( SelectedContent sel ) throws Exception {
+        encapsulate( sel, "{{@chem ", "}}" ) ;
+    }
+    
+    private void encapsulateIChem( SelectedContent sel ) throws Exception {
+        encapsulate( sel, "{{@ichem ", "}}" ) ;
+    }
+    
+    private void encapsulate( SelectedContent sel, String prefix, String suffix )
+            throws Exception {
+        
+        String replacementStr = prefix + sel.content + suffix ;
+        replaceContent( sel, replacementStr ) ;
     }
     
     private void replaceContent( SelectedContent sel, String replacementTxt ) 

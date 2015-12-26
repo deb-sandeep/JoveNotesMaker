@@ -10,6 +10,8 @@ import java.util.List ;
 import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
 
+import org.apache.commons.lang.StringUtils ;
+
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.EditMenu ;
 
@@ -31,6 +33,8 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         if( !selectedText.endsWith( "." ) ) {
             selectedText += "." ;
         }
+        
+        selectedText = StringUtils.capitalize( selectedText ) ;
         
         this.textArea.setText( selectedText ) ;
         setUpPopupMenu() ;
@@ -100,7 +104,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         
         textArea.setEditable( false ) ;
         popupMenu.remove( freezeTextMI ) ;
-        popupMenu.add( extractBlankMI ) ;
+        popupMenu.add( extractBlankMI, 0 ) ;
     }
     
     private void extractBlank() {
