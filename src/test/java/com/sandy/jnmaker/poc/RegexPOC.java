@@ -19,7 +19,7 @@ public class RegexPOC {
     
     private void runPOC() throws Exception {
         
-        Pattern pattern = Pattern.compile( getStringPattern(), Pattern.DOTALL ) ;
+        Pattern pattern = Pattern.compile( getStringPattern1(), Pattern.DOTALL ) ;
         String  input   = getStringForMatching() ;
         Matcher matcher = pattern.matcher( input ) ;
         
@@ -35,6 +35,10 @@ public class RegexPOC {
     
     String getStringPattern() {
         return "'([^\\\\']+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*'|\"([^\\\\\"]+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*\"" ;
+    }
+    
+    String getStringPattern1() {
+        return "\\\"[^\\\"]*\\\"" ;
     }
     
     private String getStringForMatching() throws Exception {

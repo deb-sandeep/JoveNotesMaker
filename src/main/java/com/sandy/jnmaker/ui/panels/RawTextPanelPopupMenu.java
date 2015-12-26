@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui;
+package com.sandy.jnmaker.ui.panels;
 
 import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 
@@ -12,12 +12,13 @@ import javax.swing.JTextPane ;
 import com.sandy.jnmaker.ui.helper.EditMenu ;
 import com.sandy.jnmaker.util.NoteType ;
 
-public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
+public class RawTextPanelPopupMenu extends JPopupMenu implements ActionListener {
 
     private static final long serialVersionUID = -7265818723778988508L ;
 
-    private JTextPane textPane  = null ;
-    private String    selectedText = null ;
+    private RawTextPanel panel        = null ;
+    private JTextPane    textPane     = null ;
+    private String       selectedText = null ;
     
     private JMenuItem qaMI         = new JMenuItem() ;
     private JMenuItem fibMI        = new JMenuItem() ;
@@ -27,12 +28,14 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
     private JMenuItem definitionMI = new JMenuItem() ;
     private JMenuItem eventMI      = new JMenuItem() ;
     private EditMenu  editMenu     = null ;
+    private JMenuItem bookmarkMI   = new JMenuItem() ;
     
-    public MakeNotesPopupMenu( JTextPane rawTextPane ) {
+    public RawTextPanelPopupMenu( RawTextPanel rawTextPanel ) {
         
         super( "Make notes" ) ;
-        this.textPane = rawTextPane ;
-        this.editMenu = new EditMenu( this, rawTextPane ) ;
+        this.panel = rawTextPanel ;
+        this.textPane = rawTextPanel.textPane ;
+        this.editMenu = new EditMenu( this, this.textPane ) ;
         setUpUI() ;
     }
     
@@ -49,6 +52,8 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
         add( prepareMenuItem( eventMI,      "@event",      NoteType.EVENT ) ) ;
         add( new Separator() ) ;
         add( prepareMenuItem( null, "// comment",  NoteType.COMMENT ) ) ;
+        add( new Separator() ) ;
+        add( prepareMenuItem( bookmarkMI,   "Bookmark", null ) ) ;
     }
     
     private JMenuItem prepareMenuItem( JMenuItem mi, String label, NoteType noteType ) {
@@ -59,17 +64,25 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
         
         mi.setText( label ) ;
         mi.addActionListener( this ) ;
-        mi.setActionCommand( noteType.toString() ) ;
+        if( noteType != null ) {
+            mi.setActionCommand( noteType.toString() ) ;
+        }
+        
         return mi ;
     }
 
     @Override
     public void actionPerformed( ActionEvent e ) {
         
-        String   actionCmd = e.getActionCommand() ;
-        NoteType noteType  = NoteType.valueOf( actionCmd ) ;
-        
-        getMainFrame().createNote( this.selectedText, noteType ) ;
+        if( e.getSource() == bookmarkMI ) {
+            panel.reviseBookmark() ;
+        }
+        else {
+            String   actionCmd = e.getActionCommand() ;
+            NoteType noteType  = NoteType.valueOf( actionCmd ) ;
+            
+            getMainFrame().createNote( this.selectedText, noteType ) ;
+        }
     }
     
     public void show( String selText, int x, int y ) {

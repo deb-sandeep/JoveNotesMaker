@@ -1,12 +1,12 @@
 package com.sandy.jnmaker.ui.panels;
 
-import java.util.regex.Matcher ;
-import java.util.regex.Pattern ;
+import java.awt.Color ;
 
 import javax.swing.JTextPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.event.DocumentEvent ;
 import javax.swing.event.DocumentListener ;
+import javax.swing.text.DefaultStyledDocument ;
 import javax.swing.text.Style ;
 import javax.swing.text.StyleConstants ;
 import javax.swing.text.StyleContext ;
@@ -15,116 +15,123 @@ import javax.swing.text.StyledDocument ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.jnmaker.ui.helper.EditMenu ;
+import com.sandy.jnmaker.ui.helper.JNSrcTokenizer ;
+import com.sandy.jnmaker.ui.helper.JNSrcTokenizer.Token ;
+import com.sandy.jnmaker.ui.helper.JNSrcTokenizer.TokenType ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class JoveNotesTextPane extends JTextPane implements DocumentListener {
 
     private static final long serialVersionUID = 1L ;
     private static final Logger logger = Logger.getLogger( JoveNotesTextPane.class ) ;
-
-    private static final String KEYWORD_PATTERN = "@\\b(" + 
-                                "definition"                    + "|" + 
-                                "qa"                            + "|" +
-                                "fib"                           + "|" +
-                                "event"                         + "|" +
-                                "true_false"                    + "|" +
-                                "wm"                            + "|" +
-                                "spellbee"                      + "|" +
-                                "skip_generation"               + "|" +
-                                "skip_generation_in_production" + "|" +
-                                ")\\b" ;
-    
-    private static final String KEYWORD1_PATTERN = "\\n(subject|chapterNumber|chapterName).*\\n" ;
-    
-    private static final String STRING_PATTERN =
-            "'([^\\\\']+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*'|\"([^\\\\\"]+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*\"" ;    
-    
-    private enum TokenType { KEYWORD, KEYWORD1, STRING } ;
     
     private StyledDocument doc = null ;
-    private boolean processingHighlight = false ;
     private EditMenu editMenu = null ;
+    
+    private long lastChangedTime = 0 ;
+    private long lastHighlightTime = 0 ;
     
     public JoveNotesTextPane() {
         
-        UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, this ) ;
         prepareAndSetStyledDocument() ;
         editMenu = UIUtil.associateEditMenu( this ) ;
+        
+        decorateUI() ;
+        startDaemonHighlightThread() ;
+    }
+    
+    private void decorateUI() {
+        UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, this ) ;
+        setForeground( UIUtil.STRING_COLOR ) ;
+        setCaretColor( Color.GREEN ) ;
+    }
+    
+    private void startDaemonHighlightThread() {
+        Thread thread = new Thread() {
+            @Override public void run() {
+                while( true ) {
+                    try {
+                        Thread.sleep( 500 ) ;
+                        if( lastHighlightTime > lastChangedTime ) {
+                            highlightDocument() ;
+                        }
+                    }
+                    catch( InterruptedException e ) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } ;
+        thread.setDaemon( true ) ;
+        thread.start() ;
     }
     
     private void prepareAndSetStyledDocument() {
 
-        Style base = null ;
-        
-        doc  = this.getStyledDocument() ;
-        base = StyleContext.getDefaultStyleContext()
+        doc  = new DefaultStyledDocument() ;
+        Style base = StyleContext.getDefaultStyleContext()
                            .getStyle( StyleContext.DEFAULT_STYLE ) ;
         
         Style keyword = doc.addStyle( TokenType.KEYWORD.toString(), base ) ;
         StyleConstants.setBold( keyword, true ) ;
         StyleConstants.setForeground( keyword, UIUtil.KEYWORD_COLOR ) ;
         
-        Style keyword1 = doc.addStyle( TokenType.KEYWORD1.toString(), base ) ;
-        StyleConstants.setBold( keyword1, true ) ;
-        StyleConstants.setForeground( keyword1, UIUtil.KEYWORD_COLOR ) ;
-        
         Style string = doc.addStyle( TokenType.STRING.toString(), base ) ;
         StyleConstants.setForeground( string, UIUtil.STRING_COLOR ) ;
         
-        doc.addDocumentListener( this ) ;
+        Style number = doc.addStyle( TokenType.NUMBER.toString(), base ) ;
+        StyleConstants.setForeground( number, UIUtil.NUMBER_COLOR ) ;
+        
+        Style unknown = doc.addStyle( TokenType.UNKNOWN.toString(), base ) ;
+        StyleConstants.setForeground( unknown, Color.RED ) ;
+        StyleConstants.setBold( unknown, true ) ;
+        
+        setDocument( doc );
     }
 
-    @Override public void insertUpdate ( DocumentEvent e ){ highlightDocument(); }
-    @Override public void removeUpdate ( DocumentEvent e ){ highlightDocument(); }
-    @Override public void changedUpdate( DocumentEvent e ){ highlightDocument(); }
-
-    private void highlightDocument() {
-        if( !processingHighlight ) {
-            doc.removeDocumentListener( this ) ;
-            SwingUtilities.invokeLater( new Runnable() {
-                public void run() {
-                    try {
-                        editMenu.disengageUndoManager() ;
-                        highlightPattern( TokenType.KEYWORD ) ;
-                        highlightPattern( TokenType.KEYWORD1 ) ;
-                        highlightPattern( TokenType.STRING ) ;
-                        doc.addDocumentListener( JoveNotesTextPane.this ) ;
-                        editMenu.reengageUndoManager() ;
-                    }
-                    catch( Exception e ) {
-                        logger.error( "Error highlighting document.", e ) ;
-                    }
+    public synchronized void highlightDocument() {
+        
+        SwingUtilities.invokeLater( new Runnable() {
+            public void run() {
+                try {
+                    editMenu.disengageUndoManager() ;
+                    parseDocumentAndHighlight() ;
+                    lastHighlightTime = System.currentTimeMillis() ;
                 }
-            });
-        }
+                catch( Exception e ) {
+                    logger.error( "Error highlighting document.", e ) ;
+                }
+                finally {
+                    editMenu.reengageUndoManager() ;
+                }
+            }
+        } ) ;
     }
     
-    private void highlightPattern( TokenType tokenType ) 
-        throws Exception {
+    private void parseDocumentAndHighlight() throws Exception {
+
+        Token          token     = null ;
+        JNSrcTokenizer tokenizer = null ;
         
-        String patternStr = null ;
-        if( tokenType == TokenType.KEYWORD ) {
-            patternStr = KEYWORD_PATTERN ;
-        }
-        else if( tokenType == TokenType.KEYWORD1 ) {
-            patternStr = KEYWORD1_PATTERN ;
-        }
-        else if( tokenType == TokenType.STRING ) {
-            patternStr = STRING_PATTERN ;
-        }
+        tokenizer = new JNSrcTokenizer( doc.getText( 0, doc.getLength() ) ) ;
         
-        Pattern pattern = Pattern.compile( patternStr, Pattern.DOTALL ) ;
-        String  input   = doc.getText( 0, doc.getLength() ) ;
-        Matcher matcher = pattern.matcher( input ) ;
-        
-        while( matcher.find() ) {
-            int start = matcher.start() ;
-            int end   = matcher.end() ;
-            
-            doc.setCharacterAttributes( start, (end-start), 
-                                        doc.getStyle( tokenType.toString() ), 
-                                        true ) ; 
+        while( ( token = tokenizer.getNextToken() ) != null ) {
+            doc.setCharacterAttributes( token.start, (token.end-token.start)+1, 
+                                        doc.getStyle( token.tokenType.toString() ), 
+                                        true ) ;
         }
-        processingHighlight = false ;
     }
+
+    @Override
+    public void insertUpdate( DocumentEvent e ) {
+        lastChangedTime = System.currentTimeMillis() ;
+    }
+
+    @Override
+    public void removeUpdate( DocumentEvent e ) {
+        lastChangedTime = System.currentTimeMillis() ;
+    }
+
+    @Override
+    public void changedUpdate( DocumentEvent e ) {}
 }

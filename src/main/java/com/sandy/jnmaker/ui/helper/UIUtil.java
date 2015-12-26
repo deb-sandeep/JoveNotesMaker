@@ -27,6 +27,7 @@ public class UIUtil {
     public static final Color EDITOR_BG_COLOR = new Color( 57, 56, 46 ) ; 
     public static final Color STRING_COLOR    = new Color( 229, 237, 220 ) ;
     public static final Color KEYWORD_COLOR   = new Color( 86, 210, 211 ) ;
+    public static final Color NUMBER_COLOR    = Color.RED ;
     
     public static ImageIcon getIcon( String iconName ) {
         return SwingUtils.getIcon( getApp().getClass(), iconName ) ;
@@ -61,6 +62,7 @@ public class UIUtil {
         
         UIDefaults defaults = new UIDefaults();
         defaults.put( "TextPane[Enabled].backgroundPainter", bgColor ) ;
+        defaults.put( "TextPane[Disabled].backgroundPainter", bgColor ) ;
         setNibusOverridesProperty( textPane, defaults ) ;
         textPane.setBackground( bgColor ) ;
     }

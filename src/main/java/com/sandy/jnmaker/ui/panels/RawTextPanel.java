@@ -26,19 +26,21 @@ import javax.swing.JScrollPane ;
 import javax.swing.JTextPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.filechooser.FileFilter ;
+import javax.swing.text.BadLocationException ;
 import javax.swing.text.Document ;
 
 import org.apache.commons.io.FileUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
-import com.sandy.jnmaker.ui.MakeNotesPopupMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class RawTextPanel extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = -6820796056331113968L ;
     private static final Logger logger = Logger.getLogger( RawTextPanel.class ) ;
+    
+    private static final String BOOKMARK_MARKER = "// here" ;
 
     private static final String AC_OPEN_FILE  = "OPEN_FILE" ;
     private static final String AC_CLOSE_FILE = "CLOSE_FILE" ;
@@ -46,10 +48,10 @@ public class RawTextPanel extends JPanel implements ActionListener {
     private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
     private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
     
+    JTextPane textPane = new JTextPane() ;
     private JFileChooser fileChooser = new JFileChooser() ;
-    private JTextPane    textPane    = new JTextPane() ;
     
-    private MakeNotesPopupMenu popup = new MakeNotesPopupMenu( textPane ) ;
+    private RawTextPanelPopupMenu popup = new RawTextPanelPopupMenu( this ) ;
     
     private String originalText = null ;
     
@@ -181,6 +183,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
         
         UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
         textPane.setForeground( UIUtil.STRING_COLOR ) ;
+        textPane.setCaretColor( Color.GREEN ) ;
     }
     
     private void setUpFileChooser() {
@@ -328,21 +331,40 @@ public class RawTextPanel extends JPanel implements ActionListener {
     
     public void scrollToLastOpPosition() {
         
-        String find = "// here" ;
         Document document = textPane.getDocument() ;
         
         try {
             int pos = document.getText( 0, document.getLength() )
                               .toLowerCase()
-                              .indexOf( find ) ;
+                              .indexOf( BOOKMARK_MARKER ) ;
             if( pos > -1 ){
                 Rectangle viewRect = textPane.modelToView( pos ) ;
                 viewRect.y += textPane.getVisibleRect().height - 20 ;
                 textPane.scrollRectToVisible( viewRect ) ;
             }
         } 
-        catch ( Exception exp ) {
-            exp.printStackTrace() ;
+        catch ( Exception e ) {
+            e.printStackTrace() ;
+        }
+    }
+    
+    public void reviseBookmark() {
+        
+        try {
+            Document document = textPane.getDocument() ;
+            int pos = document.getText( 0, document.getLength() )
+                    .toLowerCase()
+                    .indexOf( BOOKMARK_MARKER ) ;
+            
+            if( pos > -1 ) {
+                document.remove( pos, BOOKMARK_MARKER.length() ) ;
+            }
+            
+            document.insertString( textPane.getCaretPosition(), 
+                                   BOOKMARK_MARKER, null ) ;
+        }
+        catch( BadLocationException e ) {
+            e.printStackTrace();
         }
     }
 }

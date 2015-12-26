@@ -87,8 +87,8 @@ public class MainFrame extends AbstractMainFrame {
     
     private void setCommonScrollPaneAttributes( JSplitPane sp ) {
         
-        sp.setOneTouchExpandable( true ) ; 
-        sp.setDividerSize( 7 ) ;
+        sp.setOneTouchExpandable( false ) ; 
+        sp.setDividerSize( 2 ) ;
         sp.setContinuousLayout( true ) ;
         UIUtil.setSplitPaneBackground( Color.BLACK, sp ) ;
     }

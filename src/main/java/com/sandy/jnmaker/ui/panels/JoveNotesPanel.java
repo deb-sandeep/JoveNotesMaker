@@ -76,6 +76,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
             this.currentFile  = file ;
             this.currentDir   = file.getParentFile() ;
             this.textPane.setEnabled( true ) ;
+            this.textPane.highlightDocument() ;
         }
         catch( Exception e ) {
             logger.error( "Error while opening file.", e ) ;
@@ -142,6 +143,8 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
     
     private void configureTextArea() {
         
+        UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
+        
         textPane.setEditable( true ) ;
         textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
         textPane.setEnabled( false ) ;
@@ -196,6 +199,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
                 this.currentFile = file ;
                 this.currentDir = file.getParentFile() ;
                 this.textPane.setEnabled( true ) ;
+                this.textPane.highlightDocument() ;
                 saveState() ;
             }
             catch( Exception e ) {
@@ -301,6 +305,7 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
             try {
                 Document doc = textPane.getDocument() ;
                 doc.insertString( textPane.getCaretPosition(), fmtNote, null ) ;
+                textPane.highlightDocument() ;
             }
             catch( BadLocationException e ) {
                 e.printStackTrace();

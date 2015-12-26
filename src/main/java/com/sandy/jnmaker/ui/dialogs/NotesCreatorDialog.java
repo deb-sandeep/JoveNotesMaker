@@ -58,7 +58,6 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
     
     @Override
     public void actionPerformed( ActionEvent e ) {
-        
         if( e.getActionCommand().equals( AC_OK ) ) {
             okPressed() ;
         }

@@ -172,6 +172,13 @@ public class ImagePanel extends JPanel
     
     private void closeAll() {
         this.tabbedPane.removeAll() ;
+        this.openedFiles.clear() ;
+        try {
+            getStateMgr().saveState() ;
+        }
+        catch( Exception ex ) {
+            logger.error( "Error saving state", ex );
+        }
     }
 
     public String getOpenedFiles() {
