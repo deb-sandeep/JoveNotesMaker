@@ -4,6 +4,7 @@ import javax.swing.event.ChangeEvent ;
 import javax.swing.event.ChangeListener ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class TFPanel extends TFPanelUI {
 
@@ -27,6 +28,9 @@ public class TFPanel extends TFPanelUI {
         stmtTextArea.setText( selectedText ) ;
         trueFalseCheckBox.setSelected( true ) ;
         justTextArea.setEnabled( false ) ;
+        
+        UIUtil.associateEditMenu( stmtTextArea ) ;
+        UIUtil.associateEditMenu( justTextArea ) ;
     }
     
     private void initListeners( String selectedText ) {

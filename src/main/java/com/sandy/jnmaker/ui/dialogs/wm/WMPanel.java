@@ -6,6 +6,7 @@ import java.awt.event.ActionListener ;
 import org.apache.commons.lang.WordUtils ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class WMPanel extends WMPanelUI implements ActionListener {
 
@@ -25,6 +26,8 @@ public class WMPanel extends WMPanelUI implements ActionListener {
     
     private void initComponents( String selectedText ) {
         wordTF.setText( WordUtils.capitalize( selectedText ) ) ;
+        UIUtil.associateEditMenu( meaningTF ) ;
+        UIUtil.associateEditMenu( wordTF ) ;
     }
     
     private void initListeners() {

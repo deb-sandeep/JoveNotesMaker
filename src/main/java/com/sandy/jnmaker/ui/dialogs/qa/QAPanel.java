@@ -4,12 +4,17 @@ import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class QAPanel extends QAPanelUI implements KeyListener {
 
     private static final long serialVersionUID = 3958957198034168755L ;
 
     public QAPanel( String selectedText ) {
+        
+        UIUtil.associateEditMenu( this.questionTextArea ) ;
+        UIUtil.associateEditMenu( this.answerTextArea ) ;
+        
         this.answerTextArea.setText( selectedText ) ;
         this.questionTextArea.addKeyListener( this ) ;
         this.answerTextArea.addKeyListener( this ) ;

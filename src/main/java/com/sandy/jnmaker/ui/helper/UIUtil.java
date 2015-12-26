@@ -6,15 +6,19 @@ import java.awt.Color ;
 import java.awt.Dimension ;
 import java.awt.Insets ;
 import java.awt.event.ActionListener ;
+import java.awt.event.MouseAdapter ;
+import java.awt.event.MouseEvent ;
 
 import javax.swing.ImageIcon ;
 import javax.swing.JButton ;
 import javax.swing.JComponent ;
 import javax.swing.JPanel ;
+import javax.swing.JPopupMenu ;
 import javax.swing.JScrollBar ;
 import javax.swing.JSplitPane ;
 import javax.swing.JTextPane ;
 import javax.swing.UIDefaults ;
+import javax.swing.text.JTextComponent ;
 
 import com.sandy.common.ui.SwingUtils ;
 
@@ -83,4 +87,20 @@ public class UIUtil {
         comp.putClientProperty( "Nimbus.Overrides.InheritDefaults", true ) ;
     }
     
+    public static EditMenu associateEditMenu( final JTextComponent textComp ) {
+        
+        final JPopupMenu popup = new JPopupMenu() ;
+        EditMenu editMenu = new EditMenu( popup, textComp ) ; 
+        popup.add( editMenu ) ;
+        
+        textComp.addMouseListener( new MouseAdapter() {
+            public void mouseClicked( MouseEvent e ) {
+                if( e.getButton() == MouseEvent.BUTTON3 ) {
+                    popup.show( textComp, e.getX(), e.getY() ) ;
+                }
+            }
+        } ) ;
+        
+        return editMenu ;
+    }
 }

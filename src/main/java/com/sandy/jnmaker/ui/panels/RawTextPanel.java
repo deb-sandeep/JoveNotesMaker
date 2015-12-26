@@ -168,12 +168,16 @@ public class RawTextPanel extends JPanel implements ActionListener {
         } ) ;
         textPane.addKeyListener( new KeyAdapter() {
             @Override public void keyPressed( KeyEvent e ) {
-                if( e.getKeyCode()   == KeyEvent.VK_S && 
-                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
-                    saveFile() ;
+                int keyCode   = e.getKeyCode() ;
+                int modifiers = e.getModifiers() ;
+                
+                if( modifiers == KeyEvent.CTRL_MASK ) {
+                    if( keyCode == KeyEvent.VK_S ) {
+                        saveFile() ;
+                    }
                 }
             }
-        } );
+        } ) ;
         
         UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
         textPane.setForeground( UIUtil.STRING_COLOR ) ;

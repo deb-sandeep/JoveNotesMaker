@@ -7,7 +7,6 @@ import javax.swing.JTextPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.event.DocumentEvent ;
 import javax.swing.event.DocumentListener ;
-import javax.swing.text.DefaultStyledDocument ;
 import javax.swing.text.Style ;
 import javax.swing.text.StyleConstants ;
 import javax.swing.text.StyleContext ;
@@ -15,6 +14,7 @@ import javax.swing.text.StyledDocument ;
 
 import org.apache.log4j.Logger ;
 
+import com.sandy.jnmaker.ui.helper.EditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class JoveNotesTextPane extends JTextPane implements DocumentListener {
@@ -43,18 +43,20 @@ public class JoveNotesTextPane extends JTextPane implements DocumentListener {
     
     private StyledDocument doc = null ;
     private boolean processingHighlight = false ;
+    private EditMenu editMenu = null ;
     
     public JoveNotesTextPane() {
         
         UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, this ) ;
         prepareAndSetStyledDocument() ;
+        editMenu = UIUtil.associateEditMenu( this ) ;
     }
     
     private void prepareAndSetStyledDocument() {
 
         Style base = null ;
         
-        doc  = new DefaultStyledDocument() ;
+        doc  = this.getStyledDocument() ;
         base = StyleContext.getDefaultStyleContext()
                            .getStyle( StyleContext.DEFAULT_STYLE ) ;
         
@@ -69,7 +71,6 @@ public class JoveNotesTextPane extends JTextPane implements DocumentListener {
         Style string = doc.addStyle( TokenType.STRING.toString(), base ) ;
         StyleConstants.setForeground( string, UIUtil.STRING_COLOR ) ;
         
-        setDocument( doc ) ;
         doc.addDocumentListener( this ) ;
     }
 
@@ -83,10 +84,12 @@ public class JoveNotesTextPane extends JTextPane implements DocumentListener {
             SwingUtilities.invokeLater( new Runnable() {
                 public void run() {
                     try {
+                        editMenu.disengageUndoManager() ;
                         highlightPattern( TokenType.KEYWORD ) ;
                         highlightPattern( TokenType.KEYWORD1 ) ;
                         highlightPattern( TokenType.STRING ) ;
                         doc.addDocumentListener( JoveNotesTextPane.this ) ;
+                        editMenu.reengageUndoManager() ;
                     }
                     catch( Exception e ) {
                         logger.error( "Error highlighting document.", e ) ;

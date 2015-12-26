@@ -6,12 +6,16 @@ import java.io.StringReader ;
 
 import org.apache.log4j.Logger ;
 
+import com.sandy.jnmaker.ui.helper.UIUtil ;
+
 public class CommentPanel extends CommentPanelUI {
 
     private static final long serialVersionUID = 1L ;
     private static final Logger logger = Logger.getLogger( CommentPanel.class ) ;
     
     public CommentPanel( String selectedText ) {
+        
+        UIUtil.associateEditMenu( commentTF ) ;
         commentTF.setText( selectedText ) ;
     }
 

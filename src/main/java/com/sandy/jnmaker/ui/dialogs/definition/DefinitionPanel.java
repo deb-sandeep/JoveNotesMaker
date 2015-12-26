@@ -11,6 +11,8 @@ import javax.swing.JPopupMenu ;
 import org.apache.commons.lang.WordUtils ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.helper.EditMenu ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class DefinitionPanel extends DefinitionPanelUI 
     implements ActionListener {
@@ -29,6 +31,7 @@ public class DefinitionPanel extends DefinitionPanelUI
         
         initPopupMenu() ;
         definitionTF.setText( selectedText ) ;
+        UIUtil.associateEditMenu( termTF ) ;
     }
     
     private void initPopupMenu() {
@@ -38,6 +41,7 @@ public class DefinitionPanel extends DefinitionPanelUI
         
         popupMenu = new JPopupMenu() ;
         popupMenu.add( markTermMI ) ;
+        popupMenu.add( new EditMenu( popupMenu, definitionTF ) ) ;
     }
     
     private void initListeners() {

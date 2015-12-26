@@ -16,7 +16,7 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
 
     private static final long serialVersionUID = -7265818723778988508L ;
 
-    private JTextPane rawTextArea  = null ;
+    private JTextPane textPane  = null ;
     private String    selectedText = null ;
     
     private JMenuItem qaMI         = new JMenuItem() ;
@@ -25,18 +25,20 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
     private JMenuItem wmMI         = new JMenuItem() ;
     private JMenuItem spellbeeMI   = new JMenuItem() ;
     private JMenuItem definitionMI = new JMenuItem() ;
-    private JMenuItem eventMI      = new JMenuItem() ;    
+    private JMenuItem eventMI      = new JMenuItem() ;
+    private EditMenu  editMenu     = null ;
     
     public MakeNotesPopupMenu( JTextPane rawTextPane ) {
         
         super( "Make notes" ) ;
-        this.rawTextArea = rawTextPane ;
+        this.textPane = rawTextPane ;
+        this.editMenu = new EditMenu( this, rawTextPane ) ;
         setUpUI() ;
     }
     
     private void setUpUI() {
         
-        add( new EditMenu( rawTextArea ) ) ;
+        add( editMenu ) ;
         add( new Separator() ) ;
         add( prepareMenuItem( qaMI,         "@qa",         NoteType.QA ) ) ;
         add( prepareMenuItem( fibMI,        "@fib",        NoteType.FIB ) ) ;
@@ -73,7 +75,7 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
     public void show( String selText, int x, int y ) {
         
         this.selectedText = ( selText != null ) ? selText.trim() : selText ;
-        super.show( this.rawTextArea, x, y ) ;
+        super.show( this.textPane, x, y ) ;
     }
     
     public void enableJNMenuItems( boolean enabled ) {
@@ -85,5 +87,13 @@ public class MakeNotesPopupMenu extends JPopupMenu implements ActionListener {
         spellbeeMI.setEnabled( enabled ) ;
         definitionMI.setEnabled( enabled ) ;
         eventMI.setEnabled( enabled ) ;
+    }
+    
+    public void doUndo() {
+        editMenu.doUndo() ; 
+    }
+    
+    public void doRedo() {
+        editMenu.doRedo() ;
     }
 }

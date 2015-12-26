@@ -14,6 +14,7 @@ import org.apache.log4j.Logger ;
 import org.json.simple.JSONValue ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
 import javazoom.jl.player.Player ;
@@ -41,6 +42,9 @@ public class SpellbeePanel extends SpellbeePanelUI implements ActionListener {
         wordTF.setText( WordUtils.capitalize( selectedText ) ) ;
         playBtn.setEnabled( false ) ;
         pronunciationTF.setEnabled( false ) ;
+        
+        UIUtil.associateEditMenu( wordTF ) ;
+        UIUtil.associateEditMenu( meaningTF ) ;
     }
     
     private void initListeners() {
