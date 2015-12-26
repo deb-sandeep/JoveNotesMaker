@@ -318,9 +318,8 @@ public class RawTextPanel extends JPanel implements ActionListener {
     
     private void handleMakeNotesTrigger( MouseEvent e ) {
         String selectedText = textPane.getSelectedText() ;
-        if( StringUtil.isNotEmptyOrNull( selectedText ) ) {
-            popup.show( selectedText.trim(), e.getX(), e.getY() ) ;
-        }
+        popup.enableJNMenuItems( StringUtil.isNotEmptyOrNull( selectedText ) ) ;
+        popup.show( selectedText, e.getX(), e.getY() ) ;
     }
     
     public void scrollToLastOpPosition() {

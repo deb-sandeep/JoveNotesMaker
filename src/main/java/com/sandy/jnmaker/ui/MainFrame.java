@@ -9,12 +9,12 @@ import java.awt.Component ;
 import javax.swing.JSplitPane ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
-import com.sandy.jnmaker.NoteType ;
 import com.sandy.jnmaker.ui.dialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.panels.ImagePanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.RawTextPanel ;
+import com.sandy.jnmaker.util.NoteType ;
 
 public class MainFrame extends AbstractMainFrame {
 

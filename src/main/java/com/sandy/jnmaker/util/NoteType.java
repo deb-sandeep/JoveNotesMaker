@@ -1,4 +1,4 @@
-package com.sandy.jnmaker;
+package com.sandy.jnmaker.util;
 
 public enum NoteType {
 
