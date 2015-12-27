@@ -80,7 +80,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
     public void setCurrentFile( File file ) {
         
         try {
-            String content = FileUtils.readFileToString( file ) ;
+            String content = FileUtils.readFileToString( file, "UTF-8" ) ;
             this.textPane.setText( content ) ;
             this.originalText = content ;
             this.currentFile  = file ;
@@ -284,10 +284,12 @@ public class RawTextPanel extends JPanel implements ActionListener {
         if( this.currentFile != null ) {
             if( isEditorDirty() ) {
                 try {
-                    FileUtils.write( this.currentFile, this.textPane.getText() ) ;
-                    this.originalText = this.textPane.getText() ;
+                    Document doc = this.textPane.getDocument() ; 
+                    String txt = doc.getText( 0, doc.getLength() ) ;
+                    FileUtils.write( this.currentFile, txt, "UTF-8" ) ;
+                    this.originalText = txt ;
                 }
-                catch( IOException e ) {
+                catch( Exception e ) {
                     logger.error( "Could not save file contents", e ) ;
                     JOptionPane.showConfirmDialog( this,  
                           "Could not save file contents. " + e.getMessage() ) ;
