@@ -72,7 +72,9 @@ public class SpellbeePanel extends SpellbeePanelUI implements ActionListener {
               .append( "\"" ) ;
         
         try {
-            saveDownloadsInMediaDir( word ) ;
+            if( ObjectRepository.getAppConfig().getJoveNotesMediaDir() != null ) {
+                saveDownloadsInMediaDir( word ) ;
+            }
         }
         catch( IOException e ) {
             logger.error( "Could not save to media dir.", e ) ;

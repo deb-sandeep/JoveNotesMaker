@@ -11,6 +11,8 @@ import static com.sandy.jnmaker.util.ObjectRepository.setStateMgr ;
 import static com.sandy.jnmaker.util.ObjectRepository.setWkspManager ;
 import static com.sandy.jnmaker.util.ObjectRepository.setWordnicAdapter ;
 
+import java.awt.SplashScreen ;
+
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.bus.EventBus ;
@@ -99,11 +101,20 @@ public class JoveNotesMaker {
         logger.info( "Starting JoveNotesMaker application" ) ;
         JoveNotesMaker app = new JoveNotesMaker() ;
         try {
+            showSplashScreen() ;
             setApp( app ) ;
             app.launch( args ) ;
         }
         catch( Exception e ) {
             logger.error( "JoveNotesMaker exitted with an exception", e ) ;
+        }
+    }
+    
+    private static void showSplashScreen() throws Exception {
+        final SplashScreen splash = SplashScreen.getSplashScreen() ;
+        if( splash != null ) {
+            Thread.sleep( 2000 ) ;
+            splash.close() ;
         }
     }
 }

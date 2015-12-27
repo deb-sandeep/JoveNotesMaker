@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd `dirname $0`
+SCRIPTDIR=`pwd`
+cd -
+
+CP="$SCRIPTDIR/config:$SCRIPTDIR/lib/*"
+
+java -splash:jnmaker-splash.png -classpath $CP com.sandy.jnmaker.JoveNotesMaker "$@"
+

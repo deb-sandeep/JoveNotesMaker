@@ -1,0 +1,8 @@
+# Configuration properties for JoveNotesMaker application
+
+# If you are running jove notes maker in an environment which also runs the 
+# JoveNotes web application, set the following configuration to point to the
+# _spellbee media directory. This way, the jove notes maker will cache the 
+# word meanings and sound clips.
+#
+#AppConfig.joveNotesMediaDir=/home/sandeep/projects/workspace/jove_notes_media/_spellbee

@@ -18,16 +18,6 @@ public class SoundClipDownloader {
     private static String DICTCOM_CLIP_URL_TEMPLATE = 
             "http://dictionary.reference.com/browse/{{word}}?s=t" ;
       
-    private File mediaDir = null ;
-    
-    public File getMediaDir() {
-        return mediaDir ;
-    }
-
-    public void setMediaDir( File mediaDir ) {
-        this.mediaDir = mediaDir ;
-    }
-
     public File downloadSoundClip( String word ) throws Exception {
         
         logger.info( "\tDownloading sound clip for word - " + word ) ;
