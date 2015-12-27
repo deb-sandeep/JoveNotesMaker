@@ -62,7 +62,8 @@ public class JNSrcTokenizer {
             "subject" ,
             "where" ,
             "true" ,
-            "false"
+            "false",
+            "imageName"
     } ;
 
     public static class Token {
