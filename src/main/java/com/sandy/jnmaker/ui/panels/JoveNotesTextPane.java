@@ -3,16 +3,11 @@ package com.sandy.jnmaker.ui.panels;
 import java.awt.Color ;
 
 import javax.swing.JTextPane ;
-import javax.swing.SwingUtilities ;
-import javax.swing.event.DocumentEvent ;
-import javax.swing.event.DocumentListener ;
 import javax.swing.text.DefaultStyledDocument ;
 import javax.swing.text.Style ;
 import javax.swing.text.StyleConstants ;
 import javax.swing.text.StyleContext ;
 import javax.swing.text.StyledDocument ;
-
-import org.apache.log4j.Logger ;
 
 import com.sandy.jnmaker.ui.helper.EditMenu ;
 import com.sandy.jnmaker.ui.helper.JNSrcTokenizer ;
@@ -20,16 +15,14 @@ import com.sandy.jnmaker.ui.helper.JNSrcTokenizer.Token ;
 import com.sandy.jnmaker.ui.helper.JNSrcTokenizer.TokenType ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
-public class JoveNotesTextPane extends JTextPane implements DocumentListener {
+public class JoveNotesTextPane extends JTextPane {
 
     private static final long serialVersionUID = 1L ;
-    private static final Logger logger = Logger.getLogger( JoveNotesTextPane.class ) ;
     
     private StyledDocument doc = null ;
     private EditMenu editMenu = null ;
     
-    private long lastChangedTime = 0 ;
-    private long lastHighlightTime = 0 ;
+    private String lastHighlightedContent = null ;
     
     public JoveNotesTextPane() {
         
@@ -51,13 +44,16 @@ public class JoveNotesTextPane extends JTextPane implements DocumentListener {
             @Override public void run() {
                 while( true ) {
                     try {
-                        Thread.sleep( 500 ) ;
-                        if( lastHighlightTime > lastChangedTime ) {
+                        Thread.sleep( 1000 ) ;
+                        String currentContent = doc.getText( 0, doc.getLength() ) ;
+                        if( lastHighlightedContent == null ||
+                            !lastHighlightedContent.equals( currentContent ) ) {
                             highlightDocument() ;
+                            lastHighlightedContent = currentContent ;
                         }
                     }
-                    catch( InterruptedException e ) {
-                        e.printStackTrace();
+                    catch( Exception e ) {
+                        lastHighlightedContent = null ;
                     }
                 }
             }
@@ -76,10 +72,18 @@ public class JoveNotesTextPane extends JTextPane implements DocumentListener {
         StyleConstants.setBold( keyword, true ) ;
         StyleConstants.setForeground( keyword, UIUtil.KEYWORD_COLOR ) ;
         
+        Style nestedKeyword = doc.addStyle( TokenType.NESTED_KEYWORDS.toString(), base ) ;
+        StyleConstants.setBold( nestedKeyword, true ) ;
+        StyleConstants.setForeground( nestedKeyword, Color.YELLOW ) ;
+        
+        Style punctuation = doc.addStyle( TokenType.PUNCTUATION.toString(), base ) ;
+        StyleConstants.setBold( punctuation, true ) ;
+        StyleConstants.setForeground( punctuation, Color.PINK ) ;
+        
         Style string = doc.addStyle( TokenType.STRING.toString(), base ) ;
         StyleConstants.setForeground( string, UIUtil.STRING_COLOR ) ;
         
-        Style number = doc.addStyle( TokenType.NUMBER.toString(), base ) ;
+        Style number = doc.addStyle( TokenType.INT.toString(), base ) ;
         StyleConstants.setForeground( number, UIUtil.NUMBER_COLOR ) ;
         
         Style unknown = doc.addStyle( TokenType.UNKNOWN.toString(), base ) ;
@@ -89,23 +93,14 @@ public class JoveNotesTextPane extends JTextPane implements DocumentListener {
         setDocument( doc );
     }
 
-    public synchronized void highlightDocument() {
-        
-        SwingUtilities.invokeLater( new Runnable() {
-            public void run() {
-                try {
-                    editMenu.disengageUndoManager() ;
-                    parseDocumentAndHighlight() ;
-                    lastHighlightTime = System.currentTimeMillis() ;
-                }
-                catch( Exception e ) {
-                    logger.error( "Error highlighting document.", e ) ;
-                }
-                finally {
-                    editMenu.reengageUndoManager() ;
-                }
-            }
-        } ) ;
+    public void highlightDocument() throws Exception {
+        try {
+            editMenu.disengageUndoManager() ;
+            parseDocumentAndHighlight() ;
+        }
+        finally {
+            editMenu.reengageUndoManager() ;
+        }
     }
     
     private void parseDocumentAndHighlight() throws Exception {
@@ -121,17 +116,4 @@ public class JoveNotesTextPane extends JTextPane implements DocumentListener {
                                         true ) ;
         }
     }
-
-    @Override
-    public void insertUpdate( DocumentEvent e ) {
-        lastChangedTime = System.currentTimeMillis() ;
-    }
-
-    @Override
-    public void removeUpdate( DocumentEvent e ) {
-        lastChangedTime = System.currentTimeMillis() ;
-    }
-
-    @Override
-    public void changedUpdate( DocumentEvent e ) {}
 }

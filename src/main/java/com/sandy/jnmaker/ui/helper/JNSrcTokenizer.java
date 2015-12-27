@@ -2,22 +2,66 @@ package com.sandy.jnmaker.ui.helper;
 
 public class JNSrcTokenizer {
 
-    public static enum TokenType { KEYWORD, STRING, NUMBER, UNKNOWN } ;
+    public static enum TokenType { 
+        KEYWORD, 
+        NESTED_KEYWORDS,
+        STRING, 
+        INT, 
+        PUNCTUATION, 
+        UNKNOWN 
+    } ;
     
     private static final String[] KEYWORDS = {
-            "@definition",
-            "@qa",
-            "@fib",
-            "@event",
-            "@true_false",
-            "@wm",
-            "@spellbee",
-            "@skip_generation",
-            "@skip_generation_in_production",
-            "subject",
-            "chapterNumber",
-            "chapterName",
-            "true",
+            "@character" ,
+            "@chem_compound" ,
+            "@chem_equation" ,
+            "@definition" ,
+            "@equation" ,
+            "@event" ,
+            "@explanation" ,
+            "@fib" ,
+            "@forwardCaption" ,
+            "@image_label" ,
+            "@match" ,
+            "@mcq_config" ,
+            "@multi_choice" ,
+            "@numOptionsPerRow" ,
+            "@numOptionsToShow" ,
+            "@options" ,
+            "@qa" ,
+            "@reverseCaption" ,
+            "@rtc" ,
+            "@skip_generation" ,
+            "@skip_generation_in_production" ,
+            "@spellbee" ,
+            "@test_paper" ,
+            "@tn" ,
+            "@true_false" ,
+            "@wm"
+    } ;
+    
+    private static final String[] PUNCTUATIONS = {
+            ",",
+            "=",
+            ">",
+            "{",
+            "}",
+            "."
+    } ;
+    
+    private static final String[] NESTED_KEYWORDS = {
+            "chapterName" ,
+            "chapterNumber" ,
+            "cmap" ,
+            "context" ,
+            "correct" ,
+            "hide" ,
+            "script" ,
+            "script_expressions" ,
+            "skip_reverse_question" ,
+            "subject" ,
+            "where" ,
+            "true" ,
             "false"
     } ;
 
@@ -72,19 +116,13 @@ public class JNSrcTokenizer {
         try {
             while( lookaheadPos < this.contentLen ) {
                 lookaheadPos = skipWhiteSpaces( lookaheadPos ) ;
-                if( lookaheadPos >= this.contentLen ) {
-                    break ;
-                }
-                else {
-                    token = extractToken( lookaheadPos ) ;
-                    this.curPos = token.end+1 ;
-                    return token ;
-                }
+                token = extractToken( lookaheadPos ) ;
+                this.curPos = token.end+1 ;
+                return token ;
             }
         }
         catch( EOSException e ) {
         }
-        
         return null ;
     }
     
@@ -111,11 +149,17 @@ public class JNSrcTokenizer {
         if( ch == '"' ) {
             token = extractString( pos ) ;
         }
-        else if( Character.isDigit( ch ) || ( ch == '.' ) ) {
+        else if( Character.isDigit( ch ) ) {
             token = extractNumber( pos ) ;
         }
         else {
             token = extractKeyword( pos ) ;
+            if( token == null ) {
+                token = extractNestedKeyword( pos ) ;
+                if( token == null ) {
+                    token = extractPunctuation( pos ) ;
+                }
+            }
         }
         
         if( token == null ) {
@@ -164,7 +208,7 @@ public class JNSrcTokenizer {
     
     private Token extractNumber( int pos ) {
         
-        Token token = new Token( TokenType.NUMBER, pos, 0, null ) ;
+        Token token = new Token( TokenType.INT, pos, 0, null ) ;
         StringBuilder buffer = new StringBuilder() ;
         
         buffer.append( this.content.charAt( pos ) ) ;
@@ -172,7 +216,7 @@ public class JNSrcTokenizer {
         
         while( toPos < this.contentLen ) {
             char ch = this.content.charAt( toPos ) ;
-            if( Character.isDigit( ch ) || ( ch == '.' )) {
+            if( Character.isDigit( ch ) ) {
                 toPos++ ;
                 buffer.append( ch ) ;
             }
@@ -188,12 +232,23 @@ public class JNSrcTokenizer {
     }
     
     private Token extractKeyword( int pos ) {
+        return getPredefinedToken( TokenType.KEYWORD, KEYWORDS, pos ) ;
+    }
+    
+    private Token extractNestedKeyword( int pos ) {
+        return getPredefinedToken( TokenType.NESTED_KEYWORDS, NESTED_KEYWORDS, pos ) ;
+    }
+    
+    private Token extractPunctuation( int pos ) {
+        return getPredefinedToken( TokenType.PUNCTUATION, PUNCTUATIONS, pos ) ;
+    }
+    
+    private Token getPredefinedToken( TokenType type, String[] tokenSet, int pos ) {
         
-        for( String keyword : KEYWORDS ) {
+        for( String keyword : tokenSet ) {
             if( this.content.indexOf( keyword, pos ) == pos ) {
                 Token token = null ;
-                token = new Token( TokenType.KEYWORD, 
-                                   pos, pos + keyword.length()-1, keyword ) ; 
+                token = new Token( type, pos, pos + keyword.length()-1, keyword ) ; 
                 return token ;
             }
         }
