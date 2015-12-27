@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.EditMenu ;
+import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class FIBPanel extends FIBPanelUI implements ActionListener {
 
@@ -37,6 +38,8 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         selectedText = StringUtils.capitalize( selectedText ) ;
         
         this.textArea.setText( selectedText ) ;
+        UIUtil.associateEditMenu( this.textArea ) ;
+        
         setUpPopupMenu() ;
         setUpListeners() ;
     }
@@ -77,10 +80,14 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
               .append( formatText( textArea.getText() ) )
               .append( "\"\n" ) ;
         
-        for( String blankTxt : blankTextList ) {
+        for( int i=0; i<blankTextList.size(); i++ ) {
+            String blankTxt = blankTextList.get( i ) ;
             buffer.append( "\"" )
-                  .append( escapeQuotes( blankTxt ) )
-                  .append( "\"\n" ) ;
+                  .append( escapeQuotes( blankTxt ) ) 
+                  .append( "\"" ) ;
+            if( i != blankTextList.size()-1 ) {
+                buffer.append( "\n" ) ;
+            }
         }
         
         return buffer.toString() ;

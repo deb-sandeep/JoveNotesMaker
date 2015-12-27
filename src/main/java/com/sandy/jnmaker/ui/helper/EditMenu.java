@@ -92,6 +92,8 @@ public class EditMenu extends JMenu implements ActionListener {
     private JMenuItem chemMI  = new JMenuItem() ;
     private JMenuItem iChemMI = new JMenuItem() ;
     
+    private JMenuItem joinLinesMI = new JMenuItem() ;
+    
     public EditMenu( JPopupMenu popupMenu, JTextComponent textComponent ) {
         
         super( "Edit" ) ;
@@ -119,6 +121,8 @@ public class EditMenu extends JMenu implements ActionListener {
         add( prepareMenuItem( iMathMI, "{{@imath ..}}" ) ) ;
         add( prepareMenuItem( chemMI,  "{{@chem  ..}}" ) ) ;
         add( prepareMenuItem( iChemMI, "{{@ichem ..}}" ) ) ;
+        addSeparator() ;
+        add( prepareMenuItem( joinLinesMI, "Join lines" ) ) ;
     }
     
     private JMenuItem prepareMenuItem( JMenuItem mi, String label ) {
@@ -171,6 +175,7 @@ public class EditMenu extends JMenu implements ActionListener {
             else if( src == iMathMI   ) { encapsulateIMath( sel ) ; }
             else if( src == chemMI    ) { encapsulateChem(  sel ) ; }
             else if( src == iChemMI   ) { encapsulateIChem( sel ) ; }
+            else if( src == joinLinesMI){ joinLines( sel ) ; }
         }
         catch( Exception e1 ) {
             logger.error( "Error performing edit action.", e1 ) ;
@@ -237,6 +242,13 @@ public class EditMenu extends JMenu implements ActionListener {
         
         String replacementStr = prefix + sel.content + suffix ;
         replaceContent( sel, replacementStr ) ;
+    }
+    
+    private void joinLines( SelectedContent sel ) 
+        throws Exception {
+        
+        String replacementTxt = sel.content.replaceAll( "\n", " " ) ;
+        replaceContent( sel, replacementTxt ) ;
     }
     
     private void replaceContent( SelectedContent sel, String replacementTxt ) 
