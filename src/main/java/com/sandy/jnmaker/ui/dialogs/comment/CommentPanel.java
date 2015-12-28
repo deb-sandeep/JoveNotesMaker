@@ -1,5 +1,7 @@
 package com.sandy.jnmaker.ui.dialogs.comment ;
 
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
 import java.io.BufferedReader ;
 import java.io.IOException ;
 import java.io.StringReader ;
@@ -16,7 +18,20 @@ public class CommentPanel extends CommentPanelUI {
     public CommentPanel( String selectedText ) {
         
         UIUtil.associateEditMenu( commentTF ) ;
+        setUpListeners() ;
         commentTF.setText( selectedText ) ;
+    }
+    
+    private void setUpListeners() {
+        
+        commentTF.addKeyListener( new KeyAdapter() {
+            public void keyPressed( KeyEvent e ) {
+                if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
+                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
+                    parent.okPressed() ;
+                }
+            }       
+        } ) ; 
     }
 
     @Override
@@ -40,6 +55,6 @@ public class CommentPanel extends CommentPanelUI {
             return null ;
         }
         
-        return buffer.toString() ;
+        return buffer.toString().trim() ;
     }
 }
