@@ -59,6 +59,10 @@ public class DefinitionPanel extends DefinitionPanelUI
         } );
     }
 
+    protected void captureFocus() {
+        definitionTF.requestFocus() ;
+    }
+
     @Override
     public String getFormattedNote() {
         

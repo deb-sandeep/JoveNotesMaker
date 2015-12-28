@@ -36,6 +36,10 @@ public class WMPanel extends WMPanelUI implements ActionListener {
         getMeaningBtn.addActionListener( this ) ;
     }
     
+    protected void captureFocus() {
+        wordTF.requestFocus() ;
+    }
+
     @Override
     public String getFormattedNote() {
         if( StringUtil.isEmptyOrNull( meaningTF.getText() ) ) {

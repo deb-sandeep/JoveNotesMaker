@@ -7,13 +7,20 @@ import java.awt.FlowLayout ;
 import java.awt.Font ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.KeyEvent ;
+import java.awt.event.WindowEvent ;
+import java.awt.event.WindowFocusListener ;
 
 import javax.swing.BorderFactory ;
 import javax.swing.JButton ;
+import javax.swing.JComponent ;
 import javax.swing.JDialog ;
 import javax.swing.JLabel ;
 import javax.swing.JPanel ;
+import javax.swing.KeyStroke ;
 import javax.swing.border.EtchedBorder ;
+
+import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.SwingUtils ;
 import com.sandy.common.util.StringUtil ;
@@ -31,6 +38,7 @@ import com.sandy.jnmaker.util.NoteType ;
 public class NotesCreatorDialog extends JDialog implements ActionListener {
 
     private static final long serialVersionUID = 981058739418516298L ;
+    static final Logger logger = Logger.getLogger( NotesCreatorDialog.class ) ;
     
     private static final String AC_OK     = "OK" ;
     private static final String AC_CANCEL = "CANCEL" ;
@@ -41,6 +49,7 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
 
     public NotesCreatorDialog() {
         setUpUI() ;
+        setUpListeners() ;
     }
     
     public void createNote( String selectedText, NoteType noteType,
@@ -86,6 +95,35 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
         
         SwingUtils.centerOnScreen( this, 600, 400 ) ;
     }
+    
+    private void setUpListeners() {
+        
+        addWindowFocusListener() ;
+        addEscapeListener() ;
+    }
+    
+    private void addWindowFocusListener() {
+        
+        addWindowFocusListener( new WindowFocusListener() {
+            @Override public void windowLostFocus( WindowEvent e ) { }
+            @Override public void windowGainedFocus( WindowEvent e ) {
+                centerPanel.captureFocus() ;
+            }
+        } );
+    }
+    
+    private void addEscapeListener() {
+        
+        ActionListener escListener = new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                NotesCreatorDialog.this.setVisible(false);
+            }
+        } ;
+        NotesCreatorDialog.this.getRootPane().registerKeyboardAction(
+                escListener,
+                KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 ),
+                JComponent.WHEN_IN_FOCUSED_WINDOW ) ;
+    }    
     
     private JLabel getTitleLabel() {
         

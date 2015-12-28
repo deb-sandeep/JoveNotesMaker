@@ -161,4 +161,8 @@ public abstract class AbstractNotePanel extends JPanel {
             pronunciationTF.setEnabled( true ) ;
         }
     }
+    
+    protected void captureFocus() {
+        // No op by default.
+    }
 }

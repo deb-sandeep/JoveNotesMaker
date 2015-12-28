@@ -33,6 +33,10 @@ public class CommentPanel extends CommentPanelUI {
             }       
         } ) ; 
     }
+    
+    protected void captureFocus() {
+        commentTF.requestFocus() ;
+    }
 
     @Override
     public String getFormattedNote() {

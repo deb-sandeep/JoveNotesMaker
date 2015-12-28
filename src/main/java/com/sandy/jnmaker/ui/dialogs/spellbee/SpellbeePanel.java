@@ -55,6 +55,10 @@ public class SpellbeePanel extends SpellbeePanelUI implements ActionListener {
         playBtn.addActionListener( this ) ;
     }
     
+    protected void captureFocus() {
+        wordTF.requestFocus() ;
+    }
+    
     @Override
     public String getFormattedNote() {
         

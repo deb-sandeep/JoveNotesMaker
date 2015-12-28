@@ -190,6 +190,9 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 case KeyEvent.VK_S:
                     saveFile() ;
                     break ;
+                case KeyEvent.VK_W:
+                    closeFile() ;
+                    break ;
             }
         }
         else if( modifiers == ( KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK ) ) {
@@ -197,31 +200,31 @@ public class RawTextPanel extends JPanel implements ActionListener {
             MainFrame mainFrame = getMainFrame() ;
             
             switch( keyCode ) {
-                case KeyEvent.VK_Q: // @qa
+                case KeyEvent.VK_Q: 
                     mainFrame.createNote( selectedText, NoteType.QA ) ;
                     break ;
-                case KeyEvent.VK_F: // @fib
+                case KeyEvent.VK_F: 
                     mainFrame.createNote( selectedText, NoteType.FIB ) ;
                     break ;
-                case KeyEvent.VK_T: // @true_false
+                case KeyEvent.VK_T: 
                     mainFrame.createNote( selectedText, NoteType.TRUE_FALSE ) ;
                     break ;
-                case KeyEvent.VK_W: // @wm
+                case KeyEvent.VK_W: 
                     mainFrame.createNote( selectedText, NoteType.WORD_MEANING ) ;
                     break ;
-                case KeyEvent.VK_S: // @spellbee
+                case KeyEvent.VK_S: 
                     mainFrame.createNote( selectedText, NoteType.SPELLBEE ) ;
                     break ;
-                case KeyEvent.VK_D: // @definition
+                case KeyEvent.VK_D: 
                     mainFrame.createNote( selectedText, NoteType.DEFINITION ) ;
                     break ;
-                case KeyEvent.VK_E: // @event
+                case KeyEvent.VK_E: 
                     mainFrame.createNote( selectedText, NoteType.EVENT ) ;
                     break ;
-                case KeyEvent.VK_C: // comment
+                case KeyEvent.VK_C: 
                     mainFrame.createNote( selectedText, NoteType.COMMENT ) ;
                     break ;
-                case KeyEvent.VK_B: // Bookmark
+                case KeyEvent.VK_B: 
                     reviseBookmark() ;
                     break ;
             }

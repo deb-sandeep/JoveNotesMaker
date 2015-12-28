@@ -1,0 +1,3 @@
+Introduce a freeze text and extract blank in the FIB text box
+Introduce a move text to question field in QA answer text field
+While applying markdown bold or italics, trim the enclosed text

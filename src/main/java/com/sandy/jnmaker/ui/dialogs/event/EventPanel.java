@@ -64,6 +64,10 @@ public class EventPanel extends EventPanelUI
         } );
     }
 
+    protected void captureFocus() {
+        eventTF.requestFocus() ;
+    }
+
     @Override
     public String getFormattedNote() {
         

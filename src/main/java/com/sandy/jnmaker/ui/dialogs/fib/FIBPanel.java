@@ -71,6 +71,10 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         } );
     }
     
+    protected void captureFocus() {
+        this.textArea.requestFocus() ;
+    }
+
     @Override
     public String getFormattedNote() {
         

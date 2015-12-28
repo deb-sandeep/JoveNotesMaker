@@ -148,6 +148,7 @@ public class EditMenu extends JMenu implements ActionListener {
                         else if( keyCode == KeyEvent.VK_Y ) { doRedo() ; }
                         else if( keyCode == KeyEvent.VK_B ) { doBold( sel ) ; }
                         else if( keyCode == KeyEvent.VK_I ) { doItalics( sel ) ; }
+                        else if( keyCode == KeyEvent.VK_J ) { joinLines( sel ) ; }
                     }
                     catch( Exception e1 ) {
                         logger.error( "Error performing edit action.", e1 ) ;

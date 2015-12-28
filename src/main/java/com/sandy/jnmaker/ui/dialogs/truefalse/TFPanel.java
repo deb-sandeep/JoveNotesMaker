@@ -55,6 +55,10 @@ public class TFPanel extends TFPanelUI {
             }
         } );
     }
+    
+    protected void captureFocus() {
+        stmtTextArea.requestFocus() ;
+    }
 
     @Override
     public String getFormattedNote() {

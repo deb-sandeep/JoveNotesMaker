@@ -16,8 +16,13 @@ public class QAPanel extends QAPanelUI implements KeyListener {
         UIUtil.associateEditMenu( this.answerTextArea ) ;
         
         this.answerTextArea.setText( selectedText ) ;
+        
         this.questionTextArea.addKeyListener( this ) ;
         this.answerTextArea.addKeyListener( this ) ;
+    }
+    
+    protected void captureFocus() {
+        this.questionTextArea.requestFocus() ;
     }
     
     @Override
