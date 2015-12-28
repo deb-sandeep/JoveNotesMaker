@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.helper;
+package com.sandy.jnmaker.util;
 
 public class JNSrcTokenizer {
 
@@ -7,7 +7,8 @@ public class JNSrcTokenizer {
         NESTED_KEYWORDS,
         STRING, 
         INT, 
-        PUNCTUATION, 
+        PUNCTUATION,
+        COMMENT,
         UNKNOWN 
     } ;
     
@@ -159,6 +160,9 @@ public class JNSrcTokenizer {
                 token = extractNestedKeyword( pos ) ;
                 if( token == null ) {
                     token = extractPunctuation( pos ) ;
+                    if( token == null ) {
+                        token = extractComment( pos ) ;
+                    }
                 }
             }
         }
@@ -228,6 +232,53 @@ public class JNSrcTokenizer {
         
         token.end   = toPos-1 ;
         token.token = buffer.toString() ;
+        
+        return token ;
+    }
+    
+    private Token extractComment( int initialPos ) {
+        
+        int pos = initialPos ;
+        Token token = null ;
+        StringBuilder buffer = new StringBuilder() ;
+        
+        if( pos < contentLen-1 ) {
+            if( content.charAt( pos ) == '/' ) {
+                
+                if( content.charAt( pos+1 ) == '/' ) {
+
+                    while( pos < contentLen && content.charAt( pos ) != '\n') {
+                        buffer.append( content.charAt( pos ) ) ;
+                        pos++ ;
+                    }
+                    
+                    token = new Token( TokenType.COMMENT, initialPos, pos-1, 
+                                       buffer.toString() ) ;
+                }
+                else if( content.charAt( pos+1 ) == '*' ) {
+                    
+                    while( pos < contentLen-2 ) {
+                        char curChar        = content.charAt( pos ) ;
+                        char nextChar       = content.charAt( pos+1 ) ;
+                        char nextToNextChar = content.charAt( pos+2 ) ;
+                        
+                        buffer.append( curChar ) ;
+                        if( nextChar == '*' && nextToNextChar == '/' ) {
+                            buffer.append( nextChar ) ;
+                            buffer.append( nextToNextChar ) ;
+                            pos += 3 ;
+                            break ;
+                        }
+                        else {
+                            pos++ ;
+                        }
+                    }
+                    
+                    token = new Token( TokenType.COMMENT, initialPos, pos-1, 
+                            buffer.toString() ) ;
+                }
+            }
+        }
         
         return token ;
     }

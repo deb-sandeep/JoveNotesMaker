@@ -10,10 +10,10 @@ import javax.swing.text.StyleContext ;
 import javax.swing.text.StyledDocument ;
 
 import com.sandy.jnmaker.ui.helper.EditMenu ;
-import com.sandy.jnmaker.ui.helper.JNSrcTokenizer ;
-import com.sandy.jnmaker.ui.helper.JNSrcTokenizer.Token ;
-import com.sandy.jnmaker.ui.helper.JNSrcTokenizer.TokenType ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.util.JNSrcTokenizer ;
+import com.sandy.jnmaker.util.JNSrcTokenizer.Token ;
+import com.sandy.jnmaker.util.JNSrcTokenizer.TokenType ;
 
 public class JoveNotesTextPane extends JTextPane {
 
@@ -85,6 +85,10 @@ public class JoveNotesTextPane extends JTextPane {
         
         Style number = doc.addStyle( TokenType.INT.toString(), base ) ;
         StyleConstants.setForeground( number, UIUtil.NUMBER_COLOR ) ;
+        
+        Style comment = doc.addStyle( TokenType.COMMENT.toString(), base ) ;
+        StyleConstants.setItalic( comment, true ) ;
+        StyleConstants.setForeground( comment, Color.GRAY ) ;
         
         Style unknown = doc.addStyle( TokenType.UNKNOWN.toString(), base ) ;
         StyleConstants.setForeground( unknown, Color.RED ) ;
