@@ -1,7 +1,7 @@
 package com.sandy.jnmaker.ui.panels;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -33,7 +33,9 @@ import org.apache.commons.io.FileUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.util.NoteType ;
 
 public class RawTextPanel extends JPanel implements ActionListener {
 
@@ -172,18 +174,58 @@ public class RawTextPanel extends JPanel implements ActionListener {
             @Override public void keyPressed( KeyEvent e ) {
                 int keyCode   = e.getKeyCode() ;
                 int modifiers = e.getModifiers() ;
-                
-                if( modifiers == KeyEvent.CTRL_MASK ) {
-                    if( keyCode == KeyEvent.VK_S ) {
-                        saveFile() ;
-                    }
-                }
+                handleEditorControlKeyStrokes( modifiers, keyCode ) ;
             }
         } ) ;
         
         UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
         textPane.setForeground( UIUtil.STRING_COLOR ) ;
         textPane.setCaretColor( Color.GREEN ) ;
+    }
+    
+    private void handleEditorControlKeyStrokes( int modifiers, int keyCode ) {
+        
+        if( modifiers == KeyEvent.CTRL_MASK ) {
+            switch( keyCode ) {
+                case KeyEvent.VK_S:
+                    saveFile() ;
+                    break ;
+            }
+        }
+        else if( modifiers == ( KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK ) ) {
+            String selectedText = textPane.getSelectedText() ;
+            MainFrame mainFrame = getMainFrame() ;
+            
+            switch( keyCode ) {
+                case KeyEvent.VK_Q: // @qa
+                    mainFrame.createNote( selectedText, NoteType.QA ) ;
+                    break ;
+                case KeyEvent.VK_F: // @fib
+                    mainFrame.createNote( selectedText, NoteType.FIB ) ;
+                    break ;
+                case KeyEvent.VK_T: // @true_false
+                    mainFrame.createNote( selectedText, NoteType.TRUE_FALSE ) ;
+                    break ;
+                case KeyEvent.VK_W: // @wm
+                    mainFrame.createNote( selectedText, NoteType.WORD_MEANING ) ;
+                    break ;
+                case KeyEvent.VK_S: // @spellbee
+                    mainFrame.createNote( selectedText, NoteType.SPELLBEE ) ;
+                    break ;
+                case KeyEvent.VK_D: // @definition
+                    mainFrame.createNote( selectedText, NoteType.DEFINITION ) ;
+                    break ;
+                case KeyEvent.VK_E: // @event
+                    mainFrame.createNote( selectedText, NoteType.EVENT ) ;
+                    break ;
+                case KeyEvent.VK_C: // comment
+                    mainFrame.createNote( selectedText, NoteType.COMMENT ) ;
+                    break ;
+                case KeyEvent.VK_B: // Bookmark
+                    reviseBookmark() ;
+                    break ;
+            }
+        }
     }
     
     private void setUpFileChooser() {
