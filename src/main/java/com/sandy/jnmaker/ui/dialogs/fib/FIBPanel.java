@@ -150,24 +150,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             return ;
         }
         
-        int startPosition = textArea.getSelectionStart() ;
-        int endPosition   = textArea.getSelectionEnd() ;
         int curBlankNo    = blankTextList.size() ;
-        int curCaretPos   = textArea.getCaretPosition() ;
-        
         blankTextList.add( selectedText ) ;
-        
-        String text = textArea.getText() ;
-        StringBuilder newText = new StringBuilder() ;
-        newText.append( text.subSequence( 0, startPosition ) )
-               .append( "{" )
-               .append( curBlankNo )
-               .append( "}" )
-               .append( text.subSequence( endPosition, text.length() ) ) ;
-        
-        textArea.setText( newText.toString() ) ;
-        textArea.setCaretPosition( curCaretPos ) ;
-        
+        textArea.replaceSelection( "{" + curBlankNo + "}" ) ;
         refreshPreview() ;
     }
     
