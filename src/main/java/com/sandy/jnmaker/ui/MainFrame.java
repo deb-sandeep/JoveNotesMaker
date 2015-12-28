@@ -5,6 +5,8 @@ import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
 
 import java.awt.Color ;
 import java.awt.Component ;
+import java.awt.event.WindowEvent ;
+import java.awt.event.WindowFocusListener ;
 
 import javax.swing.JSplitPane ;
 
@@ -54,6 +56,17 @@ public class MainFrame extends AbstractMainFrame {
             }
         }
         super.handleWindowClosing() ;
+    }
+    
+    @Override
+    protected void setUpListeners() {
+        super.setUpListeners() ;
+        addWindowFocusListener( new WindowFocusListener() {
+            @Override public void windowLostFocus( WindowEvent e ) { }
+            @Override public void windowGainedFocus( WindowEvent e ) {
+                rawTextPanel.captureFocus() ;
+            }
+        } );
     }
 
     private JSplitPane createBottomSplitPane() {
@@ -119,5 +132,13 @@ public class MainFrame extends AbstractMainFrame {
     
     public void createNote( String selectedText, NoteType noteType ) {
         notesCreator.createNote( selectedText, noteType, jnPanel ) ;
+    }
+    
+    public void shiftFocusToNotes() {
+        this.jnPanel.captureFocus() ;
+    }
+    
+    public void shiftFocusToRawText() {
+        this.rawTextPanel.captureFocus() ;
     }
 }

@@ -68,19 +68,6 @@ public abstract class AbstractNotePanel extends JPanel {
         return formatText( input, true ) ;
     }
     
-    protected void bindOkPressEventCapture( JTextComponent textArea ) {
-        
-        textArea.addKeyListener( new KeyAdapter() {
-            @Override
-            public void keyPressed( KeyEvent e ) {
-                if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
-                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
-                    parent.okPressed() ;
-                }            
-            }
-        });
-    }
-    
     protected void showErrorMsg( String msg ) {
         JOptionPane.showMessageDialog( this, msg, "Input error", 
                                        JOptionPane.ERROR_MESSAGE ) ; 
@@ -162,7 +149,17 @@ public abstract class AbstractNotePanel extends JPanel {
         }
     }
     
-    protected void captureFocus() {
-        // No op by default.
+    protected abstract void captureFocus() ;
+    
+    protected void bindOkPressEventCapture( JTextComponent textArea ) {
+        
+        textArea.addKeyListener( new KeyAdapter() {
+            @Override public void keyPressed( KeyEvent e ) {
+                if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
+                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
+                    parent.okPressed() ;
+                }            
+            }
+        });
     }
 }

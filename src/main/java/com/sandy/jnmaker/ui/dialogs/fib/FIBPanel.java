@@ -2,6 +2,10 @@ package com.sandy.jnmaker.ui.dialogs.fib;
 
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.FocusEvent ;
+import java.awt.event.FocusListener ;
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
 import java.awt.event.MouseAdapter ;
 import java.awt.event.MouseEvent ;
 import java.util.ArrayList ;
@@ -20,12 +24,10 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
 
     private static final long serialVersionUID = -6630383705812553661L ;
     
-    private static final String AC_FREEZE_TEXT   = "FREEZE_TEXT" ;
-    private static final String AC_EXTRACT_BLANK = "EXTRACT_BLANK" ;
-    
     private JPopupMenu popupMenu      = null ;
     private JMenuItem  freezeTextMI   = null ;
     private JMenuItem  extractBlankMI = null ;
+    private JMenuItem  freezeTextAndExtractBlankMI = null ;
     
     private List<String> blankTextList = new ArrayList<>() ;
     
@@ -47,28 +49,49 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
     private void setUpPopupMenu() {
         
         freezeTextMI = new JMenuItem( "Freeze text" ) ;
-        freezeTextMI.setActionCommand( AC_FREEZE_TEXT ) ;
         freezeTextMI.addActionListener( this ) ;
         
         extractBlankMI = new JMenuItem( "Extract blank" ) ;
-        extractBlankMI.setActionCommand( AC_EXTRACT_BLANK ) ;
         extractBlankMI.addActionListener( this ) ;
         
+        freezeTextAndExtractBlankMI = new JMenuItem( "Freeze and extract" ) ;
+        freezeTextAndExtractBlankMI.addActionListener( this ) ;
+        
         popupMenu = new JPopupMenu() ;
+        popupMenu.add( freezeTextAndExtractBlankMI ) ;
         popupMenu.add( freezeTextMI ) ;
         popupMenu.add( new EditMenu( popupMenu, textArea ) ) ;
     }
     
     private void setUpListeners() {
         
+        super.bindOkPressEventCapture( textArea ) ;
+        
         textArea.addMouseListener( new MouseAdapter() {
-            @Override 
-            public void mouseClicked( MouseEvent e ) {
+            
+            @Override public void mouseClicked( MouseEvent e ) {
                 if( e.getButton() == MouseEvent.BUTTON3 ) {
                     popupMenu.show( textArea, e.getX(), e.getY() ) ;
                 }
             }
-        } );
+        } ) ;
+        
+        textArea.addFocusListener(new FocusListener() {
+
+            @Override public void focusGained(FocusEvent e) {
+                 textArea.getCaret().setVisible( true ) ;
+            }
+
+            @Override public void focusLost( FocusEvent e ) {
+                textArea.getCaret().setVisible( false ) ;
+            }
+        } ) ;
+        
+        textArea.addKeyListener( new KeyAdapter() {
+            public void keyPressed( KeyEvent e ) {
+                handleKeyShortcutPressed( e.getModifiers(), e.getKeyCode() ) ;
+            }
+        } ) ;
     }
     
     protected void captureFocus() {
@@ -100,14 +123,15 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
     @Override
     public void actionPerformed( ActionEvent e ) {
         
-        switch( e.getActionCommand() ) {
-            
-            case AC_FREEZE_TEXT:
-                freezeText() ;
-                break ;
-            case AC_EXTRACT_BLANK:
-                extractBlank() ;
-                break ;
+        if( e.getSource() == freezeTextMI ) {
+            freezeText() ;
+        }
+        else if( e.getSource() == freezeTextMI ) {
+            extractBlank() ;
+        }
+        else if( e.getSource() == freezeTextAndExtractBlankMI ) {
+            freezeText() ;
+            extractBlank() ;
         }
     }
     
@@ -115,6 +139,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         
         textArea.setEditable( false ) ;
         popupMenu.remove( freezeTextMI ) ;
+        popupMenu.remove( freezeTextAndExtractBlankMI ) ;
         popupMenu.add( extractBlankMI, 0 ) ;
     }
     
@@ -128,6 +153,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         int startPosition = textArea.getSelectionStart() ;
         int endPosition   = textArea.getSelectionEnd() ;
         int curBlankNo    = blankTextList.size() ;
+        int curCaretPos   = textArea.getCaretPosition() ;
         
         blankTextList.add( selectedText ) ;
         
@@ -140,6 +166,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                .append( text.subSequence( endPosition, text.length() ) ) ;
         
         textArea.setText( newText.toString() ) ;
+        textArea.setCaretPosition( curCaretPos ) ;
         
         refreshPreview() ;
     }
@@ -155,5 +182,19 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         }
         
         previewLabel.setText( previewText ) ;
+    }
+    
+    private void handleKeyShortcutPressed( int mod, int code ) {
+        
+        if( mod == KeyEvent.CTRL_MASK ) {
+            switch( code ) {
+                case KeyEvent.VK_F:
+                    freezeText() ;
+                    break ;
+                case KeyEvent.VK_E:
+                    extractBlank() ;
+                    break ;
+            }
+        }
     }
 }

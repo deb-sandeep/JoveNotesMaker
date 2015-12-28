@@ -1,7 +1,5 @@
 package com.sandy.jnmaker.ui.dialogs.comment ;
 
-import java.awt.event.KeyAdapter ;
-import java.awt.event.KeyEvent ;
 import java.io.BufferedReader ;
 import java.io.IOException ;
 import java.io.StringReader ;
@@ -23,15 +21,7 @@ public class CommentPanel extends CommentPanelUI {
     }
     
     private void setUpListeners() {
-        
-        commentTF.addKeyListener( new KeyAdapter() {
-            public void keyPressed( KeyEvent e ) {
-                if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
-                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
-                    parent.okPressed() ;
-                }
-            }       
-        } ) ; 
+        super.bindOkPressEventCapture( this.commentTF ) ;
     }
     
     protected void captureFocus() {

@@ -1,12 +1,12 @@
 package com.sandy.jnmaker.ui.dialogs.qa;
 
+import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
-import java.awt.event.KeyListener ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
-public class QAPanel extends QAPanelUI implements KeyListener {
+public class QAPanel extends QAPanelUI {
 
     private static final long serialVersionUID = 3958957198034168755L ;
 
@@ -14,11 +14,24 @@ public class QAPanel extends QAPanelUI implements KeyListener {
         
         UIUtil.associateEditMenu( this.questionTextArea ) ;
         UIUtil.associateEditMenu( this.answerTextArea ) ;
+        setUpListeners() ;
         
         this.answerTextArea.setText( selectedText ) ;
+    }
+    
+    private void setUpListeners() {
+        super.bindOkPressEventCapture( this.questionTextArea ) ;
+        super.bindOkPressEventCapture( this.answerTextArea ) ;
         
-        this.questionTextArea.addKeyListener( this ) ;
-        this.answerTextArea.addKeyListener( this ) ;
+        this.answerTextArea.addKeyListener( new KeyAdapter() {
+            public void keyPressed( KeyEvent e ) {
+                if( e.getModifiers() == KeyEvent.CTRL_MASK && 
+                    e.getKeyCode() == KeyEvent.VK_M ) {
+                    
+                    moveSelTextFromAnsFieldToQuestionField() ;
+                }
+            }
+        } );
     }
     
     protected void captureFocus() {
@@ -49,16 +62,14 @@ public class QAPanel extends QAPanelUI implements KeyListener {
         return buffer.toString() ;
     }
     
-    @Override
-    public void keyPressed( KeyEvent e ) {
+    private void moveSelTextFromAnsFieldToQuestionField() {
         
-        if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
-            e.getModifiers() == KeyEvent.CTRL_MASK ) {
-            
-            super.parent.okPressed() ;
+        String selText = answerTextArea.getSelectedText() ;
+        
+        if( StringUtil.isNotEmptyOrNull( selText ) ) {
+            int caretPos = questionTextArea.getCaretPosition() ;
+            questionTextArea.insert( selText, caretPos ) ;
+            questionTextArea.requestFocus() ;
         }
     }
-
-    @Override public void keyReleased( KeyEvent e ) {}
-    @Override public void keyTyped( KeyEvent e ) {}
 }

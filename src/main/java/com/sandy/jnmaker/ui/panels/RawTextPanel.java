@@ -78,6 +78,10 @@ public class RawTextPanel extends JPanel implements ActionListener {
     public File getCurrentFile() {
         return currentFile;
     }
+    
+    public void captureFocus() {
+        textPane.requestFocus() ;
+    }
 
     public void setCurrentFile( File file ) {
         
@@ -226,6 +230,9 @@ public class RawTextPanel extends JPanel implements ActionListener {
                     break ;
                 case KeyEvent.VK_B: 
                     reviseBookmark() ;
+                    break ;
+                case KeyEvent.VK_N:
+                    mainFrame.shiftFocusToNotes() ;
                     break ;
             }
         }
@@ -388,6 +395,7 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 Rectangle viewRect = textPane.modelToView( pos ) ;
                 viewRect.y += textPane.getVisibleRect().height - 20 ;
                 textPane.scrollRectToVisible( viewRect ) ;
+                textPane.setCaretPosition( pos ) ;
             }
         } 
         catch ( Exception e ) {

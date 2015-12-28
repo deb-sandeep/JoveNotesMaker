@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class JoveNotesPanel extends JPanel implements ActionListener {
 
@@ -153,6 +154,11 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
                 if( e.getKeyCode()   == KeyEvent.VK_S && 
                     e.getModifiers() == KeyEvent.CTRL_MASK ) {
                     saveFile() ;
+                }
+                else if( e.getKeyCode()   == KeyEvent.VK_R && 
+                         e.getModifiers() == ( KeyEvent.CTRL_MASK | 
+                                               KeyEvent.SHIFT_MASK ) ) {
+                    ObjectRepository.getMainFrame().shiftFocusToRawText() ;
                 }
             }
         } );
@@ -306,5 +312,9 @@ public class JoveNotesPanel extends JPanel implements ActionListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void captureFocus() {
+        textPane.requestFocus() ;
     }
 }
