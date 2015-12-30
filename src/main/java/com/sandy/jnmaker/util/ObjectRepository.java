@@ -6,6 +6,7 @@ import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.JoveNotesMaker ;
 import com.sandy.jnmaker.ui.MainFrame ;
+import com.sandy.jnmaker.ui.actions.Actions ;
 
 public class ObjectRepository {
 
@@ -17,7 +18,16 @@ public class ObjectRepository {
     private static StateManager        stateMgr       = null ;
     private static WordnicAdapter      wordnicAdapter = null ;
     private static AppConfig           appConfig      = null ;
+    private static Actions             uiActions      = null ;
     
+    public static Actions getUiActions() {
+        return uiActions;
+    }
+
+    public static void setUiActions( Actions uiActions ) {
+        ObjectRepository.uiActions = uiActions;
+    }
+
     public static AppConfig getAppConfig() {
         return appConfig;
     }

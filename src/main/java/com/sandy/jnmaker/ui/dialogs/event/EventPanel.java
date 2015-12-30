@@ -11,7 +11,7 @@ import javax.swing.JPopupMenu ;
 import org.apache.commons.lang.WordUtils ;
 
 import com.sandy.common.util.StringUtil ;
-import com.sandy.jnmaker.ui.helper.EditMenu ;
+import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class EventPanel extends EventPanelUI 
@@ -46,7 +46,7 @@ public class EventPanel extends EventPanelUI
         
         popupMenu = new JPopupMenu() ;
         popupMenu.add( markTimeMI ) ;
-        popupMenu.add( new EditMenu( popupMenu, eventTF ) ) ;
+        popupMenu.add( new PopupEditMenu( popupMenu, eventTF ) ) ;
     }
     
     private void initListeners() {

@@ -9,7 +9,7 @@ import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
 import javax.swing.JTextPane ;
 
-import com.sandy.jnmaker.ui.helper.EditMenu ;
+import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.util.NoteType ;
 
 public class RawTextPanelPopupMenu extends JPopupMenu implements ActionListener {
@@ -27,15 +27,15 @@ public class RawTextPanelPopupMenu extends JPopupMenu implements ActionListener 
     private JMenuItem spellbeeMI   = new JMenuItem() ;
     private JMenuItem definitionMI = new JMenuItem() ;
     private JMenuItem eventMI      = new JMenuItem() ;
-    private EditMenu  editMenu     = null ;
+    private PopupEditMenu  editMenu     = null ;
     private JMenuItem bookmarkMI   = new JMenuItem() ;
     
     public RawTextPanelPopupMenu( RawTextPanel rawTextPanel ) {
         
         super( "Make notes" ) ;
         this.panel = rawTextPanel ;
-        this.textPane = rawTextPanel.textPane ;
-        this.editMenu = new EditMenu( this, this.textPane ) ;
+        this.textPane = rawTextPanel.getTextPane() ;
+        this.editMenu = new PopupEditMenu( this, this.textPane ) ;
         setUpUI() ;
     }
     

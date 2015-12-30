@@ -1,15 +1,6 @@
 package com.sandy.jnmaker ;
 
-import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
-import static com.sandy.jnmaker.util.ObjectRepository.getWkspManager ;
-import static com.sandy.jnmaker.util.ObjectRepository.setApp ;
-import static com.sandy.jnmaker.util.ObjectRepository.setAppConfig ;
-import static com.sandy.jnmaker.util.ObjectRepository.setBus ;
-import static com.sandy.jnmaker.util.ObjectRepository.setMainFrame ;
-import static com.sandy.jnmaker.util.ObjectRepository.setObjectFactory ;
-import static com.sandy.jnmaker.util.ObjectRepository.setStateMgr ;
-import static com.sandy.jnmaker.util.ObjectRepository.setWkspManager ;
-import static com.sandy.jnmaker.util.ObjectRepository.setWordnicAdapter ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.awt.SplashScreen ;
 
@@ -22,6 +13,7 @@ import com.sandy.common.util.Configurator ;
 import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.ui.MainFrame ;
+import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.ConfiguratorBuilder ;
 import com.sandy.jnmaker.util.JNMCommandLine ;
@@ -51,16 +43,13 @@ public class JoveNotesMaker {
         SpringObjectFactory objFactory = new SpringObjectFactory() ;
         objFactory.addResourcePath( "classpath:com/sandy/jnmaker/objfactory.xml" ) ;
         objFactory.initialize() ;
+        
         setObjectFactory( objFactory ) ;
-        
-        // Create the event bus and register it with the object repository
-        EventBus eventBus = new EventBus() ;
-        setBus( eventBus ) ;
-        
-        // Initialize some singleton objects
+        setBus( new EventBus() ) ;
         setWkspManager( new WorkspaceManager( APP_ID ) ) ;
         setWordnicAdapter( new WordnicAdapter() ) ;
         setAppConfig( new AppConfig() ) ;
+        setUiActions( new Actions() ) ;
         
         // Configure the system components
         ConfiguratorBuilder builder = new ConfiguratorBuilder( APP_ID, cmdLine ) ;
@@ -81,7 +70,7 @@ public class JoveNotesMaker {
         StateManager stateManager = new StateManager( this, getWkspManager() ) ;
         stateManager.registerObject( "ImagePanel",     getMainFrame().getImagePanel() ) ;
         stateManager.registerObject( "RawTextPanel",   getMainFrame().getRawTextPanel() ) ;
-        stateManager.registerObject( "JoveNotesPanel", getMainFrame().getJnPanel() ) ;
+        stateManager.registerObject( "JoveNotesPanel", getMainFrame().getJNPanel() ) ;
         stateManager.initialize() ;
         stateManager.loadState() ;
         

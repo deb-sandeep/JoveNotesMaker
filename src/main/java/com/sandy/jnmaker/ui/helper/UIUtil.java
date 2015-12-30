@@ -21,6 +21,7 @@ import javax.swing.UIDefaults ;
 import javax.swing.text.JTextComponent ;
 
 import com.sandy.common.ui.SwingUtils ;
+import com.sandy.jnmaker.ui.AbstractBaseAction ;
 
 public class UIUtil {
 
@@ -31,6 +32,22 @@ public class UIUtil {
     
     public static ImageIcon getIcon( String iconName ) {
         return SwingUtils.getIcon( getApp().getClass(), iconName ) ;
+    }
+    
+    public static JButton getActionBtn( AbstractBaseAction action ) {
+        
+        JButton button = new JButton() ;
+        
+        button.setIcon( action.getSmallIcon() ) ;
+        button.setMargin( new Insets( 0, 0, 0, 0 ) ) ;
+        button.setBorderPainted( false ) ;
+        button.setFocusPainted( true ) ;
+        button.setIconTextGap( 0 ) ;
+        button.setPreferredSize( new Dimension( 30, 30 ) );
+        button.setAction( action ) ;
+        button.setText( null ) ;
+        
+        return button ;
     }
     
     public static JButton getActionBtn( String iconName, String actionCmd, 
@@ -89,10 +106,10 @@ public class UIUtil {
         comp.putClientProperty( "Nimbus.Overrides.InheritDefaults", true ) ;
     }
     
-    public static EditMenu associateEditMenu( final JTextComponent textComp ) {
+    public static PopupEditMenu associateEditMenu( final JTextComponent textComp ) {
         
         final JPopupMenu popup = new JPopupMenu() ;
-        EditMenu editMenu = new EditMenu( popup, textComp ) ; 
+        PopupEditMenu editMenu = new PopupEditMenu( popup, textComp ) ; 
         popup.add( editMenu ) ;
         
         textComp.addMouseListener( new MouseAdapter() {

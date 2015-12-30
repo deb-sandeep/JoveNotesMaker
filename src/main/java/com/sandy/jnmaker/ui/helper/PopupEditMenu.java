@@ -23,10 +23,10 @@ import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 
-public class EditMenu extends JMenu implements ActionListener {
+public class PopupEditMenu extends JMenu implements ActionListener {
 
     private static final long serialVersionUID = 1L ;
-    private static final Logger logger = Logger.getLogger( EditMenu.class ) ;
+    private static final Logger logger = Logger.getLogger( PopupEditMenu.class ) ;
     
     private class SelectedContent {
         
@@ -94,7 +94,7 @@ public class EditMenu extends JMenu implements ActionListener {
     
     private JMenuItem joinLinesMI = new JMenuItem() ;
     
-    public EditMenu( JPopupMenu popupMenu, JTextComponent textComponent ) {
+    public PopupEditMenu( JPopupMenu popupMenu, JTextComponent textComponent ) {
         
         super( "Edit" ) ;
         this.popupMenu = popupMenu ;

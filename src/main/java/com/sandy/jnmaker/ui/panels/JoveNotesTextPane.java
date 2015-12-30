@@ -9,7 +9,7 @@ import javax.swing.text.StyleConstants ;
 import javax.swing.text.StyleContext ;
 import javax.swing.text.StyledDocument ;
 
-import com.sandy.jnmaker.ui.helper.EditMenu ;
+import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.util.JNSrcTokenizer ;
 import com.sandy.jnmaker.util.JNSrcTokenizer.Token ;
@@ -20,7 +20,7 @@ public class JoveNotesTextPane extends JTextPane {
     private static final long serialVersionUID = 1L ;
     
     private StyledDocument doc = null ;
-    private EditMenu editMenu = null ;
+    private PopupEditMenu editMenu = null ;
     
     private String lastHighlightedContent = null ;
     

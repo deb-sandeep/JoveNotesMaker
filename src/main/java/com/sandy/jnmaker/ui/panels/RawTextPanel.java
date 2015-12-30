@@ -1,14 +1,13 @@
 package com.sandy.jnmaker.ui.panels;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.Rectangle ;
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.MouseAdapter ;
@@ -20,6 +19,7 @@ import java.nio.file.Files ;
 import javax.swing.BoxLayout ;
 import javax.swing.JComponent ;
 import javax.swing.JFileChooser ;
+import javax.swing.JLabel ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
@@ -30,32 +30,30 @@ import javax.swing.text.BadLocationException ;
 import javax.swing.text.Document ;
 
 import org.apache.commons.io.FileUtils ;
+import org.apache.commons.lang.StringUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.MainFrame ;
+import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.util.NoteType ;
+import com.sandy.jnmaker.util.ObjectRepository ;
 
-public class RawTextPanel extends JPanel implements ActionListener {
+public class RawTextPanel extends JPanel {
 
     private static final long serialVersionUID = -6820796056331113968L ;
     private static final Logger logger = Logger.getLogger( RawTextPanel.class ) ;
     
     private static final String BOOKMARK_MARKER = "// here" ;
 
-    private static final String AC_OPEN_FILE  = "OPEN_FILE" ;
-    private static final String AC_CLOSE_FILE = "CLOSE_FILE" ;
-    private static final String AC_SAVE_FILE  = "SAVE_FILE" ;
-    private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
-    private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
-    
-    JTextPane textPane = new JTextPane() ;
-    private JFileChooser fileChooser = new JFileChooser() ;
+    private JTextPane    textPane      = new JTextPane() ;
+    private JLabel       fileNameLabel = new JLabel() ;
+    private JFileChooser fileChooser   = new JFileChooser() ;
     
     private RawTextPanelPopupMenu popup = new RawTextPanelPopupMenu( this ) ;
     
-    private String originalText = null ;
+    private String originalText = "" ;
     
     private int  fontSize    = 12 ;
     private File currentFile = null ;
@@ -64,6 +62,10 @@ public class RawTextPanel extends JPanel implements ActionListener {
     public RawTextPanel() {
         setUpUI() ;
         setUpFileChooser() ;
+    }
+    
+    JTextPane getTextPane() {
+        return this.textPane ;
     }
     
     public int getFontSize() {
@@ -85,46 +87,48 @@ public class RawTextPanel extends JPanel implements ActionListener {
 
     public void setCurrentFile( File file ) {
         
-        try {
-            String content = FileUtils.readFileToString( file, "UTF-8" ) ;
-            this.textPane.setText( content ) ;
-            this.originalText = content ;
-            this.currentFile  = file ;
-            this.currentDir   = file.getParentFile() ;
-            SwingUtilities.invokeLater( new Runnable() {
-                @Override
-                public void run() {
-                    scrollToLastOpPosition() ;
-                }
-            } );
+        if( file == null ) {
+            this.textPane.setText( "" ) ;
+            this.originalText = "" ;
+            this.currentFile = null ;
         }
-        catch( Exception e ) {
-            logger.error( "Error while opening file.", e ) ;
-            JOptionPane.showConfirmDialog( this, 
-                               "Could not open file. " + e.getMessage() ) ;
+        else {
+            try {
+                String content = FileUtils.readFileToString( file, "UTF-8" ) ;
+                this.textPane.setText( content ) ;
+                this.originalText = content ;
+                this.currentFile  = file ;
+                this.currentDir   = file.getParentFile() ;
+                SwingUtilities.invokeLater( new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollToLastOpPosition() ;
+                    }
+                } );
+            }
+            catch( Exception e ) {
+                logger.error( "Error while opening file.", e ) ;
+                JOptionPane.showConfirmDialog( this, 
+                        "Could not open file. " + e.getMessage() ) ;
+            }
         }
+        displayFileName() ;
     }
     
-    @Override
-    public void actionPerformed( ActionEvent e ) {
+    private void displayFileName() {
         
-        switch( e.getActionCommand() ) {
-            case AC_OPEN_FILE:
-                openFile() ;
-                break ;
-            case AC_CLOSE_FILE :
-                closeFile() ;
-                break ;
-            case AC_SAVE_FILE :
-                saveFile() ;
-                break ;
-            case AC_ZOOM_IN :
-                zoom( true ) ;
-                break ;
-            case AC_ZOOM_OUT :
-                zoom( false ) ;
-                break ;
+        String labelText = "" ;
+        if( this.currentFile == null ) {
+            labelText = "** Scratch file **" ;
         }
+        else {
+            labelText = this.currentFile.getAbsolutePath() ;
+            if( labelText.length() > 80 ) {
+                labelText = "... " + StringUtils.right( labelText, 75 ) ; 
+            }
+        }
+        
+        this.fileNameLabel.setText( " [File] " + labelText ) ;
     }
     
     private void setUpUI() {
@@ -132,18 +136,26 @@ public class RawTextPanel extends JPanel implements ActionListener {
         setLayout( new BorderLayout() ) ;
         add( getToolbar(), BorderLayout.WEST ) ;
         add( getDocumentEditorPanel(), BorderLayout.CENTER ) ;
+        add( getFileNameLabel(), BorderLayout.SOUTH ) ;
+        
         UIUtil.setPanelBackground( Color.BLACK, this ) ;
+        displayFileName() ;
     }
     
     private JComponent getToolbar() {
         
-        JPanel panel = new JPanel() ;
+        JPanel  panel   = new JPanel() ;
+        Actions actions = ObjectRepository.getUiActions() ;
+        
         panel.setLayout( new BoxLayout(panel, BoxLayout.Y_AXIS) ) ;
-        panel.add( getActionBtn( "file_open",  AC_OPEN_FILE,  this ) ) ;
-        panel.add( getActionBtn( "file_close", AC_CLOSE_FILE, this ) ) ;
-        panel.add( getActionBtn( "file_save",  AC_SAVE_FILE,  this ) ) ;
-        panel.add( getActionBtn( "zoom_in",    AC_ZOOM_IN,    this ) ) ;
-        panel.add( getActionBtn( "zoom_out",   AC_ZOOM_OUT,   this ) ) ;
+        
+        panel.add( getActionBtn( actions.getNewRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getOpenRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getSaveRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getSaveAsRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getCloseRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getZoomInRawAction() ) ) ;
+        panel.add( getActionBtn( actions.getZoomOutRawAction() ) ) ;
         
         UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, panel ) ;
         
@@ -163,9 +175,16 @@ public class RawTextPanel extends JPanel implements ActionListener {
         return scrollPane ;
     }
     
+    private JLabel getFileNameLabel() {
+        
+        this.fileNameLabel.setBackground( Color.BLACK ) ;
+        this.fileNameLabel.setForeground( Color.YELLOW ) ;
+        this.fileNameLabel.setText( " " ) ;
+        return this.fileNameLabel ;
+    }
+    
     private void configureTextArea() {
         
-        textPane.setEditable( true ) ;
         textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
         textPane.addMouseListener( new MouseAdapter() {
             public void mouseClicked( MouseEvent e ) {
@@ -265,10 +284,20 @@ public class RawTextPanel extends JPanel implements ActionListener {
         } );
     }
     
-    private void openFile() {
+    public void newFile() {
         
         if( isEditorDirty() ) {
-            if( !userConsentToDiscardChanges() ) {
+            if( !handleDirtyFileOnExit() ) {
+                return ;
+            }
+        }
+        setCurrentFile( null ) ;
+    }
+    
+    public void openFile() {
+        
+        if( isEditorDirty() ) {
+            if( !handleDirtyFileOnExit() ) {
                 return ;
             }
         }
@@ -290,19 +319,25 @@ public class RawTextPanel extends JPanel implements ActionListener {
     public boolean isEditorDirty() {
         
         boolean isDirty = false ;
-        if( this.currentFile != null ) {
-            if( !this.textPane.getText().equals( this.originalText ) ) {
-                isDirty = true ;
-            }
+        if( !this.textPane.getText().equals( this.originalText ) ) {
+            isDirty = true ;
         }
         return isDirty ;
     }
     
-    public boolean userConsentToDiscardChanges() {
+    public boolean handleDirtyFileOnExit() {
         
         int choice = JOptionPane.showConfirmDialog( this,  
-                                 "There are unsaved changes. Ok to discard?" ) ;
-        return choice == JOptionPane.OK_OPTION ;
+                     "There are unsaved changes. Save before exit?\n" + 
+                     "Yes to save, No to discard and Cancel to abort exit." ) ;
+        
+        if( choice == JOptionPane.CANCEL_OPTION ) {
+            return false ;
+        }
+        else if( choice == JOptionPane.OK_OPTION ) {
+            saveFile() ;
+        }
+        return true ;
     }
     
     private File getSelectedFile() {
@@ -319,19 +354,18 @@ public class RawTextPanel extends JPanel implements ActionListener {
         return selectedFile ;
     }
     
-    private void closeFile() {
+    public void closeFile() {
         
         if( isEditorDirty() ) {
-            if( !userConsentToDiscardChanges() ) {
+            if( !handleDirtyFileOnExit() ) {
                 return ;
             }
         }
-        this.textPane.setText( "" ) ;
-        this.currentFile = null ;
+        setCurrentFile( null ) ;
         saveState() ;
     }
     
-    private void saveFile() {
+    public void saveFile() {
         
         if( this.currentFile != null ) {
             if( isEditorDirty() ) {
@@ -348,9 +382,37 @@ public class RawTextPanel extends JPanel implements ActionListener {
                 }
             }
         }
+        else {
+            saveFileAs() ;
+        }
     }
     
-    private void zoom( boolean zoomIn ) {
+    public void saveFileAs() {
+        
+        fileChooser.setCurrentDirectory( this.currentDir ) ;
+        int userChoice = fileChooser.showSaveDialog( this ) ;
+        if( userChoice == JFileChooser.APPROVE_OPTION ) {
+            this.currentDir = fileChooser.getCurrentDirectory() ;
+            File selectedFile = fileChooser.getSelectedFile() ;
+            
+            try {
+                Document doc = this.textPane.getDocument() ; 
+                String txt = doc.getText( 0, doc.getLength() ) ;
+                FileUtils.write( selectedFile, txt, "UTF-8" ) ;
+                
+                this.originalText = txt ;
+                this.currentFile = selectedFile ;
+                displayFileName() ;
+            }
+            catch( Exception e ) {
+                logger.error( "Could not save file contents", e ) ;
+                JOptionPane.showConfirmDialog( this,  
+                      "Could not save file contents. " + e.getMessage() ) ;
+            }
+        }
+    }
+    
+    public void zoom( boolean zoomIn ) {
         
         if( zoomIn ) {
             this.fontSize += 1 ;

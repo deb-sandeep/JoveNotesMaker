@@ -17,7 +17,7 @@ import javax.swing.JPopupMenu ;
 import org.apache.commons.lang.StringUtils ;
 
 import com.sandy.common.util.StringUtil ;
-import com.sandy.jnmaker.ui.helper.EditMenu ;
+import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class FIBPanel extends FIBPanelUI implements ActionListener {
@@ -60,7 +60,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         popupMenu = new JPopupMenu() ;
         popupMenu.add( freezeTextAndExtractBlankMI ) ;
         popupMenu.add( freezeTextMI ) ;
-        popupMenu.add( new EditMenu( popupMenu, textArea ) ) ;
+        popupMenu.add( new PopupEditMenu( popupMenu, textArea ) ) ;
     }
     
     private void setUpListeners() {

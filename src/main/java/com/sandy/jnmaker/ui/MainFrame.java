@@ -8,10 +8,12 @@ import java.awt.Component ;
 import java.awt.event.WindowEvent ;
 import java.awt.event.WindowFocusListener ;
 
+import javax.swing.JMenuBar ;
 import javax.swing.JSplitPane ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
 import com.sandy.jnmaker.ui.dialogs.NotesCreatorDialog ;
+import com.sandy.jnmaker.ui.helper.AppMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.panels.ImagePanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
@@ -43,15 +45,15 @@ public class MainFrame extends AbstractMainFrame {
     }
 
     @Override
-    protected void handleWindowClosing() {
+    public void handleWindowClosing() {
         if( rawTextPanel.isEditorDirty() ) {
-            if( !rawTextPanel.userConsentToDiscardChanges() ) {
+            if( !rawTextPanel.handleDirtyFileOnExit() ) {
                 return ;
             }
         }
         
         if( jnPanel.isEditorDirty() ) {
-            if( !jnPanel.userConsentToDiscardChanges() ) {
+            if( !jnPanel.handleDirtyFileOnExit() ) {
                 return ;
             }
         }
@@ -67,6 +69,10 @@ public class MainFrame extends AbstractMainFrame {
                 rawTextPanel.captureFocus() ;
             }
         } );
+    }
+    
+    protected JMenuBar getFrameMenu() {
+        return new AppMenu() ;
     }
 
     private JSplitPane createBottomSplitPane() {
@@ -122,11 +128,11 @@ public class MainFrame extends AbstractMainFrame {
         this.imagePanel = imagePanel;
     }
 
-    public JoveNotesPanel getJnPanel() {
+    public JoveNotesPanel getJNPanel() {
         return this.jnPanel;
     }
 
-    public void setJnPanel( JoveNotesPanel jnPanel ) {
+    public void setJNPanel( JoveNotesPanel jnPanel ) {
         this.jnPanel = jnPanel;
     }
     
