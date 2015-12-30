@@ -390,6 +390,7 @@ public class RawTextPanel extends JPanel {
     public void saveFileAs() {
         
         fileChooser.setCurrentDirectory( this.currentDir ) ;
+        fileChooser.setDialogTitle( "Save file as" );
         int userChoice = fileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
             this.currentDir = fileChooser.getCurrentDirectory() ;

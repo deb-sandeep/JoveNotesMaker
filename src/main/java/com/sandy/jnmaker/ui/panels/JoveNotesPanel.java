@@ -199,6 +199,16 @@ public class JoveNotesPanel extends JPanel {
         } );
     }
     
+    public void newFile() {
+        
+        if( isEditorDirty() ) {
+            if( !handleDirtyFileOnExit() ) {
+                return ;
+            }
+        }
+        setCurrentFile( null ) ;
+    }
+    
     public void openFile() {
         
         if( isEditorDirty() ) {
@@ -269,13 +279,11 @@ public class JoveNotesPanel extends JPanel {
                 return ;
             }
         }
-        this.textPane.setText( "" ) ;
-        this.textPane.setEnabled( false ) ;
-        this.currentFile = null ;
+        setCurrentFile( null ) ;
         saveState() ;
     }
     
-    private void saveFile() {
+    public void saveFile() {
         
         if( this.currentFile != null ) {
             if( isEditorDirty() ) {
@@ -290,6 +298,35 @@ public class JoveNotesPanel extends JPanel {
                     JOptionPane.showConfirmDialog( this,  
                           "Could not save file contents. " + e.getMessage() ) ;
                 }
+            }
+        }
+        else {
+            saveFileAs() ;
+        }
+    }
+    
+    public void saveFileAs() {
+        
+        fileChooser.setCurrentDirectory( this.currentDir ) ;
+        fileChooser.setDialogTitle( "Save file as" );
+        int userChoice = fileChooser.showSaveDialog( this ) ;
+        if( userChoice == JFileChooser.APPROVE_OPTION ) {
+            this.currentDir = fileChooser.getCurrentDirectory() ;
+            File selectedFile = fileChooser.getSelectedFile() ;
+            
+            try {
+                Document doc = this.textPane.getDocument() ; 
+                String txt = doc.getText( 0, doc.getLength() ) ;
+                FileUtils.write( selectedFile, txt, "UTF-8" ) ;
+                
+                this.originalText = txt ;
+                this.currentFile = selectedFile ;
+                displayFileName() ;
+            }
+            catch( Exception e ) {
+                logger.error( "Could not save file contents", e ) ;
+                JOptionPane.showConfirmDialog( this,  
+                      "Could not save file contents. " + e.getMessage() ) ;
             }
         }
     }

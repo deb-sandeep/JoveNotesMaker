@@ -233,37 +233,37 @@ public class Actions {
     
     @SuppressWarnings( "unused" )
     private void newJNFile() {
-        getMainFrame().getJNPanel() ;
+        getMainFrame().getJNPanel().newFile() ;
     }
     
     @SuppressWarnings( "unused" )
     private void openJNFile() {
-        getMainFrame().getJNPanel() ;
+        getMainFrame().getJNPanel().openFile() ;
     }
     
     @SuppressWarnings( "unused" )
     private void closeJNFile() {
-        getMainFrame().getJNPanel() ;
+        getMainFrame().getJNPanel().closeFile() ;
     }
     
     @SuppressWarnings( "unused" )
     private void saveJNFile() {
-        getMainFrame().getJNPanel() ;
+        getMainFrame().getJNPanel().saveFile() ;
     }
     
     @SuppressWarnings( "unused" )
     private void saveAsJNFile() {
-        getMainFrame().getJNPanel() ;
+        getMainFrame().getJNPanel().saveFileAs() ;
     }
     
     @SuppressWarnings( "unused" )
     private void zoomInJN() {
-        getMainFrame().getJNPanel() ;
+        getMainFrame().getJNPanel().zoom( true ) ;
     }
     
     @SuppressWarnings( "unused" )
     private void zoomOutJN() {
-        getMainFrame().getJNPanel() ;
+        getMainFrame().getJNPanel().zoom( false ) ;
     }
     
     @SuppressWarnings( "unused" )
