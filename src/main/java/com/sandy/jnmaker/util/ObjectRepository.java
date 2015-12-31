@@ -7,6 +7,7 @@ import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.JoveNotesMaker ;
 import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.ui.actions.Actions ;
+import com.sandy.jnmaker.ui.helper.ProjectManager ;
 
 public class ObjectRepository {
 
@@ -19,7 +20,16 @@ public class ObjectRepository {
     private static WordnicAdapter      wordnicAdapter = null ;
     private static AppConfig           appConfig      = null ;
     private static Actions             uiActions      = null ;
+    private static ProjectManager      projectManager = null ;
     
+    public static ProjectManager getProjectManager() {
+        return projectManager;
+    }
+
+    public static void setProjectManager( ProjectManager projectManager ) {
+        ObjectRepository.projectManager = projectManager;
+    }
+
     public static Actions getUiActions() {
         return uiActions;
     }

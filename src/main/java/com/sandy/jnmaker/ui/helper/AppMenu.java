@@ -22,6 +22,7 @@ public class AppMenu extends JMenuBar {
         add( buildAppMenu() ) ;
         add( buildRawFileMenu() ) ;
         add( buildJNFileMenu() ) ;
+        add( buildProjectMenu() ) ;
     }
     
     private JMenu buildAppMenu() {
@@ -60,6 +61,18 @@ public class AppMenu extends JMenuBar {
         menu.addSeparator() ;
         menu.add( actions.getZoomInJNAction() ) ;
         menu.add( actions.getZoomOutJNAction() ) ;
+        
+        return menu ;
+    }
+    
+    private JMenu buildProjectMenu() {
+        JMenu menu = new JMenu( "Project" ) ;
+        menu.setMnemonic( KeyEvent.VK_P ) ;
+        
+        menu.add( actions.getNewProjectAction() ) ;
+        menu.add( actions.getOpenProjectAction() ) ;
+        menu.add( actions.getSaveProjectAction() ) ;
+        menu.add( actions.getCloseProjectAction() ) ;
         
         return menu ;
     }

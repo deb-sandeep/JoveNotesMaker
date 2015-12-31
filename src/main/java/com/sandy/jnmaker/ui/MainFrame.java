@@ -19,6 +19,7 @@ import com.sandy.jnmaker.ui.panels.ImagePanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.RawTextPanel ;
 import com.sandy.jnmaker.util.NoteType ;
+import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class MainFrame extends AbstractMainFrame {
 
@@ -31,7 +32,7 @@ public class MainFrame extends AbstractMainFrame {
     private NotesCreatorDialog notesCreator = null ;
 
     public MainFrame() throws Exception {
-        super( "JoveNotes Maker", getIcon( "app_icon" ) ) ;
+        super( "JoveNotes Maker - []", getIcon( "app_icon" ) ) ;
         notesCreator = new NotesCreatorDialog() ;
     }
 
@@ -46,18 +47,9 @@ public class MainFrame extends AbstractMainFrame {
 
     @Override
     public void handleWindowClosing() {
-        if( rawTextPanel.isEditorDirty() ) {
-            if( !rawTextPanel.handleDirtyFileOnExit() ) {
-                return ;
-            }
+        if( ObjectRepository.getProjectManager().closeProject() ) {
+            super.handleWindowClosing() ;
         }
-        
-        if( jnPanel.isEditorDirty() ) {
-            if( !jnPanel.handleDirtyFileOnExit() ) {
-                return ;
-            }
-        }
-        super.handleWindowClosing() ;
     }
     
     @Override

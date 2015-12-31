@@ -14,6 +14,7 @@ import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.ui.actions.Actions ;
+import com.sandy.jnmaker.ui.helper.ProjectManager ;
 import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.ConfiguratorBuilder ;
 import com.sandy.jnmaker.util.JNMCommandLine ;
@@ -50,31 +51,27 @@ public class JoveNotesMaker {
         setWordnicAdapter( new WordnicAdapter() ) ;
         setAppConfig( new AppConfig() ) ;
         setUiActions( new Actions() ) ;
+        setProjectManager( new ProjectManager() ) ;
         
         // Configure the system components
         ConfiguratorBuilder builder = new ConfiguratorBuilder( APP_ID, cmdLine ) ;
         Configurator configurator = builder.createConfigurator() ;
         configurator.initialize() ;
-        
     }
     
     private void postInitialize() throws Exception {
-        // Initialize the event bus registrations
-
-        // Initialize the state manager
         initializeStateManager() ;
     }
     
     private void initializeStateManager() throws Exception {
         
         StateManager stateManager = new StateManager( this, getWkspManager() ) ;
-        stateManager.registerObject( "ImagePanel",     getMainFrame().getImagePanel() ) ;
-        stateManager.registerObject( "RawTextPanel",   getMainFrame().getRawTextPanel() ) ;
-        stateManager.registerObject( "JoveNotesPanel", getMainFrame().getJNPanel() ) ;
+        setStateMgr( stateManager ) ;
+        
+        stateManager.registerObject( "ProjectManager", getProjectManager() ) ;
         stateManager.initialize() ;
         stateManager.loadState() ;
         
-        setStateMgr( stateManager ) ;
     }
     
     private void setUpAndShowMainFrame() throws Exception {

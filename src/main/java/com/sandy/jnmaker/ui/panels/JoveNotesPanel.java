@@ -1,7 +1,6 @@
 package com.sandy.jnmaker.ui.panels;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -110,7 +109,7 @@ public class JoveNotesPanel extends JPanel {
         setLayout( new BorderLayout() ) ;
         add( getToolbar(), BorderLayout.WEST ) ;
         add( getDocumentEditorPanel(), BorderLayout.CENTER ) ;
-        add( getFileNameLabel(), BorderLayout.SOUTH ) ;
+        add( getFileNameLabel(), BorderLayout.NORTH ) ;
         
         UIUtil.setPanelBackground( Color.BLACK, this ) ;
         displayFileName() ;
@@ -221,7 +220,6 @@ public class JoveNotesPanel extends JPanel {
         if( file != null ) {
             try {
                 setCurrentFile( file ) ;
-                saveState() ;
             }
             catch( Exception e ) {
                 logger.error( "Error while opening file.", e ) ;
@@ -280,7 +278,6 @@ public class JoveNotesPanel extends JPanel {
             }
         }
         setCurrentFile( null ) ;
-        saveState() ;
     }
     
     public void saveFile() {
@@ -343,19 +340,8 @@ public class JoveNotesPanel extends JPanel {
             }
         }
         this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
-        saveState() ;
     }
 
-    private void saveState() {
-        
-        try {
-            getStateMgr().saveState() ;
-        }
-        catch( Exception e ) {
-            logger.error( "Could not save state", e ) ;
-        }
-    }
-    
     public void addNote( String fmtNote ) {
         if( this.currentFile == null ) {
             JOptionPane.showMessageDialog( this, "Please load a source file first" );

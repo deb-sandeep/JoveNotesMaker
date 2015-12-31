@@ -1,7 +1,6 @@
 package com.sandy.jnmaker.ui.panels;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.getStateMgr ;
 
 import java.awt.BorderLayout ;
 import java.awt.Component ;
@@ -20,8 +19,6 @@ import javax.swing.JFileChooser ;
 import javax.swing.JPanel ;
 import javax.swing.filechooser.FileFilter ;
 
-import org.apache.log4j.Logger ;
-
 import com.sandy.common.ui.CloseableTabbedPane ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
 import com.sandy.common.ui.ScalableImagePanel ;
@@ -32,17 +29,17 @@ public class ImagePanel extends JPanel
     implements ActionListener, TabCloseListener {
 
     private static final long serialVersionUID = -6820796056331113968L ;
-    private static final Logger logger = Logger.getLogger( ImagePanel.class ) ;
     
     private static final String AC_OPEN_FILES = "OPEN_FILES" ;
     private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
     private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
     private static final String AC_CLOSE_ALL  = "CLOSE_ALL" ;
     
-    private CloseableTabbedPane tabbedPane  = null ;
-    private File                currentDir  = new File( System.getProperty( "user.home" ) ) ;
-    private List<File>          openedFiles = new ArrayList<>() ;
-    private JFileChooser        fileChooser = new JFileChooser() ;
+    private CloseableTabbedPane tabbedPane    = null ;
+    private File                currentDir    = new File( System.getProperty( "user.home" ) ) ;
+    private List<File>          openedFiles   = new ArrayList<>() ;
+    private List<File>          originalFiles = new ArrayList<>() ;
+    private JFileChooser        fileChooser   = new JFileChooser() ;
     
     public ImagePanel() {
         
@@ -137,12 +134,6 @@ public class ImagePanel extends JPanel
                 imgPanel.setImage( file );
                 this.tabbedPane.add( file.getName(), imgPanel ) ;
                 this.openedFiles.add( file ) ;
-                try {
-                    getStateMgr().saveState() ;
-                }
-                catch( Exception e ) {
-                    logger.error( "Error saving state", e );
-                }
             }
         }
     }
@@ -170,15 +161,10 @@ public class ImagePanel extends JPanel
         }
     }
     
-    private void closeAll() {
+    public void closeAll() {
         this.tabbedPane.removeAll() ;
         this.openedFiles.clear() ;
-        try {
-            getStateMgr().saveState() ;
-        }
-        catch( Exception ex ) {
-            logger.error( "Error saving state", ex );
-        }
+        this.originalFiles.clear() ;
     }
 
     public String getOpenedFiles() {
@@ -203,9 +189,21 @@ public class ImagePanel extends JPanel
                     
                     this.tabbedPane.add( file.getName(), imgPanel ) ;
                     this.openedFiles.add( file ) ;
+                    this.originalFiles.add( file ) ;
                 }
             }
         }
+    }
+    
+    public void saveFiles() {
+        this.originalFiles.clear() ;
+        for( File f : this.openedFiles ) {
+            this.originalFiles.add( f ) ;
+         }
+    }
+    
+    public boolean isEditorDirty() {
+        return !this.originalFiles.equals( this.openedFiles ) ;
     }
 
     public File getCurrentDir() {
@@ -222,12 +220,5 @@ public class ImagePanel extends JPanel
         ScalableImagePanel imgPanel = ( ScalableImagePanel )e.getSource() ;
         File file = imgPanel.getCurImgFile() ;
         this.openedFiles.remove( file ) ;
-        
-        try {
-            getStateMgr().saveState() ;
-        }
-        catch( Exception ex ) {
-            logger.error( "Error saving state", ex );
-        }
     }
 }

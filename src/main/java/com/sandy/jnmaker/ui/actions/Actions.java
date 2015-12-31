@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui.actions;
 
-import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 import static java.awt.event.KeyEvent.* ;
 
 import java.awt.event.ActionEvent ;
@@ -11,7 +11,6 @@ import javax.swing.JOptionPane ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.ReflectionUtil ;
-import com.sandy.jnmaker.ui.AbstractBaseAction ;
 
 public class Actions {
 
@@ -35,24 +34,34 @@ public class Actions {
     private AbstractBaseAction zoomInJNAction     = null ;
     private AbstractBaseAction zoomOutJNAction    = null ;
     
+    private AbstractBaseAction newProjectAction   = null ;
+    private AbstractBaseAction openProjectAction  = null ;
+    private AbstractBaseAction saveProjectAction  = null ;
+    private AbstractBaseAction closeProjectAction = null ;
+    
     private Object[][] menuConfig = {
-        { "exitApp",       "Exit",             null,          VK_X,     -1  , -1  },
+        { "exitApp",       "Exit",             null,          VK_X,     -1  , -1 },
         
-        { "newRawFile",    "New raw file",     "file_new",    VK_N,     VK_1, CTRL_DOWN_MASK  },
-        { "openRawFile",   "Open raw file",    "file_open",   VK_O,     VK_2, CTRL_DOWN_MASK  },
-        { "saveRawFile",   "Save raw file",    "file_save",   VK_S,     VK_3, CTRL_DOWN_MASK  },
-        { "saveAsRawFile", "Save as raw file", "file_save_as",VK_A,     VK_4, CTRL_DOWN_MASK  },
-        { "closeRawFile",  "Close raw file",   "file_close",  VK_C,     VK_5, CTRL_DOWN_MASK  },
-        { "zoomInRaw",     "Zoom in",          "zoom_in",     VK_PLUS,  VK_6, CTRL_DOWN_MASK  },
-        { "zoomOutRaw",    "Zoom out",         "zoom_out",    VK_MINUS, VK_7, CTRL_DOWN_MASK  },
+        { "newRawFile",    "New raw file",     "file_new",    VK_N,     VK_1, CTRL_DOWN_MASK },
+        { "openRawFile",   "Open raw file",    "file_open",   VK_O,     VK_2, CTRL_DOWN_MASK },
+        { "saveRawFile",   "Save raw file",    "file_save",   VK_S,     VK_3, CTRL_DOWN_MASK },
+        { "saveAsRawFile", "Save as raw file", "file_save_as",VK_A,     VK_4, CTRL_DOWN_MASK },
+        { "closeRawFile",  "Close raw file",   "file_close",  VK_C,     VK_5, CTRL_DOWN_MASK },
+        { "zoomInRaw",     "Zoom in",          "zoom_in",     VK_PLUS,  VK_6, CTRL_DOWN_MASK },
+        { "zoomOutRaw",    "Zoom out",         "zoom_out",    VK_MINUS, VK_7, CTRL_DOWN_MASK },
         
-        { "newJNFile",    "New JN file",     "file_new",    VK_N,     VK_1, ALT_DOWN_MASK  },
-        { "openJNFile",   "Open JN file",    "file_open",   VK_O,     VK_2, ALT_DOWN_MASK  },
-        { "saveJNFile",   "Save JN file",    "file_save",   VK_S,     VK_3, ALT_DOWN_MASK  },
-        { "saveAsJNFile", "Save as JN file", "file_save_as",VK_A,     VK_4, ALT_DOWN_MASK  },
-        { "closeJNFile",  "Close JN file",   "file_close",  VK_C,     VK_5, ALT_DOWN_MASK  },
-        { "zoomInJN",     "Zoom in",         "zoom_in",     VK_PLUS,  VK_6, ALT_DOWN_MASK  },
-        { "zoomOutJN",    "Zoom out",        "zoom_out",    VK_MINUS, VK_7, ALT_DOWN_MASK  },
+        { "newJNFile",     "New JN file",     "file_new",    VK_N,      VK_1, ALT_DOWN_MASK },
+        { "openJNFile",    "Open JN file",    "file_open",   VK_O,      VK_2, ALT_DOWN_MASK },
+        { "saveJNFile",    "Save JN file",    "file_save",   VK_S,      VK_3, ALT_DOWN_MASK },
+        { "saveAsJNFile",  "Save as JN file", "file_save_as",VK_A,      VK_4, ALT_DOWN_MASK },
+        { "closeJNFile",   "Close JN file",   "file_close",  VK_C,      VK_5, ALT_DOWN_MASK },
+        { "zoomInJN",      "Zoom in",         "zoom_in",     VK_PLUS,   VK_6, ALT_DOWN_MASK },
+        { "zoomOutJN",     "Zoom out",        "zoom_out",    VK_MINUS,  VK_7, ALT_DOWN_MASK },
+        
+        { "newProject",    "New project",     "file_new",    VK_N,      VK_F1, 0 },
+        { "openProject",   "Open project",    "file_open",   VK_O,      VK_F2, 0 },
+        { "saveProject",   "Save project",    "file_save",   VK_S,      VK_F3, 0 },
+        { "closeProject",  "Close project",   "file_close",  VK_C,      VK_F5, 0 },
     } ;
     
     public Actions() {
@@ -73,6 +82,11 @@ public class Actions {
         closeJNFileAction  = constructAction( "closeJNFile"  ) ;
         zoomInJNAction     = constructAction( "zoomInJN"     ) ;
         zoomOutJNAction    = constructAction( "zoomOutJN"    ) ;
+        
+        newProjectAction   = constructAction( "newProject"   ) ;
+        openProjectAction  = constructAction( "openProject"  ) ;
+        saveProjectAction  = constructAction( "saveProject"  ) ;
+        closeProjectAction = constructAction( "closeProject" ) ;
     }
     
     public AbstractBaseAction getNewRawFileAction() {
@@ -143,6 +157,21 @@ public class Actions {
         return zoomOutJNAction;
     }
     
+    public AbstractBaseAction getNewProjectAction() {
+        return newProjectAction;
+    }
+
+    public AbstractBaseAction getOpenProjectAction() {
+        return openProjectAction;
+    }
+
+    public AbstractBaseAction getSaveProjectAction() {
+        return saveProjectAction;
+    }
+
+    public AbstractBaseAction getCloseProjectAction() {
+        return closeProjectAction;
+    }
 
     @SuppressWarnings( "serial" )
     private AbstractBaseAction constructAction( String actionId ) {
@@ -161,7 +190,6 @@ public class Actions {
                                                 " is not configured." ) ;
         }
         else {
-            
             String fnName      = (String)menuConfig[i][0] ;
             String displayName = (String)menuConfig[i][1] ;
             String iconName    = (String)menuConfig[i][2] ;
@@ -269,5 +297,25 @@ public class Actions {
     @SuppressWarnings( "unused" )
     private void exitApp() {
         getMainFrame().handleWindowClosing() ;
+    }
+    
+    @SuppressWarnings( "unused" )
+    private void newProject() {
+        getProjectManager().newProject() ;
+    }
+    
+    @SuppressWarnings( "unused" )
+    private void openProject() {
+        getProjectManager().openProject() ;
+    }
+    
+    @SuppressWarnings( "unused" )
+    private void saveProject() {
+        getProjectManager().saveProject() ;
+    }
+    
+    @SuppressWarnings( "unused" )
+    private void closeProject() {
+        getProjectManager().closeProject() ;
     }
 }
