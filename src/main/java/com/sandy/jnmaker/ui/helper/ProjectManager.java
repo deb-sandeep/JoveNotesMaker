@@ -63,9 +63,7 @@ public class ProjectManager {
             loadState( file ) ;
             this.projectConfigFile = file ;
             saveAppState() ;
-            getMainFrame().setTitle( "JoveNotes Maker - [" + 
-                                     projectConfigFile.getAbsolutePath() + 
-                                     "]" );
+            setMainFrameTitle() ;
         }
     }
     
@@ -140,6 +138,7 @@ public class ProjectManager {
             if( file == null ) {
                 file = getSelectedFile( "Save project as" ) ;
                 if( file == null ) return ;
+                this.projectConfigFile = file ;
             }
             
             try {
@@ -166,9 +165,20 @@ public class ProjectManager {
         
         obtainObjectReferences() ;
         if( dirtyCurrentProjectHandled() ) {
+            try {
+                saveState( this.projectConfigFile ) ;
+            }
+            catch( Exception e ) {
+                logger.error( "Couldn't save state", e ) ;
+            }
+            
             jnPanel.closeFile() ;
             rawTextPanel.closeFile() ;
             imagePanel.closeAll() ;
+            
+            projectConfigFile = null ;
+            setMainFrameTitle() ;
+            
             projectClosed = true ;
         }
         return projectClosed ;
@@ -263,6 +273,8 @@ public class ProjectManager {
     
     public void saveState( File file ) throws Exception {
         
+        if( file == null )return ;
+        
         Properties stateValues = new Properties() ;
         for( String path : STATE_KEYS ) {
             String objKey     = path.substring( 0, path.indexOf( '.' ) ) ;
@@ -326,5 +338,16 @@ public class ProjectManager {
         catch( Exception e ) {
             logger.error( "Can't save state", e ) ;
         }
+    }
+
+    private void setMainFrameTitle() {
+        String titleText = "JoveNotes Maker - " ;
+        if( this.projectConfigFile == null ) {
+            titleText += "[]" ;
+        }
+        else {
+            titleText += "[" + projectConfigFile.getAbsolutePath() + "]" ;
+        }
+        getMainFrame().setTitle( titleText ) ;
     }
 }

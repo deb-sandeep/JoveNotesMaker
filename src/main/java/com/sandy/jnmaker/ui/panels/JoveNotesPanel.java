@@ -25,6 +25,7 @@ import org.apache.commons.io.FileUtils ;
 import org.apache.commons.lang.StringUtils ;
 import org.apache.log4j.Logger ;
 
+import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.util.ObjectRepository ;
@@ -237,6 +238,11 @@ public class JoveNotesPanel extends JPanel {
                 isDirty = true ;
             }
         }
+        else {
+            if( StringUtil.isNotEmptyOrNull( this.textPane.getText() ) ) {
+                isDirty = true ;
+            }
+        }
         return isDirty ;
     }
     
@@ -343,17 +349,13 @@ public class JoveNotesPanel extends JPanel {
     }
 
     public void addNote( String fmtNote ) {
-        if( this.currentFile == null ) {
-            JOptionPane.showMessageDialog( this, "Please load a source file first" );
+        
+        try {
+            Document doc = textPane.getDocument() ;
+            doc.insertString( textPane.getCaretPosition(), fmtNote, null ) ;
         }
-        else {
-            try {
-                Document doc = textPane.getDocument() ;
-                doc.insertString( textPane.getCaretPosition(), fmtNote, null ) ;
-            }
-            catch( BadLocationException e ) {
-                e.printStackTrace();
-            }
+        catch( BadLocationException e ) {
+            e.printStackTrace();
         }
     }
 
