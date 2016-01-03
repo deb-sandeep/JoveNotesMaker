@@ -2,6 +2,8 @@ package com.sandy.jnmaker.ui.dialogs.event ;
 
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
 import java.awt.event.MouseAdapter ;
 import java.awt.event.MouseEvent ;
 
@@ -62,6 +64,12 @@ public class EventPanel extends EventPanelUI
                 }
             }
         } );
+        
+        eventTF.addKeyListener( new KeyAdapter() {
+            public void keyPressed( KeyEvent e ) {
+                handleKeyShortcutPressed( e.getModifiers(), e.getKeyCode() ) ;
+            }
+        } ) ;
     }
 
     protected void captureFocus() {
@@ -91,10 +99,26 @@ public class EventPanel extends EventPanelUI
     public void actionPerformed( ActionEvent ae ) {
         
         if( ae.getSource() == markTimeMI ) {
-            String selText = eventTF.getSelectedText().trim() ;
-            if( StringUtil.isNotEmptyOrNull( selText ) ) {
-                timeTF.setText( WordUtils.capitalize( selText ) ) ;
+            extractTerm() ;
+        }
+    }
+
+    private void handleKeyShortcutPressed( int mod, int code ) {
+        
+        if( mod == KeyEvent.CTRL_MASK ) {
+            switch( code ) {
+                case KeyEvent.VK_E:
+                    extractTerm() ;
+                    break ;
             }
+        }
+    }
+
+    private void extractTerm() {
+        
+        String selText = eventTF.getSelectedText().trim() ;
+        if( StringUtil.isNotEmptyOrNull( selText ) ) {
+            timeTF.setText( WordUtils.capitalize( selText ) ) ;
         }
     }
 }

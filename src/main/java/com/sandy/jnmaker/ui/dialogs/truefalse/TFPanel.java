@@ -67,11 +67,11 @@ public class TFPanel extends TFPanelUI {
         buffer.append( "@true_false \"" )
               .append( formatText( stmtTextArea.getText() ) )
               .append( "\"\n" )
-              .append( trueFalseCheckBox.isSelected() )
-              .append( "\n" ) ;
+              .append( trueFalseCheckBox.isSelected() ) ;
         
         if( !trueFalseCheckBox.isSelected() ) {
-            buffer.append( "\"" )
+            buffer.append( "\n" )
+                  .append( "\"" )
                   .append( formatText( justTextArea.getText() ) )
                   .append( "\"" ) ;
         }
