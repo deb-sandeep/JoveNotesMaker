@@ -101,6 +101,8 @@ public class PopupEditMenu extends JMenu implements ActionListener {
         this.editor = textComponent ;
         this.undoManager = new UndoManager() ;
         this.editor.getDocument().addUndoableEditListener( undoManager ) ;
+        this.editor.addKeyListener( new AutocompleteManager( this.editor ) ) ;
+
         setUpUI() ;
         setUpListeners() ;
     }

@@ -21,7 +21,16 @@ public class ObjectRepository {
     private static AppConfig           appConfig      = null ;
     private static Actions             uiActions      = null ;
     private static ProjectManager      projectManager = null ;
+    private static WordRepository      wordRepository = null ;
     
+    public static WordRepository getWordRepository() {
+        return wordRepository;
+    }
+
+    public static void setWordRepository( WordRepository wordRepository ) {
+        ObjectRepository.wordRepository = wordRepository;
+    }
+
     public static ProjectManager getProjectManager() {
         return projectManager;
     }

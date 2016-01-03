@@ -79,6 +79,7 @@ public class JoveNotesPanel extends JPanel {
                 this.currentFile  = file ;
                 this.currentDir   = file.getParentFile() ;
                 
+                ObjectRepository.getWordRepository().offer( this.originalText ) ;
             }
             catch( Exception e ) {
                 logger.error( "Error while opening file.", e ) ;

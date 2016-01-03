@@ -106,7 +106,7 @@ public class UIUtil {
         comp.putClientProperty( "Nimbus.Overrides.InheritDefaults", true ) ;
     }
     
-    public static PopupEditMenu associateEditMenu( final JTextComponent textComp ) {
+    public static PopupEditMenu associateEditMenu ( final JTextComponent textComp ) {
         
         final JPopupMenu popup = new JPopupMenu() ;
         PopupEditMenu editMenu = new PopupEditMenu( popup, textComp ) ; 

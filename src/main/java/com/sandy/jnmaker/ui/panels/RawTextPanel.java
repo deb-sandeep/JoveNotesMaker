@@ -98,6 +98,8 @@ public class RawTextPanel extends JPanel {
                 this.originalText = content ;
                 this.currentFile  = file ;
                 this.currentDir   = file.getParentFile() ;
+                
+                ObjectRepository.getWordRepository().offer( this.originalText ) ;
                 SwingUtilities.invokeLater( new Runnable() {
                     @Override
                     public void run() {

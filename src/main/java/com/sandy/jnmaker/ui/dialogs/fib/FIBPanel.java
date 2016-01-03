@@ -33,11 +33,15 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
     
     public FIBPanel( String selectedText ) {
         
-        if( !selectedText.endsWith( "." ) ) {
-            selectedText += "." ;
+        if( StringUtil.isEmptyOrNull( selectedText ) ) {
+            selectedText = "" ;
         }
-        
-        selectedText = StringUtils.capitalize( selectedText ) ;
+        else {
+            if( !selectedText.endsWith( "." ) ) {
+                selectedText += "." ;
+            }
+            selectedText = StringUtils.capitalize( selectedText ) ;
+        }
         
         this.textArea.setText( selectedText ) ;
         UIUtil.associateEditMenu( this.textArea ) ;

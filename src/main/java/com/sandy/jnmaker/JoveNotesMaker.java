@@ -18,6 +18,7 @@ import com.sandy.jnmaker.ui.helper.ProjectManager ;
 import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.ConfiguratorBuilder ;
 import com.sandy.jnmaker.util.JNMCommandLine ;
+import com.sandy.jnmaker.util.WordRepository ;
 import com.sandy.jnmaker.util.WordnicAdapter ;
 
 public class JoveNotesMaker {
@@ -52,6 +53,7 @@ public class JoveNotesMaker {
         setAppConfig( new AppConfig() ) ;
         setUiActions( new Actions() ) ;
         setProjectManager( new ProjectManager() ) ;
+        setWordRepository( new WordRepository() ) ;
         
         // Configure the system components
         ConfiguratorBuilder builder = new ConfiguratorBuilder( APP_ID, cmdLine ) ;

@@ -60,6 +60,7 @@ public class ProjectManager {
         
         obtainObjectReferences() ;
         if( closeProject() ) {
+            ObjectRepository.getWordRepository().clear() ;
             loadState( file ) ;
             this.projectConfigFile = file ;
             saveAppState() ;
