@@ -77,7 +77,10 @@ public class ProjectManager {
         obtainObjectReferences() ;
         if( dirtyCurrentProjectHandled() ) {
             File file = getSelectedFile( "New project" ) ;
-            if( file.exists() ) {
+            if( file == null ) {
+                return ;
+            }
+            else if( file.exists() ) {
                 int choice = JOptionPane.showConfirmDialog( getMainFrame(), 
                                                    "File exists, overwrite?" ) ;
                 if( choice != JOptionPane.OK_OPTION ) {
