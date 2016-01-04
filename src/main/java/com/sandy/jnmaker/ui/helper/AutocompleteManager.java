@@ -105,7 +105,11 @@ public class AutocompleteManager extends KeyAdapter {
                 }
                 else if( keyCode == KeyEvent.VK_ENTER ) {
                     control.moveCaretPosition( control.getSelectionEnd() ) ;
-                    doc.insertString( control.getCaretPosition(), " ", null ) ;
+                    inAutoCompleteMode = false ;
+                }
+                else if( keyCode == KeyEvent.VK_SPACE ) {
+                    control.moveCaretPosition( control.getSelectionEnd() ) ;
+                    doc.insertString( control.getCaretPosition(), "", null ) ;
                     inAutoCompleteMode = false ;
                 }
                 else if( keyCode == KeyEvent.VK_ESCAPE ) {
