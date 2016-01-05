@@ -239,25 +239,35 @@ public class PopupEditMenu extends JMenu implements ActionListener {
     }
     
     private void encapsulateMath( SelectedContent sel ) throws Exception {
-        encapsulate( sel, "{{@math ", "}}" ) ;
+        encapsulate( sel, "{{@math ", "}}", true ) ;
     }
     
     private void encapsulateIMath( SelectedContent sel ) throws Exception {
-        encapsulate( sel, "{{@imath ", "}}" ) ;
+        encapsulate( sel, "{{@imath ", "}}", true ) ;
     }
     
     private void encapsulateChem( SelectedContent sel ) throws Exception {
-        encapsulate( sel, "{{@chem ", "}}" ) ;
+        encapsulate( sel, "{{@chem ", "}}", true ) ;
     }
     
     private void encapsulateIChem( SelectedContent sel ) throws Exception {
-        encapsulate( sel, "{{@ichem ", "}}" ) ;
+        encapsulate( sel, "{{@ichem ", "}}", true ) ;
     }
     
-    private void encapsulate( SelectedContent sel, String prefix, String suffix )
+    private String escapeSlash( String input ) {
+        return input.replaceAll( "\\\\", "\\\\\\\\" ) ;
+    }
+    
+    private void encapsulate( SelectedContent sel, String prefix, String suffix,
+                              boolean escapeSlash )
             throws Exception {
         
-        String replacementStr = prefix + sel.content + suffix ;
+        String replacementStr = prefix ;
+        if( escapeSlash ) {
+            replacementStr += escapeSlash( sel.content ) ;
+        }
+        replacementStr += suffix ;
+        
         replaceContent( sel, replacementStr ) ;
     }
     

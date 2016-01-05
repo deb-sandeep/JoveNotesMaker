@@ -9,7 +9,12 @@ public class QuoteReplaceTest {
     @Test
     public void quoteEscape() {
         assertEquals( "This \\\"is\\\" a quoted text",  
-                      "This \"is\" a quoted text".replaceAll( "\\\"", "\\\\\"" ) ) ;
+                "This \"is\" a quoted text".replaceAll( "\\\"", "\\\\\"" ) ) ;
     }
-
+    
+    @Test
+    public void slashEscape() {
+        assertEquals( "\\\\gamma",  
+                      "\\gamma".replaceAll( "\\\\", "\\\\\\\\" ) ) ;
+    }
 }
