@@ -9,7 +9,10 @@ public class JNSrcTokenizer {
         INT, 
         PUNCTUATION,
         COMMENT,
-        UNKNOWN 
+        UNKNOWN,
+        MD_BOLD,
+        MD_ITALIC,
+        JN_MARKER
     } ;
     
     private static final String[] KEYWORDS = {

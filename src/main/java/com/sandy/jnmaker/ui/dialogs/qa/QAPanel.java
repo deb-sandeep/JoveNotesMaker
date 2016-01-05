@@ -77,7 +77,7 @@ public class QAPanel extends QAPanelUI {
               .append( "\"\n" ) ;
         if( ansImgFile != null ) {
             buffer.append( "\"" )
-                  .append( ansImgFile.getName() ) 
+                  .append( "{{@img " + ansImgFile.getName() + "}}" ) 
                   .append( "\"\n" ) ; 
         }
         buffer.append( "\"" )

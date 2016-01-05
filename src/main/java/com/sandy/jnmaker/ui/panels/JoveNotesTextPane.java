@@ -1,6 +1,8 @@
 package com.sandy.jnmaker.ui.panels;
 
 import java.awt.Color ;
+import java.util.regex.Matcher ;
+import java.util.regex.Pattern ;
 
 import javax.swing.JTextPane ;
 import javax.swing.text.DefaultStyledDocument ;
@@ -94,6 +96,15 @@ public class JoveNotesTextPane extends JTextPane {
         StyleConstants.setForeground( unknown, Color.RED ) ;
         StyleConstants.setBold( unknown, true ) ;
         
+        Style mdBold = doc.addStyle( TokenType.MD_BOLD.toString(), base ) ;
+        StyleConstants.setBold( mdBold, true ) ;
+        
+        Style mdItalic = doc.addStyle( TokenType.MD_ITALIC.toString(), base ) ;
+        StyleConstants.setItalic( mdItalic, true ) ;
+        
+        Style jnMarker = doc.addStyle( TokenType.JN_MARKER.toString(), base ) ;
+        StyleConstants.setForeground( jnMarker, Color.YELLOW.brighter() ) ;
+        
         setDocument( doc );
     }
 
@@ -115,9 +126,51 @@ public class JoveNotesTextPane extends JTextPane {
         tokenizer = new JNSrcTokenizer( doc.getText( 0, doc.getLength() ) ) ;
         
         while( ( token = tokenizer.getNextToken() ) != null ) {
+            
             doc.setCharacterAttributes( token.start, (token.end-token.start)+1, 
-                                        doc.getStyle( token.tokenType.toString() ), 
-                                        true ) ;
+                    doc.getStyle( token.tokenType.toString() ), 
+                    true ) ;
+            
+            if( token.tokenType == TokenType.STRING ) {
+                highlightString( token ) ;
+            }
         }
+    }
+    
+    private void highlightString( Token token ) {
+        
+        highlightRegexToken( token, TokenType.MD_BOLD   ) ;
+        highlightRegexToken( token, TokenType.MD_ITALIC ) ;
+        highlightRegexToken( token, TokenType.JN_MARKER ) ;
+    }
+    
+    private void highlightRegexToken( Token token, TokenType type ) {
+        
+        Pattern pattern = Pattern.compile( getRegexForToken( type ), 
+                                           Pattern.DOTALL ) ;
+        String  input   = token.token ;
+        Matcher matcher = pattern.matcher( input ) ;
+        
+        while( matcher.find() ) {
+            int start = matcher.start() ;
+            int end   = matcher.end() ;
+            
+            doc.setCharacterAttributes( token.start + start, (end-start)+1, 
+                                        doc.getStyle( type.toString() ), false ) ;
+        }
+    }
+    
+    private String getRegexForToken( TokenType tokenType ) {
+        
+        if( tokenType == TokenType.MD_BOLD ) {
+            return "\\*\\*[^\\s]*?\\*\\*" ;
+        }
+        else if( tokenType == TokenType.MD_ITALIC ) {
+            return "_[^\\s]*?_" ;
+        }
+        else if( tokenType == TokenType.JN_MARKER ) {
+            return "\\{\\{@([a-zA-Z0-9]*)\\s+((.(?!\\{\\{))*)\\}\\}" ;
+        }
+        return null ;
     }
 }
