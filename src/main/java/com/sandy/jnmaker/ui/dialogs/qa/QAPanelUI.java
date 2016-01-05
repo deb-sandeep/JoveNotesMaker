@@ -31,6 +31,8 @@ public abstract class QAPanelUI extends AbstractNotePanel {
         javax.swing.JLabel enterALabel = new javax.swing.JLabel();
         javax.swing.JScrollPane enterAnswerTextAreaSP = new javax.swing.JScrollPane();
         answerTextArea = new javax.swing.JTextArea();
+        ansImgBtn = new javax.swing.JButton();
+        ansImgLabel = new javax.swing.JLabel();
 
         setBackground(java.awt.Color.lightGray);
         setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
@@ -42,7 +44,7 @@ public abstract class QAPanelUI extends AbstractNotePanel {
         questionTextArea.setColumns(20);
         questionTextArea.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         questionTextArea.setLineWrap(true);
-        questionTextArea.setRows(5);
+        questionTextArea.setRows(3);
         questionTextArea.setTabSize(4);
         questionTextArea.setWrapStyleWord(true);
         questionTextArea.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -60,6 +62,16 @@ public abstract class QAPanelUI extends AbstractNotePanel {
         answerTextArea.setMargin(new java.awt.Insets(2, 2, 2, 2));
         enterAnswerTextAreaSP.setViewportView(answerTextArea);
 
+        ansImgBtn.setFont(new java.awt.Font("Ubuntu", 0, 10)); // NOI18N
+        ansImgBtn.setText("Image");
+        ansImgBtn.setIconTextGap(0);
+        ansImgBtn.setPreferredSize(new java.awt.Dimension(42, 20));
+
+        ansImgLabel.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        ansImgLabel.setForeground(new java.awt.Color(0, 44, 255));
+        ansImgLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        ansImgLabel.setText(" ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,10 +83,14 @@ public abstract class QAPanelUI extends AbstractNotePanel {
                     .addComponent(enterQTextAreaSP)
                     .addComponent(separator)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(enterQLabel)
-                            .addComponent(enterALabel))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(enterQLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(enterALabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ansImgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ansImgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -83,19 +99,24 @@ public abstract class QAPanelUI extends AbstractNotePanel {
                 .addContainerGap()
                 .addComponent(enterQLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enterQTextAreaSP, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(enterQTextAreaSP, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enterALabel)
+                    .addComponent(ansImgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ansImgLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enterALabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enterAnswerTextAreaSP, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(enterAnswerTextAreaSP, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>                        
 
 
     // Variables declaration - do not modify                     
+    protected javax.swing.JButton ansImgBtn;
+    protected javax.swing.JLabel ansImgLabel;
     protected javax.swing.JTextArea answerTextArea;
     protected javax.swing.JTextArea questionTextArea;
     // End of variables declaration                   
