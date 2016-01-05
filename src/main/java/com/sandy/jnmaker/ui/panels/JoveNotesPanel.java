@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.panels;
+package com.sandy.jnmaker.ui.panels ;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
 
@@ -259,7 +259,6 @@ public class JoveNotesPanel extends JPanel {
         else if( choice == JOptionPane.OK_OPTION ) {
             saveFile() ;
         }
-        
         return true ;
     }
     
@@ -273,7 +272,6 @@ public class JoveNotesPanel extends JPanel {
             this.currentDir = fileChooser.getCurrentDirectory() ;
             selectedFile = fileChooser.getSelectedFile() ;
         }
-        
         return selectedFile ;
     }
     

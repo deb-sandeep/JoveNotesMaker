@@ -1,17 +1,23 @@
 package com.sandy.jnmaker.ui.helper;
 
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+
+import java.awt.Dimension ;
 import java.awt.Toolkit ;
 import java.awt.datatransfer.Clipboard ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
+import java.io.File ;
 
+import javax.swing.JFileChooser ;
 import javax.swing.JMenu ;
 import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
 import javax.swing.event.PopupMenuEvent ;
 import javax.swing.event.PopupMenuListener ;
+import javax.swing.text.BadLocationException ;
 import javax.swing.text.DefaultEditorKit ;
 import javax.swing.text.DefaultEditorKit.CopyAction ;
 import javax.swing.text.DefaultEditorKit.CutAction ;
@@ -21,7 +27,11 @@ import javax.swing.undo.UndoManager ;
 
 import org.apache.log4j.Logger ;
 
+import com.sandy.common.ui.ImageFilter ;
+import com.sandy.common.ui.ImagePreview ;
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.dialogs.NotesCreatorDialog ;
+import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class PopupEditMenu extends JMenu implements ActionListener {
 
@@ -91,6 +101,7 @@ public class PopupEditMenu extends JMenu implements ActionListener {
     private JMenuItem iMathMI = new JMenuItem() ;
     private JMenuItem chemMI  = new JMenuItem() ;
     private JMenuItem iChemMI = new JMenuItem() ;
+    private JMenuItem insImgMI= new JMenuItem() ;
     
     private JMenuItem joinLinesMI = new JMenuItem() ;
     
@@ -123,6 +134,7 @@ public class PopupEditMenu extends JMenu implements ActionListener {
         add( prepareMenuItem( iMathMI, "{{@imath ..}}" ) ) ;
         add( prepareMenuItem( chemMI,  "{{@chem  ..}}" ) ) ;
         add( prepareMenuItem( iChemMI, "{{@ichem ..}}" ) ) ;
+        add( prepareMenuItem( insImgMI,"Insert image"  ) ) ;
         addSeparator() ;
         add( prepareMenuItem( joinLinesMI, "Join lines" ) ) ;
     }
@@ -151,6 +163,7 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                         else if( keyCode == KeyEvent.VK_B ) { doBold( sel ) ; }
                         else if( keyCode == KeyEvent.VK_I ) { doItalics( sel ) ; }
                         else if( keyCode == KeyEvent.VK_J ) { joinLines( sel ) ; }
+                        else if( keyCode == KeyEvent.VK_P ) { insertImage() ; }
                     }
                     catch( Exception e1 ) {
                         logger.error( "Error performing edit action.", e1 ) ;
@@ -167,17 +180,18 @@ public class PopupEditMenu extends JMenu implements ActionListener {
         Object src = e.getSource() ;
         
         try {
-            if     ( src == copyMI    ) { doCopy( e ) ;      }
-            else if( src == cutMI     ) { doCut( e ) ;       }
-            else if( src == pasteMI   ) { doPaste( e ) ;     }
-            else if( src == undoMI    ) { doUndo() ;         }
-            else if( src == redoMI    ) { doRedo() ;         }
-            else if( src == boldMI    ) { doBold( sel ) ;    }
-            else if( src == italicsMI ) { doItalics( sel ) ; }
-            else if( src == mathMI    ) { encapsulateMath(  sel ) ; }
-            else if( src == iMathMI   ) { encapsulateIMath( sel ) ; }
-            else if( src == chemMI    ) { encapsulateChem(  sel ) ; }
-            else if( src == iChemMI   ) { encapsulateIChem( sel ) ; }
+            if     ( src == copyMI     ) { doCopy( e ) ;      }
+            else if( src == cutMI      ) { doCut( e ) ;       }
+            else if( src == pasteMI    ) { doPaste( e ) ;     }
+            else if( src == undoMI     ) { doUndo() ;         }
+            else if( src == redoMI     ) { doRedo() ;         }
+            else if( src == boldMI     ) { doBold( sel ) ;    }
+            else if( src == italicsMI  ) { doItalics( sel ) ; }
+            else if( src == mathMI     ) { encapsulateMath(  sel ) ; }
+            else if( src == iMathMI    ) { encapsulateIMath( sel ) ; }
+            else if( src == chemMI     ) { encapsulateChem(  sel ) ; }
+            else if( src == iChemMI    ) { encapsulateIChem( sel ) ; }
+            else if( src == insImgMI   ) { insertImage() ; }
             else if( src == joinLinesMI){ joinLines( sel ) ; }
         }
         catch( Exception e1 ) {
@@ -267,5 +281,56 @@ public class PopupEditMenu extends JMenu implements ActionListener {
     
     public void reengageUndoManager() {
         this.editor.getDocument().addUndoableEditListener( undoManager ) ;
+    }
+    
+    private void insertImage() {
+        
+        JFileChooser       fc    = getImageFileChooser() ;
+        NotesCreatorDialog ncDlg = ObjectRepository.getCurNotesDialog() ;
+        
+        if( ncDlg != null ) { ncDlg.setAlwaysOnTop( false ) ; }
+        int choice = fc.showOpenDialog( this ) ;
+        if( ncDlg != null ) { ncDlg.setAlwaysOnTop( true ) ; }
+        
+        
+        if( choice == JFileChooser.APPROVE_OPTION ) {
+            
+            File imgFile = fc.getSelectedFile() ;
+            if( imgFile != null && imgFile.exists() ) {
+                
+                String imgName = imgFile.getName() ;
+                String imgStr  = "{{@img " + imgName + "}}" ;
+                
+                try {
+                    editor.getDocument().insertString( editor.getCaretPosition(), 
+                                                       imgStr, null ) ;
+                }
+                catch( BadLocationException e ) {
+                    logger.error( "Error inserting image.", e ) ;
+                }
+            }
+        }
+    }
+    
+    private JFileChooser getImageFileChooser() {
+        
+        File curJNFile = getMainFrame().getJNPanel().getCurrentFile() ;
+        File startDir  = new File( System.getProperty( "user.home" ) ) ;
+        
+        if( curJNFile != null ) {
+            File imgDir = new File( curJNFile.getParentFile(), "img" ) ;
+            if( imgDir.exists() ) {
+                startDir = imgDir ;
+            }
+        }
+        
+        JFileChooser fileChooser = new JFileChooser( startDir ) ;
+        fileChooser.setAccessory( new ImagePreview( fileChooser ) ) ;
+        fileChooser.setFileFilter( new ImageFilter() ) ;
+        fileChooser.setPreferredSize( new Dimension( 700, 400 ) ) ;
+        fileChooser.setFileSelectionMode( JFileChooser.FILES_ONLY ) ;
+        fileChooser.setMultiSelectionEnabled( false ) ;
+        
+        return fileChooser ;
     }
 }

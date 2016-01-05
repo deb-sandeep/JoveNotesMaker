@@ -34,6 +34,7 @@ import com.sandy.jnmaker.ui.dialogs.truefalse.TFPanel ;
 import com.sandy.jnmaker.ui.dialogs.wm.WMPanel ;
 import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
 import com.sandy.jnmaker.util.NoteType ;
+import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class NotesCreatorDialog extends JDialog implements ActionListener {
 
@@ -62,7 +63,18 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
         }
         this.centerPanel = getCenterPanel( selectedText, noteType ) ;
         getContentPane().add( this.centerPanel, BorderLayout.CENTER ) ;
+        
         setVisible( true ) ;
+    }
+    
+    public void setVisible( boolean visible ) {
+        super.setVisible( visible ) ;
+        if( visible ) {
+            ObjectRepository.setCurNotesDialog( this ) ;
+        }
+        else {
+            ObjectRepository.setCurNotesDialog( null ) ;
+        }
     }
     
     @Override

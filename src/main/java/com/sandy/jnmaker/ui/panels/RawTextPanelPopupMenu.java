@@ -27,8 +27,9 @@ public class RawTextPanelPopupMenu extends JPopupMenu implements ActionListener 
     private JMenuItem spellbeeMI   = new JMenuItem() ;
     private JMenuItem definitionMI = new JMenuItem() ;
     private JMenuItem eventMI      = new JMenuItem() ;
-    private PopupEditMenu  editMenu     = null ;
     private JMenuItem bookmarkMI   = new JMenuItem() ;
+    
+    private PopupEditMenu editMenu = null ;
     
     public RawTextPanelPopupMenu( RawTextPanel rawTextPanel ) {
         
