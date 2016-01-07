@@ -12,7 +12,8 @@ public class JNSrcTokenizer {
         UNKNOWN,
         MD_BOLD,
         MD_ITALIC,
-        JN_MARKER
+        JN_MARKER,
+        JN_KEYWORD
     } ;
     
     private static final String[] KEYWORDS = {
@@ -41,7 +42,7 @@ public class JNSrcTokenizer {
             "@test_paper" ,
             "@tn" ,
             "@true_false" ,
-            "@wm"
+            "@wm",
     } ;
     
     private static final String[] PUNCTUATIONS = {

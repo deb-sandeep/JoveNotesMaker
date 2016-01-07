@@ -21,6 +21,22 @@ public class JoveNotesTextPane extends JTextPane {
 
     private static final long serialVersionUID = 1L ;
     
+    private static String[] JN_KEYWORDS = {
+            "@img", 
+            "@table",
+            "@th",
+            "@td",
+            "@math",
+            "@imath",
+            "@chem",
+            "@ichem",
+            "@audio",
+            "@youtube",
+            "@doc",
+            "@var",
+            "\""
+    } ;
+    
     private StyledDocument doc = null ;
     private PopupEditMenu editMenu = null ;
     
@@ -103,7 +119,10 @@ public class JoveNotesTextPane extends JTextPane {
         StyleConstants.setItalic( mdItalic, true ) ;
         
         Style jnMarker = doc.addStyle( TokenType.JN_MARKER.toString(), base ) ;
-        StyleConstants.setForeground( jnMarker, Color.YELLOW.brighter() ) ;
+        StyleConstants.setForeground( jnMarker, new Color(205, 206, 192) ) ;
+        
+        Style jnKeyword = doc.addStyle( TokenType.JN_KEYWORD.toString(), base ) ;
+        StyleConstants.setBold( jnKeyword, true ) ;
         
         setDocument( doc );
     }
@@ -142,6 +161,7 @@ public class JoveNotesTextPane extends JTextPane {
         highlightRegexToken( token, TokenType.MD_BOLD   ) ;
         highlightRegexToken( token, TokenType.MD_ITALIC ) ;
         highlightRegexToken( token, TokenType.JN_MARKER ) ;
+        highlightJNKeywords( token ) ;
     }
     
     private void highlightRegexToken( Token token, TokenType type ) {
@@ -155,7 +175,7 @@ public class JoveNotesTextPane extends JTextPane {
             int start = matcher.start() ;
             int end   = matcher.end() ;
             
-            doc.setCharacterAttributes( token.start + start, (end-start)+1, 
+            doc.setCharacterAttributes( token.start + start, (end-start), 
                                         doc.getStyle( type.toString() ), false ) ;
         }
     }
@@ -172,5 +192,23 @@ public class JoveNotesTextPane extends JTextPane {
             return "\\{\\{@([a-zA-Z0-9]*)\\s+((.(?!\\{\\{))*)\\}\\}" ;
         }
         return null ;
+    }
+    
+    private void highlightJNKeywords( Token token ) {
+        
+        Style  style =  doc.getStyle( TokenType.JN_KEYWORD.toString() ) ;
+        String input = token.token ;
+        for( int i=0; i<input.length(); i++ ) {
+            for( String jnKeyword : JN_KEYWORDS ) {
+                if( input.indexOf( jnKeyword, i ) == i ) {
+                    doc.setCharacterAttributes( token.start + i, 
+                                                jnKeyword.length(), 
+                                                style, 
+                                                false ) ;
+                    i += jnKeyword.length() ;
+                    break ;
+                }
+            }
+        }
     }
 }
