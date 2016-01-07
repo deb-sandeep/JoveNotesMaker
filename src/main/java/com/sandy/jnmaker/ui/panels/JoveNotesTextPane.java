@@ -62,7 +62,7 @@ public class JoveNotesTextPane extends JTextPane {
             @Override public void run() {
                 while( true ) {
                     try {
-                        Thread.sleep( 1000 ) ;
+                        Thread.sleep( 500 ) ;
                         String currentContent = doc.getText( 0, doc.getLength() ) ;
                         if( lastHighlightedContent == null ||
                             !lastHighlightedContent.equals( currentContent ) ) {

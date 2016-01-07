@@ -154,10 +154,11 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                 int keyCode   = e.getKeyCode() ;
                 int modifiers = e.getModifiers() ;
                 
-                if( modifiers == KeyEvent.CTRL_MASK ) { 
-                    SelectedContent sel = new SelectedContent() ;
-                    
-                    try {
+                SelectedContent sel = new SelectedContent() ;
+                
+                try {
+                    if( modifiers == KeyEvent.CTRL_MASK ) { 
+                        
                         if     ( keyCode == KeyEvent.VK_Z ) { doUndo() ; }
                         else if( keyCode == KeyEvent.VK_Y ) { doRedo() ; }
                         else if( keyCode == KeyEvent.VK_B ) { doBold( sel ) ; }
@@ -165,9 +166,19 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                         else if( keyCode == KeyEvent.VK_J ) { joinLines( sel ) ; }
                         else if( keyCode == KeyEvent.VK_P ) { insertImage() ; }
                     }
-                    catch( Exception e1 ) {
-                        logger.error( "Error performing edit action.", e1 ) ;
+                    else if( modifiers == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK) ) {
+                        
+                        if     ( keyCode == KeyEvent.VK_M ) { encapsulateIMath( sel ) ; }
+                        else if( keyCode == KeyEvent.VK_C ) { encapsulateIChem( sel ) ; }
                     }
+                    else if( modifiers == (KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK) ) {
+                        
+                        if     ( keyCode == KeyEvent.VK_M ) { encapsulateMath( sel ) ; }
+                        else if( keyCode == KeyEvent.VK_C ) { encapsulateChem( sel ) ; }
+                    }
+                }
+                catch( Exception e1 ) {
+                    logger.error( "Error performing edit action.", e1 ) ;
                 }
             }
         } ) ;
