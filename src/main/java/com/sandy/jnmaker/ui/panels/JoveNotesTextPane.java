@@ -183,10 +183,10 @@ public class JoveNotesTextPane extends JTextPane {
     private String getRegexForToken( TokenType tokenType ) {
         
         if( tokenType == TokenType.MD_BOLD ) {
-            return "\\*\\*[^\\s]*?\\*\\*" ;
+            return "\\*\\*.*?\\*\\*" ;
         }
         else if( tokenType == TokenType.MD_ITALIC ) {
-            return "_[^\\s]*?_" ;
+            return "_.*?_" ;
         }
         else if( tokenType == TokenType.JN_MARKER ) {
             return "\\{\\{@([a-zA-Z0-9]*)\\s+((.(?!\\{\\{))*)\\}\\}" ;
