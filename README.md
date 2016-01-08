@@ -1,5 +1,6 @@
 # JoveNotesMaker
 
+![Screenshot](/docs/app.png?raw=true)
 
 ### Keyboard shortcuts
 
