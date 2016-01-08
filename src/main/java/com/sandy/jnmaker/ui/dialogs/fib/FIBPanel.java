@@ -164,6 +164,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         
         String previewText = "<html><body>" + textArea.getText() + "</body></html>" ;
         
+        previewText = previewText.replaceAll( "\n\n", "<p>" ) ;
+        previewText = previewText.replaceAll( "\n", "<br>" ) ;
+        
         for( int i=0; i<blankTextList.size(); i++ ) {
             String blankTxt = blankTextList.get( i ) ;
             previewText = previewText.replace( "{"+i+"}", 
