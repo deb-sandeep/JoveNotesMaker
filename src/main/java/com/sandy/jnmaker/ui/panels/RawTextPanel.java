@@ -73,7 +73,7 @@ public class RawTextPanel extends JPanel {
 
     public void setFontSize( int fontSize ) {
         this.fontSize = fontSize;
-        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
     }
 
     public File getCurrentFile() {
@@ -186,7 +186,7 @@ public class RawTextPanel extends JPanel {
     
     private void configureTextArea() {
         
-        textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
         textPane.addMouseListener( new MouseAdapter() {
             public void mouseClicked( MouseEvent e ) {
                 if( e.getButton() == MouseEvent.BUTTON3 ) {
@@ -423,7 +423,7 @@ public class RawTextPanel extends JPanel {
                 this.fontSize = 8 ;
             }
         }
-        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
     }
 
     private void handleMakeNotesTrigger( MouseEvent e ) {

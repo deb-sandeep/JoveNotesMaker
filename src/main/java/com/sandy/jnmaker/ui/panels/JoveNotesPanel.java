@@ -56,7 +56,7 @@ public class JoveNotesPanel extends JPanel {
 
     public void setFontSize( int fontSize ) {
         this.fontSize = fontSize;
-        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
     }
 
     public File getCurrentFile() {
@@ -344,7 +344,7 @@ public class JoveNotesPanel extends JPanel {
                 this.fontSize = 8 ;
             }
         }
-        this.textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
     }
 
     public void addNote( String fmtNote ) {
