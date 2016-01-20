@@ -160,7 +160,7 @@ public class JoveNotesPanel extends JPanel {
         
         UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
         
-        textPane.setFont( new Font( "Tahoma", Font.PLAIN, fontSize ) ) ;
+        textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
         textPane.addKeyListener( new KeyAdapter() {
             @Override public void keyPressed( KeyEvent e ) {
                 if( e.getKeyCode()   == KeyEvent.VK_S && 
