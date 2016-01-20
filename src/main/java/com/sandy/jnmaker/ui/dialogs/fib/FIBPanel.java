@@ -130,7 +130,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         if( e.getSource() == freezeTextMI ) {
             freezeText() ;
         }
-        else if( e.getSource() == freezeTextMI ) {
+        else if( e.getSource() == extractBlankMI ) {
             extractBlank() ;
         }
         else if( e.getSource() == freezeTextAndExtractBlankMI ) {

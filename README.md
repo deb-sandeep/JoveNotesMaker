@@ -48,7 +48,7 @@ Raw text panel        | Ctrl+Shift + W   | Make `word meaning` out of seleccted 
 Raw text panel        | Ctrl+Shift + S   | Make `spellbee` out of seleccted text.
 Raw text panel        | Ctrl+Shift + D   | Make `definition` out of seleccted text.
 Raw text panel        | Ctrl+Shift + E   | Make `event` out of seleccted text.
-Raw text panel        | Ctrl+Shift + C   | Make `comment` out of seleccted text.
+Raw text panel        | Ctrl+Shift + /   | Make `comment` out of seleccted text.
                       |                  |
 Raw text panel        | Ctrl+Shift + B   | Move/Create bookmark at the cursor position.
 Raw text panel        | Ctrl+Shift + N   | Move focus to notes panel.

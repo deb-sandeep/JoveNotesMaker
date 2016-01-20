@@ -245,7 +245,7 @@ public class RawTextPanel extends JPanel {
                 case KeyEvent.VK_E: 
                     mainFrame.createNote( selectedText, NoteType.EVENT ) ;
                     break ;
-                case KeyEvent.VK_C: 
+                case KeyEvent.VK_SLASH: 
                     mainFrame.createNote( selectedText, NoteType.COMMENT ) ;
                     break ;
                 case KeyEvent.VK_B: 

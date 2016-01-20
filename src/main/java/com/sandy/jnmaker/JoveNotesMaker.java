@@ -4,6 +4,8 @@ import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.awt.SplashScreen ;
 
+import javax.swing.SwingUtilities ;
+
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.bus.EventBus ;
@@ -31,8 +33,18 @@ public class JoveNotesMaker {
         
         preInitialize( args ) ;
         SwingUtils.setNimbusLookAndFeel() ;
-        setUpAndShowMainFrame() ;
-        postInitialize() ;
+        SwingUtilities.invokeLater( new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    setUpAndShowMainFrame() ;
+                    postInitialize() ;
+                }
+                catch( Exception e ) {
+                    e.printStackTrace();
+                }
+            }
+        } );
     }
     
     private void preInitialize( String[] args ) throws Exception {
