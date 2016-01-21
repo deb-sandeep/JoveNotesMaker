@@ -46,7 +46,15 @@ public class RawTextPanel extends JPanel {
     
     private static final String BOOKMARK_MARKER = "// here" ;
 
-    private JTextPane    textPane      = new JTextPane() ;
+    @SuppressWarnings( "serial" )
+    private JTextPane textPane = new JTextPane() { 
+        // This is a work around for the bizzare wrapping behavior of JTextPane.
+        // This fix seems to be working, but in future if we see problems 
+        // follow the advise here - https://community.oracle.com/message/10692405
+        public boolean getScrollableTracksViewportWidth() {
+            return true ;
+        }        
+    } ;
     private JLabel       fileNameLabel = new JLabel() ;
     private JFileChooser fileChooser   = new JFileChooser() ;
     
