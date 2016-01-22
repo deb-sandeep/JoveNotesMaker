@@ -110,12 +110,7 @@ public class RawTextPanel extends JPanel implements WordSource {
                 this.currentDir   = file.getParentFile() ;
                 
                 ObjectRepository.getWordRepository().offer( this.originalText ) ;
-                SwingUtilities.invokeLater( new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollToLastOpPosition() ;
-                    }
-                } );
+                scrollToBookmarkPosition() ;
             }
             catch( Exception e ) {
                 logger.error( "Error while opening file.", e ) ;
@@ -260,6 +255,9 @@ public class RawTextPanel extends JPanel implements WordSource {
                     break ;
                 case KeyEvent.VK_B: 
                     reviseBookmark() ;
+                    break ;
+                case KeyEvent.VK_G: 
+                    scrollToBookmarkPosition() ;
                     break ;
                 case KeyEvent.VK_N:
                     mainFrame.shiftFocusToNotes() ;
@@ -442,24 +440,29 @@ public class RawTextPanel extends JPanel implements WordSource {
         popup.show( selectedText, e.getX(), e.getY() ) ;
     }
     
-    public void scrollToLastOpPosition() {
+    public void scrollToBookmarkPosition() {
         
-        Document document = textPane.getDocument() ;
-        
-        try {
-            int pos = document.getText( 0, document.getLength() )
-                              .toLowerCase()
-                              .indexOf( BOOKMARK_MARKER ) ;
-            if( pos > -1 ){
-                Rectangle viewRect = textPane.modelToView( pos ) ;
-                viewRect.y += textPane.getVisibleRect().height - 20 ;
-                textPane.scrollRectToVisible( viewRect ) ;
-                textPane.setCaretPosition( pos ) ;
+        SwingUtilities.invokeLater( new Runnable() {
+            @Override
+            public void run() {
+                Document document = textPane.getDocument() ;
+                
+                try {
+                    int pos = document.getText( 0, document.getLength() )
+                                      .toLowerCase()
+                                      .indexOf( BOOKMARK_MARKER ) ;
+                    if( pos > -1 ){
+                        Rectangle viewRect = textPane.modelToView( pos ) ;
+                        viewRect.y += textPane.getVisibleRect().height - 20 ;
+                        textPane.scrollRectToVisible( viewRect ) ;
+                        textPane.setCaretPosition( pos ) ;
+                    }
+                } 
+                catch ( Exception e ) {
+                    e.printStackTrace() ;
+                }
             }
-        } 
-        catch ( Exception e ) {
-            e.printStackTrace() ;
-        }
+        } );
     }
     
     public void reviseBookmark() {

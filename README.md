@@ -51,6 +51,7 @@ Raw text panel        | Ctrl+Shift + E   | Make `event` out of seleccted text.
 Raw text panel        | Ctrl+Shift + /   | Make `comment` out of seleccted text.
                       |                  |
 Raw text panel        | Ctrl+Shift + B   | Move/Create bookmark at the cursor position.
+Raw text panel        | Ctrl+Shift + G   | Go to bookmark position
 Raw text panel        | Ctrl+Shift + N   | Move focus to notes panel.
                       |                  |
 Raw text panel        | Ctrl + S         | Save current file.
