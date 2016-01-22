@@ -48,6 +48,7 @@ public class JoveNotesPanel extends JPanel {
     public JoveNotesPanel() {
         setUpUI() ;
         setUpFileChooser() ;
+        ObjectRepository.getWordRepository().addWordSource( textPane ) ;
     }
     
     public int getFontSize() {

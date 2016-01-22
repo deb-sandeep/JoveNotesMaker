@@ -38,8 +38,9 @@ import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
+import com.sandy.jnmaker.util.WordRepository.WordSource ;
 
-public class RawTextPanel extends JPanel {
+public class RawTextPanel extends JPanel implements WordSource {
 
     private static final long serialVersionUID = -6820796056331113968L ;
     private static final Logger logger = Logger.getLogger( RawTextPanel.class ) ;
@@ -69,6 +70,7 @@ public class RawTextPanel extends JPanel {
     public RawTextPanel() {
         setUpUI() ;
         setUpFileChooser() ;
+        ObjectRepository.getWordRepository().addWordSource( this ) ;
     }
     
     JTextPane getTextPane() {
@@ -478,5 +480,10 @@ public class RawTextPanel extends JPanel {
         catch( BadLocationException e ) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getTextForWordRepository() {
+        return textPane.getText() ;
     }
 }

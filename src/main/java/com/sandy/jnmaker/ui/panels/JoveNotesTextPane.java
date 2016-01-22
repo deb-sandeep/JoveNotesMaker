@@ -5,6 +5,7 @@ import java.util.regex.Matcher ;
 import java.util.regex.Pattern ;
 
 import javax.swing.JTextPane ;
+import javax.swing.text.BadLocationException ;
 import javax.swing.text.DefaultStyledDocument ;
 import javax.swing.text.Style ;
 import javax.swing.text.StyleConstants ;
@@ -16,8 +17,9 @@ import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.util.JNSrcTokenizer ;
 import com.sandy.jnmaker.util.JNSrcTokenizer.Token ;
 import com.sandy.jnmaker.util.JNSrcTokenizer.TokenType ;
+import com.sandy.jnmaker.util.WordRepository.WordSource ;
 
-public class JoveNotesTextPane extends JTextPane {
+public class JoveNotesTextPane extends JTextPane implements WordSource {
 
     private static final long serialVersionUID = 1L ;
     
@@ -210,5 +212,18 @@ public class JoveNotesTextPane extends JTextPane {
                 }
             }
         }
+    }
+
+    @Override
+    public String getTextForWordRepository() {
+        String str = null ;
+        try {
+            str = doc.getText( 0, doc.getLength() ) ;
+        }
+        catch( BadLocationException e ) {
+            // This should not be happening.
+            e.printStackTrace() ;
+        }
+        return str ;
     }
 }
