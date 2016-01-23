@@ -30,7 +30,7 @@ import org.apache.log4j.Logger ;
 import com.sandy.common.ui.ImageFilter ;
 import com.sandy.common.ui.ImagePreview ;
 import com.sandy.common.util.StringUtil ;
-import com.sandy.jnmaker.ui.dialogs.NotesCreatorDialog ;
+import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class PopupEditMenu extends JMenu implements ActionListener {
@@ -273,13 +273,15 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                               boolean escapeSlash )
             throws Exception {
         
-        String replacementStr = prefix ;
-        if( escapeSlash ) {
-            replacementStr += escapeSlash( sel.content ) ;
+        if( sel.content != null ) {
+            String replacementStr = prefix ;
+            if( escapeSlash ) {
+                replacementStr += escapeSlash( sel.content ) ;
+            }
+            replacementStr += suffix ;
+            
+            replaceContent( sel, replacementStr ) ;
         }
-        replacementStr += suffix ;
-        
-        replaceContent( sel, replacementStr ) ;
     }
     
     private void joinLines( SelectedContent sel ) 

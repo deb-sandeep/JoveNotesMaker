@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.helper;
 
 import static com.sandy.jnmaker.util.ObjectRepository.getApp ;
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
@@ -121,5 +122,9 @@ public class UIUtil {
         } ) ;
         
         return editMenu ;
+    }
+    
+    public static void logStatus( String msg ) {
+        getMainFrame().logStatus( msg ) ;
     }
 }

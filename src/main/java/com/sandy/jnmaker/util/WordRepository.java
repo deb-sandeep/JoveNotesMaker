@@ -30,6 +30,7 @@ public class WordRepository {
             public void run() {
                 StringBuilder buffer  = new StringBuilder() ;
                 String        srcText = null ;
+                try{ Thread.sleep( 5000 ) ; }catch( Exception e ){}
                 while( true ) {
                     try {
                         buffer.delete( 0, buffer.length() ) ;
@@ -43,7 +44,7 @@ public class WordRepository {
                         sleep( 2500 ) ;
                     }
                     catch( Exception e ) {
-                        // This should rarely occuur and if so, we just ignore.
+                        // This should rarely occur and if so, we just ignore.
                         e.printStackTrace() ;
                     }
                 }

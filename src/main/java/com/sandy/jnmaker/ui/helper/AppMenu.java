@@ -23,6 +23,7 @@ public class AppMenu extends JMenuBar {
         add( buildRawFileMenu() ) ;
         add( buildJNFileMenu() ) ;
         add( buildProjectMenu() ) ;
+        add( buildToolsMenu() ) ;
     }
     
     private JMenu buildAppMenu() {
@@ -73,6 +74,16 @@ public class AppMenu extends JMenuBar {
         menu.add( actions.getOpenProjectAction() ) ;
         menu.add( actions.getSaveProjectAction() ) ;
         menu.add( actions.getCloseProjectAction() ) ;
+        
+        return menu ;
+    }
+    
+    private JMenu buildToolsMenu() {
+        
+        JMenu menu = new JMenu( "Tools" ) ;
+        menu.setMnemonic( KeyEvent.VK_T ) ;
+        
+        menu.add( actions.getMatrixMappingToolAction() ) ;
         
         return menu ;
     }

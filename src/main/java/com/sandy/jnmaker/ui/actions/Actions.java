@@ -1,20 +1,50 @@
 package com.sandy.jnmaker.ui.actions;
 
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
-import static java.awt.event.KeyEvent.* ;
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.getProjectManager ;
+import static java.awt.event.InputEvent.ALT_DOWN_MASK ;
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK ;
+import static java.awt.event.KeyEvent.VK_1 ;
+import static java.awt.event.KeyEvent.VK_2 ;
+import static java.awt.event.KeyEvent.VK_3 ;
+import static java.awt.event.KeyEvent.VK_4 ;
+import static java.awt.event.KeyEvent.VK_5 ;
+import static java.awt.event.KeyEvent.VK_6 ;
+import static java.awt.event.KeyEvent.VK_7 ;
+import static java.awt.event.KeyEvent.VK_A ;
+import static java.awt.event.KeyEvent.VK_C ;
+import static java.awt.event.KeyEvent.VK_F1 ;
+import static java.awt.event.KeyEvent.VK_F2 ;
+import static java.awt.event.KeyEvent.VK_F3 ;
+import static java.awt.event.KeyEvent.VK_F5 ;
+import static java.awt.event.KeyEvent.VK_M ;
+import static java.awt.event.KeyEvent.VK_MINUS ;
+import static java.awt.event.KeyEvent.VK_N ;
+import static java.awt.event.KeyEvent.VK_O ;
+import static java.awt.event.KeyEvent.VK_PLUS ;
+import static java.awt.event.KeyEvent.VK_S ;
+import static java.awt.event.KeyEvent.VK_X ;
 
+import java.awt.Component ;
 import java.awt.event.ActionEvent ;
 import java.lang.reflect.Method ;
 
+import javax.swing.JFrame ;
 import javax.swing.JOptionPane ;
+import javax.swing.SwingUtilities ;
 
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.ReflectionUtil ;
+import com.sandy.jnmaker.tools.AbstractTool ;
+import com.sandy.jnmaker.tools.mapping.MatrixMappingTool ;
+import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class Actions {
 
     private static final Logger logger = Logger.getLogger( Actions.class ) ;
+    
+    private AbstractTool mappingTool = new MatrixMappingTool() ;
     
     private AbstractBaseAction exitAppAction       = null ;
     
@@ -39,6 +69,8 @@ public class Actions {
     private AbstractBaseAction saveProjectAction  = null ;
     private AbstractBaseAction closeProjectAction = null ;
     
+    private AbstractBaseAction mappingToolAction  = null ;
+    
     private Object[][] menuConfig = {
         { "exitApp",       "Exit",             null,          VK_X,     -1  , -1 },
         
@@ -62,6 +94,8 @@ public class Actions {
         { "openProject",   "Open project",    "file_open",   VK_O,      VK_F2, 0 },
         { "saveProject",   "Save project",    "file_save",   VK_S,      VK_F3, 0 },
         { "closeProject",  "Close project",   "file_close",  VK_C,      VK_F5, 0 },
+        
+        { "mappingTool",   "Matrix Mapping",  "mapping",     VK_M,      VK_M, CTRL_DOWN_MASK | ALT_DOWN_MASK }
     } ;
     
     public Actions() {
@@ -87,6 +121,8 @@ public class Actions {
         openProjectAction  = constructAction( "openProject"  ) ;
         saveProjectAction  = constructAction( "saveProject"  ) ;
         closeProjectAction = constructAction( "closeProject" ) ;
+        
+        mappingToolAction  = constructAction( "mappingTool" ) ;
     }
     
     public AbstractBaseAction getNewRawFileAction() {
@@ -117,42 +153,34 @@ public class Actions {
         return zoomInRawAction;
     }
 
-    
     public AbstractBaseAction getZoomOutRawAction() {
         return zoomOutRawAction;
     }
     
-
     public AbstractBaseAction getNewJNFileAction() {
         return newJNFileAction;
     }
 
-    
     public AbstractBaseAction getOpenJNFileAction() {
         return openJNFileAction;
     }
 
-    
     public AbstractBaseAction getCloseJNFileAction() {
         return closeJNFileAction;
     }
 
-    
     public AbstractBaseAction getSaveJNFileAction() {
         return saveJNFileAction;
     }
 
-    
     public AbstractBaseAction getSaveAsJNFileAction() {
         return saveAsJNFileAction;
     }
 
-    
     public AbstractBaseAction getZoomInJNAction() {
         return zoomInJNAction;
     }
 
-    
     public AbstractBaseAction getZoomOutJNAction() {
         return zoomOutJNAction;
     }
@@ -171,6 +199,10 @@ public class Actions {
 
     public AbstractBaseAction getCloseProjectAction() {
         return closeProjectAction;
+    }
+    
+    public AbstractBaseAction getMatrixMappingToolAction() {
+        return mappingToolAction ;
     }
 
     @SuppressWarnings( "serial" )
@@ -317,5 +349,36 @@ public class Actions {
     @SuppressWarnings( "unused" )
     private void closeProject() {
         getProjectManager().closeProject() ;
+    }
+    
+    @SuppressWarnings( "unused" )
+    private void mappingTool() {
+        executeTool( mappingTool ) ;
+    }
+    
+    private void executeTool( final AbstractTool tool ) {
+        SwingUtilities.invokeLater( new Runnable() {
+            public void run() {
+                JFrame    mainFrame = ObjectRepository.getMainFrame() ;
+                Component glassPane = mainFrame.getGlassPane() ;
+                
+                if( tool.shouldFreezeMainFrame() ) {
+                    glassPane.setVisible( true ) ;
+                }
+                try {
+                    tool.execute() ;
+                }
+                catch( Exception e ) {
+                    logger.error( "Tool " + tool.getDisplayName() + " failed.", e ) ;
+                    JOptionPane.showMessageDialog( mainFrame, e.getMessage(), 
+                                   "Tool failure", JOptionPane.ERROR_MESSAGE ) ;
+                }
+                finally {
+                    if( tool.shouldFreezeMainFrame() ) {
+                        glassPane.setVisible( false ) ;
+                    }
+                }
+            }
+        } ) ;
     }
 }
