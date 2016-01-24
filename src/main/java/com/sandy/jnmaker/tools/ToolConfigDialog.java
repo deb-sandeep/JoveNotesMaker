@@ -10,12 +10,14 @@ import java.awt.event.ActionListener ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.WindowEvent ;
 import java.awt.event.WindowFocusListener ;
+import java.util.List ;
 
 import javax.swing.BorderFactory ;
 import javax.swing.JButton ;
 import javax.swing.JComponent ;
 import javax.swing.JDialog ;
 import javax.swing.JLabel ;
+import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.KeyStroke ;
 import javax.swing.border.EtchedBorder ;
@@ -41,6 +43,7 @@ public class ToolConfigDialog extends JDialog implements ActionListener {
 
     public ToolConfigDialog( AbstractToolConfigPanel centerPanel ) {
         this.centerPanel = centerPanel ;
+        this.centerPanel.setParentDialog( this ) ;
         setUpUI( centerPanel ) ;
         setUpListeners() ;
     }
@@ -49,6 +52,13 @@ public class ToolConfigDialog extends JDialog implements ActionListener {
     public void actionPerformed( ActionEvent e ) {
         if( e.getActionCommand().equals( AC_OK ) ) {
             userChoice = UserChoice.OK ;
+            if( userChoice == UserChoice.OK ) {
+                List<String> errorMsgs = centerPanel.validateUserInput() ;
+                if( errorMsgs != null && !errorMsgs.isEmpty() ) {
+                    showErrorMessages( "Validation errors", errorMsgs ) ;
+                    return ;
+                }
+            }
         }
         else {
             userChoice = UserChoice.CANCEL ;
@@ -137,5 +147,16 @@ public class ToolConfigDialog extends JDialog implements ActionListener {
         button.setActionCommand( actionCmd ) ;
         button.addActionListener( this ) ;
         return button ;
+    }
+
+    public void showErrorMessages( String title, List<String> errorMsgs ) {
+        StringBuilder buffer = new StringBuilder( "<html><body><ul>" ) ;
+        for( String msg : errorMsgs ) {
+            buffer.append( "<li>" ).append( msg ).append( "</li>" ) ;
+        }
+        buffer.append( "</ul></body></html>" ) ;
+        
+        JOptionPane.showMessageDialog( this, buffer.toString(), title,
+                                       JOptionPane.ERROR_MESSAGE ) ;
     }
 }

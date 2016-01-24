@@ -5,7 +5,7 @@ import com.sandy.jnmaker.tools.AbstractToolConfigPanel ;
 
 public class MatrixMappingTool extends AbstractTool {
     
-    private MappingToolPanel configPanel = null ;
+    private MappingToolConfigPanel configPanel = null ;
     
     public MatrixMappingTool() {
         super( "Matrix Mapping Tool" ) ;
@@ -14,7 +14,7 @@ public class MatrixMappingTool extends AbstractTool {
     @Override
     protected AbstractToolConfigPanel getConfigPanel() {
         if( configPanel == null ) {
-            configPanel = new MappingToolPanel() ;
+            configPanel = new MappingToolConfigPanel() ;
         }
         return configPanel ;
     }

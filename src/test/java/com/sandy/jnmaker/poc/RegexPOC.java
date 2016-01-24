@@ -19,13 +19,15 @@ public class RegexPOC {
     
     private void runPOC() throws Exception {
         
-        Pattern pattern = Pattern.compile( getBoldPattern(), Pattern.DOTALL ) ;
-        String  input   = getStringForMatching() ;
+        Pattern pattern = Pattern.compile( getConfigParamPattern(), Pattern.DOTALL ) ;
+        String  input   = getConfigParamString() ;
         Matcher matcher = pattern.matcher( input ) ;
         
         while( matcher.find() ) {
-            String matchStr = matcher.group( 0 ) ;
-            logger.debug( matchStr ) ;
+            logger.debug( "Found a match @position = " + matcher.start() ) ;
+            for( int i=0; i<matcher.groupCount()+1; i++ ) {
+                logger.debug( "Group[" + i + "] = " + matcher.group( i ) );
+            }
         }
     }
     
@@ -45,8 +47,16 @@ public class RegexPOC {
         return "\\*\\*.*?\\*\\*" ;
     }
     
-    private String getStringForMatching() throws Exception {
+    String getConfigParamPattern() {
+        return "^@([a-zA-Z0-9_]+)\\s*=?\\s*(.*)$" ;
+    }
+    
+    String getStringForMatching() throws Exception {
         URL url = ReflectionUtil.getResource( RegexPOC.class, "sample.jn" ) ;
         return IOUtils.toString( url ) ;
+    }
+    
+    String getConfigParamString() {
+        return "@test = 20  " ;
     }
 }
