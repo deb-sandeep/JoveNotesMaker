@@ -34,8 +34,8 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
         return new Dimension( 600, 525 ) ;
     }
     
-    public File getInputFile() {
-        return null ;
+    public MappingFileParser getParser() {
+        return this.parser ;
     }
     
     // ----------- Mapping input details ---------------------------------------
@@ -79,7 +79,7 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
     
     // ----------- Row to column mapping ( Multi Choice ) ----------------------
     public boolean isMLCForR2CMappingEnabled() {
-        return isR2CMappingEnabled() && super.enable_MC_R2C.isEnabled() ;
+        return isR2CMappingEnabled() && super.enable_MC_R2C.isSelected() ;
     }
     
     public String getMLCCaptionForR2C() {
@@ -104,7 +104,7 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
     
     // ----------- Row to column mapping ( Fill in the blanks ) ----------------
     public boolean isFIBForR2CMappingEnabled() {
-        return isR2CMappingEnabled() && super.enable_FIB_R2C.isEnabled() ;
+        return isR2CMappingEnabled() && super.enable_FIB_R2C.isSelected() ;
     }
     
     public String getFIBTemplateForR2CMapping() {
@@ -113,7 +113,7 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
     
     // ----------- Row to column mapping ( Question Answers ) ------------------
     public boolean isQAForR2CMappingEnabled() {
-        return isR2CMappingEnabled() && super.enable_QA_R2C.isEnabled() ;
+        return isR2CMappingEnabled() && super.enable_QA_R2C.isSelected() ;
     }
     
     public String getQATemplateForR2CMapping() {
@@ -128,7 +128,7 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
     
     // ----------- Column to Row mapping ( Multi Choice ) ----------------------
     public boolean isMLCForC2RMappingEnabled() {
-        return isC2RMappingEnabled() && super.enable_MC_C2R.isEnabled() ;
+        return isC2RMappingEnabled() && super.enable_MC_C2R.isSelected() ;
     }
     
     public String getMLCCaptionForC2R() {
@@ -153,7 +153,7 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
     
     // ----------- Column to Row mapping ( Fill in the blanks ) ----------------
     public boolean isFIBForC2RMappingEnabled() {
-        return isC2RMappingEnabled() && super.enable_FIB_C2R.isEnabled() ;
+        return isC2RMappingEnabled() && super.enable_FIB_C2R.isSelected() ;
     }
     
     public String getFIBTemplateForC2RMapping() {
@@ -162,16 +162,11 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
     
     // ----------- Column to Row mapping ( Question Answers ) ------------------
     public boolean isQAForC2RMappingEnabled() {
-        return isC2RMappingEnabled() && super.enable_QA_C2R.isEnabled() ;
+        return isC2RMappingEnabled() && super.enable_QA_C2R.isSelected() ;
     }
     
     public String getQATemplateForC2RMapping() {
         return super.template_QA_C2R.getText() ;
-    }
-    
-    public List<String> validateUserInput() {
-        List<String> msgs = new ArrayList<>() ;
-        return msgs ;
     }
     
     private void setUpListeners() {
@@ -246,6 +241,107 @@ public class MappingToolConfigPanel extends MappingToolConfigPanelUI {
     }
 
     private void populateUIFromParsedValues() {
-        // TODO Auto-generated method stub
+        
+        filePathTF.setText( parser.getInputFile().getAbsolutePath() ) ;
+        numColsInFileTF.setText( "" + parser.getNumColsInFile() ) ;
+        numRowsInFileTF.setText( "" + parser.getNumRowsInFile() ) ;
+        
+        colNameTF.setText( parser.getColName() ) ;
+        rowNameTF.setText( parser.getRowName() ) ;
+
+        enableC2RMappings.setSelected( parser.isEnableC2RMappings() ) ;
+
+        enable_MC_C2R.setSelected( parser.isEnable_MC_C2R() ) ;
+        numOptionsPerRow_MC_C2R.setText( "" + parser.getNumOptionsPerRow_MC_C2R() ) ;
+        numOptionsToShow_MC_C2R.setText( "" + parser.getNumOptionsToShow_MC_C2R() ) ;
+        caption_MC_C2R.setText( parser.getCaption_MC_C2R() ) ;
+        
+        enable_FIB_C2R.setSelected( parser.isEnable_FIB_C2R() ) ;
+        template_FIB_C2R.setText( parser.getTemplate_FIB_C2R() ) ;
+        
+        enable_QA_C2R.setSelected( parser.isEnable_QA_C2R() ) ;
+        template_QA_C2R.setText( parser.getTemplate_QA_C2R() ) ;
+
+        enableR2CMappings.setSelected( parser.isEnableR2CMappings() ) ;
+
+        enable_MC_R2C.setSelected( parser.isEnable_MC_R2C() ) ;
+        numOptionsPerRow_MC_R2C.setText( "" + parser.getNumOptionsPerRow_MC_R2C() ) ;
+        numOptionsToShow_MC_R2C.setText( "" + parser.getNumOptionsToShow_MC_R2C() ) ;
+        caption_MC_R2C.setText( parser.getCaption_MC_R2C() ) ;
+        
+        enable_FIB_R2C.setSelected( parser.isEnable_FIB_R2C() ) ;
+        template_FIB_R2C.setText( parser.getTemplate_FIB_R2C() ) ;
+
+        enable_QA_R2C.setSelected( parser.isEnable_QA_R2C() ) ;
+        template_QA_R2C.setText( parser.getTemplate_QA_R2C() ) ;        
+    }
+    
+    public List<String> validateUserInput() {
+        List<String> msgs = new ArrayList<>() ;
+        
+        if( StringUtil.isEmptyOrNull( filePathTF.getText() ) ) {
+            msgs.add( "Mapping specification file is not loaded." ) ;
+        }
+        else {
+            if( getNumColumns() == -1 ) {
+                msgs.add( "Invalid number of columns is specified." ) ;
+            }
+            
+            if( getNumRows() == -1 ) {
+                msgs.add( "Invalid number of rows is specified." ) ;
+            }
+            
+            if( !(isC2RMappingEnabled() || isR2CMappingEnabled()) ) {
+                msgs.add( "C2R or R2C question generation is not enabled." ) ;
+            }
+            
+            if( !( isMLCForR2CMappingEnabled() || 
+                   isFIBForR2CMappingEnabled() ||
+                   isQAForR2CMappingEnabled()  ||
+                   isMLCForC2RMappingEnabled() ||
+                   isFIBForC2RMappingEnabled() ||
+                   isQAForC2RMappingEnabled() ) ) {
+                
+                msgs.add( "No generation options selected" ) ;
+            }
+            
+            if( isMLCForR2CMappingEnabled() ) {
+                if( !getMLCCaptionForR2C().contains( "<row>" ) ) {
+                    msgs.add( "Multi choice caption for R2C does not contain &lt;row&gt;." ) ;
+                }
+            }
+
+            if( isFIBForR2CMappingEnabled() ) {
+                if( !getFIBTemplateForR2CMapping().contains( "<row>" ) ) {
+                    msgs.add( "FIB template for R2C does not contain &lt;row&gt;." ) ;
+                }
+            }
+
+            if( isQAForR2CMappingEnabled() ) {
+                if( !getQATemplateForR2CMapping().contains( "<row>" ) ) {
+                    msgs.add( "QA template for R2C does not contain &lt;row&gt;." ) ;
+                }
+            }
+
+            if( isMLCForC2RMappingEnabled() ) {
+                if( !getMLCCaptionForC2R().contains( "<col>" ) ) {
+                    msgs.add( "Multi choice caption for C2R does not contain &lt;col&gt;." ) ;
+                }
+            }
+
+            if( isFIBForC2RMappingEnabled() ) {
+                if( !getFIBTemplateForC2RMapping().contains( "<col>" ) ) {
+                    msgs.add( "FIB template for C2R does not contain &lt;col&gt;." ) ;
+                }
+            }
+
+            if( isQAForC2RMappingEnabled() ) {
+                if( !getQATemplateForC2RMapping().contains( "<col>" ) ) {
+                    msgs.add( "QA template for C2R does not contain &lt;col&gt;." ) ;
+                }
+            }
+        }
+        
+        return msgs ;
     }
 }

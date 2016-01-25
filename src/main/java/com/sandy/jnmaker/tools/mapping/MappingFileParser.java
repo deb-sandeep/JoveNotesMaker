@@ -8,13 +8,11 @@ import java.util.regex.Matcher ;
 import java.util.regex.Pattern ;
 
 import org.apache.commons.io.FileUtils ;
-import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 
 public class MappingFileParser {
     
-    private static final Logger logger = Logger.getLogger( MappingFileParser.class ) ;
     private static final Pattern CONFIG_PARAM_PATTERN = 
                          Pattern.compile( "^@([a-zA-Z0-9_]+)\\s*=?\\s*(.*)$" ) ;
     
@@ -45,7 +43,14 @@ public class MappingFileParser {
     private boolean enable_QA_C2R           = true ;
     private String  template_QA_C2R         = "What are the $colName$s for <row>?" ;
 
-    private File inputFile = null ;
+    private File         inputFile = null ;
+    private List<String> colNames  = new ArrayList<>() ;
+    private List<String> rowNames  = new ArrayList<>() ;
+    private boolean[][]  mappings  = null ;
+    private int          curMapRow = 0 ;
+    
+    private enum ParseState { OPEN, ROWS, COLS, MAPPING } ;
+    private ParseState parseState = ParseState.OPEN ;
 
     public MappingFileParser( File inputFile ) {
         this.inputFile = inputFile ;
@@ -89,7 +94,20 @@ public class MappingFileParser {
             parseConfigParameter( paramName, paramVal, msgs ) ;
         }
         else {
-            logger.debug( "Non config line = " + line ) ;
+            switch( parseState ) {
+                case COLS:
+                    colNames.add( line.trim() ) ;
+                    break ;
+                case ROWS:
+                    rowNames.add( line.trim() ) ;
+                    break ;
+                case MAPPING:
+                    parseMappingLine( line, msgs ) ;
+                    break ;
+                case OPEN:
+                    msgs.add( "Don't know what to do with line - " + line ) ;
+                    break ;
+            }
         }
     }
     
@@ -179,7 +197,36 @@ public class MappingFileParser {
             case "template_QA_C2R" :
                 this.template_QA_C2R = paramVal ; 
                 break ;
+                
+            case "colNames" :
+                this.parseState = ParseState.COLS ;
+                break ;
+                
+            case "rowNames" :
+                this.parseState = ParseState.ROWS ;
+                break ;
+                
+            case "mappings" :
+                this.parseState = ParseState.MAPPING ;
+                mappings = new boolean[getNumRowsInFile()][getNumColsInFile()] ;
+                break ;
         }
+    }
+    
+    private void parseMappingLine( String line, List<String> msgs ) {
+        String[] cols = line.split( "\\s+" ) ;
+        if( cols.length < getNumColsInFile() ) {
+            msgs.add( "Mapping line " + curMapRow + " has less number of columns." ) ;
+        }
+        else {
+            for( int i=0; i<cols.length; i++ ) {
+                mappings[curMapRow][i] = false ;
+                if( cols[i].equals( "1" ) ) {
+                    mappings[curMapRow][i] = true ;
+                }
+            }
+        }
+        curMapRow++ ;
     }
     
     private int getInt( String config, String val, List<String> msgs ) {
@@ -273,5 +320,52 @@ public class MappingFileParser {
 
     public String getTemplate_QA_C2R() {
         return template_QA_C2R;
+    }
+    
+    public File getInputFile() {
+        return this.inputFile ;
+    }
+    
+    public int getNumColsInFile() {
+        return this.colNames.size() ;
+    }
+    
+    public int getNumRowsInFile() {
+        return this.rowNames.size() ;
+    }
+    
+    public List<String> getColNames() {
+        return this.colNames ;
+    }
+    
+    public List<String> getRowNames() {
+        return this.rowNames ;
+    }
+    
+    public List<String> getColumnsForRow( String row ) {
+        List<String> cols = new ArrayList<>() ;
+        int rowIndex = rowNames.indexOf( row ) ;
+        if( rowIndex != -1 ) {
+            boolean[] mappingRow = mappings[rowIndex] ;
+            for( int i=0; i<colNames.size(); i++ ) {
+                if( mappingRow[i] == true ) {
+                    cols.add( colNames.get( i ) ) ;
+                }
+            }
+        }
+        return cols ;
+    }
+    
+    public List<String> getRowsForColumn( String col ) {
+        List<String> rows = new ArrayList<>() ;
+        int colIndex = colNames.indexOf( col ) ;
+        if( colIndex != -1 ) {
+            for( int i=0; i<rowNames.size(); i++ ) {
+                if( mappings[i][colIndex] == true ) {
+                    rows.add( rowNames.get( i ) ) ;
+                }
+            }
+        }
+        return rows ;
     }
 }
