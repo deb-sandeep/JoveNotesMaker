@@ -4,10 +4,13 @@ import java.awt.Component ;
 import java.awt.Font ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
 import java.util.ArrayList ;
 import java.util.List ;
 
 import javax.swing.JTextArea ;
+import javax.swing.text.BadLocationException ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
@@ -32,6 +35,16 @@ public class ExercisePanel extends ExercisePanelUI implements ActionListener {
         super.deleteHintBtn.addActionListener( this ) ;
         super.moveLeftBtn.addActionListener( this ) ;
         super.moveRightBtn.addActionListener( this ) ;
+        
+        super.questionTA.addKeyListener( new KeyAdapter() {
+            public void keyPressed( KeyEvent e ) {
+                if( e.getModifiers() == KeyEvent.CTRL_MASK && 
+                    e.getKeyCode() == KeyEvent.VK_M ) {
+                    
+                    moveSelTextFromQuestionsFieldToAnsField() ;
+                }
+            }
+        } ) ;
     }
     
     @Override
@@ -79,7 +92,7 @@ public class ExercisePanel extends ExercisePanelUI implements ActionListener {
 
     @Override
     protected void captureFocus() {
-        super.answerTA.requestFocus() ;
+        super.questionTA.requestFocus() ;
     }
 
     @Override
@@ -188,4 +201,22 @@ public class ExercisePanel extends ExercisePanelUI implements ActionListener {
         }
         return marks ;
     }
+    
+    private void moveSelTextFromQuestionsFieldToAnsField() {
+        
+        String selText = questionTA.getSelectedText() ;
+        if( StringUtil.isNotEmptyOrNull( selText ) ) {
+            int caretPos = answerTA.getCaretPosition() ;
+            answerTA.insert( selText, caretPos ) ;
+            answerTA.requestFocus() ;
+            
+            try {
+                questionTA.getDocument().remove( questionTA.getSelectionStart(), 
+                                                 selText.length() ) ;
+            }
+            catch( BadLocationException e ) {
+                e.printStackTrace();
+            }
+        }
+    }    
 }
