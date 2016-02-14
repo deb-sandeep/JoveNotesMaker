@@ -250,6 +250,9 @@ public class RawTextPanel extends JPanel implements WordSource {
                 case KeyEvent.VK_E: 
                     mainFrame.createNote( selectedText, NoteType.EVENT ) ;
                     break ;
+                case KeyEvent.VK_X: 
+                    mainFrame.createNote( selectedText, NoteType.EXERCISE ) ;
+                    break ;
                 case KeyEvent.VK_SLASH: 
                     mainFrame.createNote( selectedText, NoteType.COMMENT ) ;
                     break ;

@@ -41,14 +41,15 @@ All text editors      | Ctrl + Shift + C | Convert to inline mhchem
 All text editors      | Alt  + Shift + M | Convert to latex                       
 All text editors      | Alt  + Shift + C | Convert to mhchem
                       |                  |
-Raw text panel        | Ctrl+Shift + Q   | Make question out of seleccted text.
-Raw text panel        | Ctrl+Shift + F   | Make `fill in the blanks` out of seleccted text.
-Raw text panel        | Ctrl+Shift + T   | Make `true false` out of seleccted text.
-Raw text panel        | Ctrl+Shift + W   | Make `word meaning` out of seleccted text.
-Raw text panel        | Ctrl+Shift + S   | Make `spellbee` out of seleccted text.
-Raw text panel        | Ctrl+Shift + D   | Make `definition` out of seleccted text.
-Raw text panel        | Ctrl+Shift + E   | Make `event` out of seleccted text.
-Raw text panel        | Ctrl+Shift + /   | Make `comment` out of seleccted text.
+Raw text panel        | Ctrl+Shift + Q   | Make question out of selected text.
+Raw text panel        | Ctrl+Shift + F   | Make `fill in the blanks` out of selected text.
+Raw text panel        | Ctrl+Shift + T   | Make `true false` out of selected text.
+Raw text panel        | Ctrl+Shift + W   | Make `word meaning` out of selected text.
+Raw text panel        | Ctrl+Shift + S   | Make `spellbee` out of selected text.
+Raw text panel        | Ctrl+Shift + D   | Make `definition` out of selected text.
+Raw text panel        | Ctrl+Shift + E   | Make `event` out of selected text.
+Raw text panel        | Ctrl+Shift + X   | Make `exercise` out of selected text.
+Raw text panel        | Ctrl+Shift + /   | Make `comment` out of selected text.
                       |                  |
 Raw text panel        | Ctrl+Shift + B   | Move/Create bookmark at the cursor position.
 Raw text panel        | Ctrl+Shift + G   | Go to bookmark position

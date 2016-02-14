@@ -9,5 +9,6 @@ public enum NoteType {
     WORD_MEANING, 
     SPELLBEE, 
     COMMENT, 
-    EVENT
+    EVENT,
+    EXERCISE
 }
