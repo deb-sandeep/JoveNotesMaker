@@ -39,7 +39,8 @@ public class JNSrcTokenizer {
             "@skip_generation" ,
             "@skip_generation_in_production" ,
             "@spellbee" ,
-            "@test_paper" ,
+            "@exercise_bank" ,
+            "@exercise" ,
             "@tn" ,
             "@true_false" ,
             "@wm",
@@ -68,7 +69,10 @@ public class JNSrcTokenizer {
             "where" ,
             "true" ,
             "false",
-            "imageName"
+            "imageName",
+            "marks",
+            "hints",
+            "answer"
     } ;
 
     public static class Token {
