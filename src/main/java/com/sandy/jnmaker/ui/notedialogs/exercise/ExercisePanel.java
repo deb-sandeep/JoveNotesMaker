@@ -68,6 +68,7 @@ public class ExercisePanel extends ExercisePanelUI implements ActionListener {
         StringBuilder buffer = new StringBuilder() ;
         buffer.append( "@exercise marks=" )
               .append( marks )
+              .append( "\n" )
               .append( " \"" )
               .append( formatText( questionText ) )
               .append( "\"\n" ) ;
