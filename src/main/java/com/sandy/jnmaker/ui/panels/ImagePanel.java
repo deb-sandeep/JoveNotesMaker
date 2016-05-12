@@ -7,12 +7,14 @@ import java.awt.Component ;
 import java.awt.Dimension ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.image.BufferedImage ;
 import java.io.File ;
 import java.io.IOException ;
 import java.nio.file.Files ;
 import java.util.ArrayList ;
 import java.util.List ;
 
+import javax.imageio.ImageIO ;
 import javax.swing.BoxLayout ;
 import javax.swing.JComponent ;
 import javax.swing.JFileChooser ;
@@ -21,12 +23,13 @@ import javax.swing.filechooser.FileFilter ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
+import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 public class ImagePanel extends JPanel 
-    implements ActionListener, TabCloseListener {
+    implements ActionListener, TabCloseListener, ScalableImagePanelListener {
 
     private static final long serialVersionUID = -6820796056331113968L ;
     
@@ -186,6 +189,7 @@ public class ImagePanel extends JPanel
                     File file = new File( filePath ) ;
                     ScalableImagePanel imgPanel = new ScalableImagePanel() ;
                     imgPanel.setImage( file );
+                    imgPanel.addListener( this );
                     
                     this.tabbedPane.add( file.getName(), imgPanel ) ;
                     this.openedFiles.add( file ) ;
@@ -218,7 +222,29 @@ public class ImagePanel extends JPanel
     public void tabClosing( ActionEvent e ) {
         
         ScalableImagePanel imgPanel = ( ScalableImagePanel )e.getSource() ;
+        imgPanel.removeListener( this ) ;
         File file = imgPanel.getCurImgFile() ;
         this.openedFiles.remove( file ) ;
+    }
+
+    @Override
+    public void subImageSelected( BufferedImage image ) {
+        
+        fileChooser.setCurrentDirectory( this.currentDir ) ;
+        fileChooser.setSelectedFile( new File( "" ) );
+        int userChoice = fileChooser.showSaveDialog( this ) ;
+        if( userChoice == JFileChooser.APPROVE_OPTION ) {
+            this.currentDir = fileChooser.getCurrentDirectory() ;
+            File outputFile = fileChooser.getSelectedFile() ;
+            if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
+                outputFile = new File( this.currentDir, outputFile.getName() + ".png" ) ;
+            }
+            try {
+                ImageIO.write( image, "png", outputFile ) ;
+            }
+            catch( IOException e ) {
+                e.printStackTrace();
+            }
+        }
     }
 }
