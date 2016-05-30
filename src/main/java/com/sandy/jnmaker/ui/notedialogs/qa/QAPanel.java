@@ -39,10 +39,15 @@ public class QAPanel extends QAPanelUI {
         
         this.answerTextArea.addKeyListener( new KeyAdapter() {
             public void keyPressed( KeyEvent e ) {
-                if( e.getModifiers() == KeyEvent.CTRL_MASK && 
+                if( e.getModifiers() == ( KeyEvent.CTRL_MASK | KeyEvent.ALT_MASK )&& 
                     e.getKeyCode() == KeyEvent.VK_M ) {
                     
                     moveSelTextFromAnsFieldToQuestionField() ;
+                }
+                else if( e.getModifiers() == KeyEvent.CTRL_MASK && 
+                         e.getKeyCode() == KeyEvent.VK_M ) {
+                    
+                    copySelTextFromAnsFieldToQuestionField() ;
                 }
             }
         } ) ;
@@ -88,6 +93,18 @@ public class QAPanel extends QAPanelUI {
     }
     
     private void moveSelTextFromAnsFieldToQuestionField() {
+        
+        String selText = answerTextArea.getSelectedText() ;
+        answerTextArea.replaceSelection( "" ) ;
+        
+        if( StringUtil.isNotEmptyOrNull( selText ) ) {
+            int caretPos = questionTextArea.getCaretPosition() ;
+            questionTextArea.insert( selText, caretPos ) ;
+            questionTextArea.requestFocus() ;
+        }
+    }
+    
+    private void copySelTextFromAnsFieldToQuestionField() {
         
         String selText = answerTextArea.getSelectedText() ;
         

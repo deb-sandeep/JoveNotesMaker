@@ -57,4 +57,7 @@ Raw text panel        | Ctrl+Shift + N   | Move focus to notes panel.
                       |                  |
 Raw text panel        | Ctrl + S         | Save current file.
 Raw text panel        | Ctrl + W         | Close current file.
+                      |                  |
+Question dialog (Ans) | Ctrl + Alt + M   | Move selected text to question text
+Question dialog (Ans) | Ctrl + M         | Copy selected text to question text
 
