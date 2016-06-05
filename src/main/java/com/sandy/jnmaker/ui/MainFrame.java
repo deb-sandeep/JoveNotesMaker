@@ -8,15 +8,11 @@ import java.awt.Component ;
 import java.awt.event.WindowEvent ;
 import java.awt.event.WindowFocusListener ;
 
-import javax.swing.BorderFactory ;
 import javax.swing.JMenuBar ;
 import javax.swing.JSplitPane ;
-import javax.swing.border.BevelBorder ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
-import com.sandy.common.ui.statusbar.StatusBar ;
 import com.sandy.jnmaker.ui.helper.AppMenu ;
-import com.sandy.jnmaker.ui.helper.MessageSBComponent ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.ui.panels.ImagePanel ;
@@ -32,10 +28,8 @@ public class MainFrame extends AbstractMainFrame {
     private RawTextPanel   rawTextPanel = null ;
     private ImagePanel     imagePanel   = null ;
     private JoveNotesPanel jnPanel      = null ;
-    private StatusBar      statusBar    = null ;
     
     private NotesCreatorDialog notesCreator = null ;
-    private MessageSBComponent statusMsgComponent = null ;
 
     public MainFrame() throws Exception {
         super( "JoveNotes Maker - []", getIcon( "app_icon" ) ) ;
@@ -98,6 +92,8 @@ public class MainFrame extends AbstractMainFrame {
         splitPane.add( this.imagePanel ) ;
         splitPane.add( bottomComponent ) ;
         setCommonScrollPaneAttributes( splitPane ) ;
+        splitPane.setOneTouchExpandable( true ) ;
+        splitPane.setDividerSize( 7 ) ;
         
         return splitPane ;
     }
@@ -144,20 +140,5 @@ public class MainFrame extends AbstractMainFrame {
     
     public void shiftFocusToRawText() {
         this.rawTextPanel.captureFocus() ;
-    }
-
-    protected StatusBar getStatusBar() {
-        if( statusBar == null ) {
-            statusBar = new StatusBar() ;
-            statusMsgComponent = new MessageSBComponent() ;
-            statusBar.addStatusBarComponent( statusMsgComponent,
-                                             StatusBar.Direction.WEST ) ;
-            statusBar.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) ) ;
-        }
-        return statusBar ;
-    }
-    
-    public void logStatus( String status ) {
-        statusMsgComponent.logMessage( status ) ;
     }
 }
