@@ -135,6 +135,7 @@ public class ImagePanel extends JPanel
             for( File file : files ) {
                 ScalableImagePanel imgPanel = new ScalableImagePanel() ;
                 imgPanel.setImage( file );
+                imgPanel.addListener( this ) ;
                 this.tabbedPane.add( file.getName(), imgPanel ) ;
                 this.openedFiles.add( file ) ;
             }
