@@ -22,6 +22,7 @@ import javax.swing.text.DefaultEditorKit ;
 import javax.swing.text.DefaultEditorKit.CopyAction ;
 import javax.swing.text.DefaultEditorKit.CutAction ;
 import javax.swing.text.DefaultEditorKit.PasteAction ;
+import javax.swing.text.Document ;
 import javax.swing.text.JTextComponent ;
 import javax.swing.undo.UndoManager ;
 
@@ -175,6 +176,12 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                         
                         if     ( keyCode == KeyEvent.VK_M ) { encapsulateMath( sel ) ; }
                         else if( keyCode == KeyEvent.VK_C ) { encapsulateChem( sel ) ; }
+                        else if( keyCode == KeyEvent.VK_RIGHT ) { 
+                            selectTextTillSurroundingPeriod( true ) ; 
+                        }
+                        else if( keyCode == KeyEvent.VK_LEFT  ) { 
+                            selectTextTillSurroundingPeriod( false ) ; 
+                        }
                     }
                 }
                 catch( Exception e1 ) {
@@ -355,5 +362,32 @@ public class PopupEditMenu extends JMenu implements ActionListener {
         fileChooser.setMultiSelectionEnabled( false ) ;
         
         return fileChooser ;
+    }
+    
+    private void selectTextTillSurroundingPeriod( boolean forward ) {
+        try {
+            int      curPos  = editor.getCaretPosition() ;
+            int      tgtPos  = 0 ;
+            Document doc     = editor.getDocument() ;
+            String   docText = doc.getText( 0, doc.getLength() ) ;
+            
+            if( forward ) {
+                tgtPos = docText.indexOf( '.', curPos ) ;
+                if( tgtPos == -1 ) {
+                    tgtPos = doc.getLength() ;
+                }
+            }
+            else {
+                tgtPos = docText.lastIndexOf( '.', curPos-1 ) ;
+                if( tgtPos == -1 ) {
+                    tgtPos = 0 ;
+                }
+            }
+            
+            editor.moveCaretPosition( tgtPos );
+        }
+        catch( BadLocationException e ) {
+            e.printStackTrace();
+        }
     }
 }
