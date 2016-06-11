@@ -365,23 +365,59 @@ public class PopupEditMenu extends JMenu implements ActionListener {
     }
     
     private void selectTextTillSurroundingPeriod( boolean forward ) {
+        
         try {
             int      curPos  = editor.getCaretPosition() ;
             int      tgtPos  = 0 ;
+            int      nlPos   = 0 ;
             Document doc     = editor.getDocument() ;
             String   docText = doc.getText( 0, doc.getLength() ) ;
             
             if( forward ) {
                 tgtPos = docText.indexOf( '.', curPos ) ;
+                nlPos  = docText.indexOf( '\n', curPos ) ;
+                
                 if( tgtPos == -1 ) {
-                    tgtPos = doc.getLength() ;
+                    if( nlPos == -1 ) {
+                        tgtPos = doc.getLength() ;
+                    }
+                    else {
+                        tgtPos = nlPos - 1 ;
+                    }
+                }
+                else {
+                    if( nlPos < tgtPos ) {
+                        tgtPos = nlPos - 1 ;
+                    }
+                    else {
+                        tgtPos++ ;
+                    }
                 }
             }
             else {
-                tgtPos = docText.lastIndexOf( '.', curPos-1 ) ;
+                tgtPos = docText.lastIndexOf( '.', curPos ) ;
+                nlPos  = docText.lastIndexOf( '\n', curPos ) ;
+                
                 if( tgtPos == -1 ) {
-                    tgtPos = 0 ;
+                    if( nlPos == -1 ) {
+                        tgtPos = 0 ;
+                    }
+                    else {
+                        tgtPos = nlPos + 1 ;
+                    }
                 }
+                else {
+                    if( nlPos > tgtPos ) {
+                        tgtPos = nlPos + 1 ;
+                    }
+                    else {
+                        tgtPos++ ;
+                    }
+                }
+            }
+            
+            if( tgtPos > doc.getLength() ) {
+                tgtPos = doc.getLength() ;
             }
             
             editor.moveCaretPosition( tgtPos );
