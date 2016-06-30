@@ -148,9 +148,13 @@ public class JoveNotesTextPane extends JTextPane implements WordSource {
         
         while( ( token = tokenizer.getNextToken() ) != null ) {
             
-            doc.setCharacterAttributes( token.start, (token.end-token.start)+1, 
-                    doc.getStyle( token.tokenType.toString() ), 
-                    true ) ;
+            int len = (token.end-token.start)+1 ;
+            
+            if( len > 0 ) {
+                doc.setCharacterAttributes( token.start, len, 
+                        doc.getStyle( token.tokenType.toString() ), 
+                        true ) ;
+            }
             
             if( token.tokenType == TokenType.STRING ) {
                 highlightString( token ) ;
@@ -176,9 +180,12 @@ public class JoveNotesTextPane extends JTextPane implements WordSource {
         while( matcher.find() ) {
             int start = matcher.start() ;
             int end   = matcher.end() ;
+            int len   = end - start ;
             
-            doc.setCharacterAttributes( token.start + start, (end-start), 
-                                        doc.getStyle( type.toString() ), false ) ;
+            if( len > 0 ) {
+                doc.setCharacterAttributes( token.start + start, len, 
+                        doc.getStyle( type.toString() ), false ) ;
+            }
         }
     }
     

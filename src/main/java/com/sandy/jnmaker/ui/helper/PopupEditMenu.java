@@ -294,8 +294,33 @@ public class PopupEditMenu extends JMenu implements ActionListener {
     private void joinLines( SelectedContent sel ) 
         throws Exception {
         
-        String replacementTxt = sel.content.replaceAll( "\n", " " ) ;
-        replaceContent( sel, replacementTxt ) ;
+        if( sel.content != null ) {
+            String replacementTxt = sel.content.replaceAll( "\n", " " ) ;
+            replaceContent( sel, replacementTxt ) ;
+        }
+        else {
+            Document doc = editor.getDocument() ;
+            int caretPos = editor.getCaretPosition() ;
+            String text  = doc.getText( 0, doc.getLength() ) ;
+            
+            int crlfPos = text.indexOf( "\r\n", caretPos ) ;
+            int lfPos   = text.indexOf( "\n", caretPos ) ;
+            
+            if( crlfPos != -1 && lfPos != -1 ) {
+                if( crlfPos < lfPos ) {
+                    doc.remove( crlfPos, 2 ) ;
+                    doc.insertString( crlfPos, " ", null ) ;
+                }
+                else {
+                    doc.remove( lfPos, 1 ) ;
+                    doc.insertString( lfPos, " ", null ) ;
+                }
+            }
+            else if( lfPos != -1 ) {
+                doc.remove( lfPos, 1 ) ;
+                doc.insertString( lfPos, " ", null ) ;
+            }
+        }
     }
     
     private void replaceContent( SelectedContent sel, String replacementTxt ) 
