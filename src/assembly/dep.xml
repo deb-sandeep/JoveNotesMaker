@@ -55,5 +55,10 @@
           <outputDirectory>/config</outputDirectory>
           <destName>log4j.properties</destName>
         </file>
+        <file>
+          <source>${project.basedir}/src/main/configuration/config.properties</source>
+          <outputDirectory>/config</outputDirectory>
+          <destName>config.properties</destName>
+        </file>
     </files>
 </assembly>

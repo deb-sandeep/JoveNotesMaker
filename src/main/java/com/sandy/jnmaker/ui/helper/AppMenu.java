@@ -84,6 +84,7 @@ public class AppMenu extends JMenuBar {
         menu.setMnemonic( KeyEvent.VK_T ) ;
         
         menu.add( actions.getMatrixMappingToolAction() ) ;
+        menu.add( actions.getJCMapToolAction() ) ;
         
         return menu ;
     }

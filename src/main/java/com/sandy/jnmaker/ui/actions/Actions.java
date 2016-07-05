@@ -21,6 +21,7 @@ import static java.awt.event.KeyEvent.VK_M ;
 import static java.awt.event.KeyEvent.VK_MINUS ;
 import static java.awt.event.KeyEvent.VK_N ;
 import static java.awt.event.KeyEvent.VK_O ;
+import static java.awt.event.KeyEvent.VK_P ;
 import static java.awt.event.KeyEvent.VK_PLUS ;
 import static java.awt.event.KeyEvent.VK_S ;
 import static java.awt.event.KeyEvent.VK_X ;
@@ -36,6 +37,8 @@ import javax.swing.SwingUtilities ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.ReflectionUtil ;
+import com.sandy.core.ConfigManager ;
+import com.sandy.jcmap.JCMap ;
 import com.sandy.jnmaker.tools.AbstractTool ;
 import com.sandy.jnmaker.tools.mapping.MatrixMappingTool ;
 import com.sandy.jnmaker.util.ObjectRepository ;
@@ -70,6 +73,7 @@ public class Actions {
     private AbstractBaseAction closeProjectAction = null ;
     
     private AbstractBaseAction mappingToolAction  = null ;
+    private AbstractBaseAction jcMapToolAction    = null ;
     
     private Object[][] menuConfig = {
         { "exitApp",       "Exit",             null,          VK_X,     -1  , -1 },
@@ -95,7 +99,8 @@ public class Actions {
         { "saveProject",   "Save project",    "file_save",   VK_S,      VK_F3, 0 },
         { "closeProject",  "Close project",   "file_close",  VK_C,      VK_F5, 0 },
         
-        { "mappingTool",   "Matrix Mapping",  "mapping",     VK_M,      VK_M, CTRL_DOWN_MASK | ALT_DOWN_MASK }
+        { "mappingTool",   "Matrix Mapping",  "mapping",     VK_M,      VK_M, CTRL_DOWN_MASK | ALT_DOWN_MASK },
+        { "jcMapTool",     "Concept Map",     "mapping",     VK_P,      VK_P, CTRL_DOWN_MASK | ALT_DOWN_MASK },
     } ;
     
     public Actions() {
@@ -123,6 +128,7 @@ public class Actions {
         closeProjectAction = constructAction( "closeProject" ) ;
         
         mappingToolAction  = constructAction( "mappingTool" ) ;
+        jcMapToolAction    = constructAction( "jcMapTool"   ) ;
     }
     
     public AbstractBaseAction getNewRawFileAction() {
@@ -203,6 +209,10 @@ public class Actions {
     
     public AbstractBaseAction getMatrixMappingToolAction() {
         return mappingToolAction ;
+    }
+    
+    public AbstractBaseAction getJCMapToolAction() {
+        return jcMapToolAction ;
     }
 
     @SuppressWarnings( "serial" )
@@ -354,6 +364,24 @@ public class Actions {
     @SuppressWarnings( "unused" )
     private void mappingTool() {
         executeTool( mappingTool ) ;
+    }
+    
+    @SuppressWarnings( "unused" )
+    private void jcMapTool() {
+        try {
+            ConfigManager cfgMgr = ConfigManager.getInstance() ;
+            cfgMgr.initialize() ; 
+
+            JCMap jcMap = new JCMap( false ) ;
+            jcMap.setBounds( 0, 0, 600, 700 ) ;
+            jcMap.setVisible( true ) ;
+            jcMap.getEditor().requestFocus() ;
+            
+            jcMap.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE ) ;
+        }
+        catch( Exception e ) {
+            e.printStackTrace();
+        }
     }
     
     private void executeTool( final AbstractTool tool ) {
