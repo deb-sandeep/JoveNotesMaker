@@ -37,9 +37,9 @@ import javax.swing.SwingUtilities ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.ReflectionUtil ;
-import com.sandy.core.ConfigManager ;
 import com.sandy.jcmap.JCMap ;
 import com.sandy.jnmaker.tools.AbstractTool ;
+import com.sandy.jnmaker.tools.cmap.CMapper ;
 import com.sandy.jnmaker.tools.mapping.MatrixMappingTool ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
@@ -47,6 +47,7 @@ public class Actions {
 
     private static final Logger logger = Logger.getLogger( Actions.class ) ;
     
+    private CMapper      cMapper     = null ;
     private AbstractTool mappingTool = new MatrixMappingTool() ;
     
     private AbstractBaseAction exitAppAction       = null ;
@@ -367,20 +368,15 @@ public class Actions {
     }
     
     @SuppressWarnings( "unused" )
-    private void jcMapTool() {
-        try {
-            ConfigManager cfgMgr = ConfigManager.getInstance() ;
-            cfgMgr.initialize() ; 
-
-            JCMap jcMap = new JCMap( false ) ;
-            jcMap.setBounds( 0, 0, 600, 700 ) ;
-            jcMap.setVisible( true ) ;
-            jcMap.getEditor().requestFocus() ;
-            
-            jcMap.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE ) ;
+    private void jcMapTool() throws Exception {
+        if( cMapper == null ) {
+            cMapper = new CMapper() ;
         }
-        catch( Exception e ) {
-            e.printStackTrace();
+        
+        if( cMapper != null ) {
+            JCMap tool = cMapper.getCMapper() ;
+            tool.setVisible( true ) ;
+            tool.getEditor().requestFocus() ;
         }
     }
     

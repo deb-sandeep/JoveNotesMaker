@@ -92,6 +92,10 @@ public class QAPanel extends QAPanelUI {
         return buffer.toString() ;
     }
     
+    public void appendNoteToAnswer( String text ) {
+        this.answerTextArea.append( text ) ;
+    }
+    
     private void moveSelTextFromAnsFieldToQuestionField() {
         
         String selText = answerTextArea.getSelectedText() ;

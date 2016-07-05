@@ -240,4 +240,8 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
         
         return panel ;
     }
+    
+    public AbstractNotePanel getCenterPanel() {
+        return this.centerPanel ;
+    }
 }
