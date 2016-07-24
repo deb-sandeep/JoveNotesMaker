@@ -97,7 +97,9 @@ public class ImagePanel extends JPanel
             public boolean accept( File file ) {
                 try {
                     String contentType =  Files.probeContentType( file.toPath() ) ;
-                    if( file.isDirectory() || contentType.startsWith( "image/" ) ) {
+                    if( file.isDirectory() || 
+                        ( contentType != null && 
+                          contentType.startsWith( "image/" ) ) ) {
                         return true ;
                     }
                 }

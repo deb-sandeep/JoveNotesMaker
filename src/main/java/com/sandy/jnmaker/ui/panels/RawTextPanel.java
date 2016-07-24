@@ -284,7 +284,9 @@ public class RawTextPanel extends JPanel implements WordSource {
             public boolean accept( File file ) {
                 try {
                     String contentType =  Files.probeContentType( file.toPath() ) ;
-                    if( file.isDirectory() || contentType.startsWith( "text/" ) ) {
+                    if( file.isDirectory() || 
+                        ( contentType != null && 
+                          contentType.startsWith( "text/" ) ) ) {
                         return true ;
                     }
                 }
