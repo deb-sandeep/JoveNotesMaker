@@ -38,6 +38,9 @@ All text editors      | Ctrl + J         | Join selected lines
 All text editors      | Ctrl + P         | Insert image file
 All text editors      | Ctrl + Shift + M | Convert to inline latex                       
 All text editors      | Ctrl + Shift + C | Convert to inline mhchem 
+All text editors      | Ctrl + Shift + R | Make font red 
+All text editors      | Ctrl + Shift + G | Make font green 
+All text editors      | Ctrl + Shift + B | Make font blue
 All text editors      | Alt  + Shift + M | Convert to latex                       
 All text editors      | Alt  + Shift + C | Convert to mhchem
                       |                  |

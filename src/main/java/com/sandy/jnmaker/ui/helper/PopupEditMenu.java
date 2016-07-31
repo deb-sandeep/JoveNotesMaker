@@ -106,6 +106,10 @@ public class PopupEditMenu extends JMenu implements ActionListener {
     
     private JMenuItem joinLinesMI = new JMenuItem() ;
     
+    private JMenuItem redFont   = new JMenuItem() ;
+    private JMenuItem blueFont  = new JMenuItem() ;
+    private JMenuItem greenFont = new JMenuItem() ;
+    
     public PopupEditMenu( JPopupMenu popupMenu, JTextComponent textComponent ) {
         
         super( "Edit" ) ;
@@ -138,6 +142,10 @@ public class PopupEditMenu extends JMenu implements ActionListener {
         add( prepareMenuItem( insImgMI,"Insert image"  ) ) ;
         addSeparator() ;
         add( prepareMenuItem( joinLinesMI, "Join lines" ) ) ;
+        addSeparator() ;
+        add( prepareMenuItem( redFont,   "Red font" ) ) ;
+        add( prepareMenuItem( blueFont,  "Blue font" ) ) ;
+        add( prepareMenuItem( greenFont, "Green font" ) ) ;
     }
     
     private JMenuItem prepareMenuItem( JMenuItem mi, String label ) {
@@ -171,6 +179,9 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                         
                         if     ( keyCode == KeyEvent.VK_M ) { encapsulateIMath( sel ) ; }
                         else if( keyCode == KeyEvent.VK_C ) { encapsulateIChem( sel ) ; }
+                        else if( keyCode == KeyEvent.VK_R ) { setFontColor( "red", sel ) ; }
+                        else if( keyCode == KeyEvent.VK_G ) { setFontColor( "green", sel ) ; }
+                        else if( keyCode == KeyEvent.VK_B ) { setFontColor( "blue", sel ) ; }
                     }
                     else if( modifiers == (KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK) ) {
                         
@@ -210,11 +221,19 @@ public class PopupEditMenu extends JMenu implements ActionListener {
             else if( src == chemMI     ) { encapsulateChem(  sel ) ; }
             else if( src == iChemMI    ) { encapsulateIChem( sel ) ; }
             else if( src == insImgMI   ) { insertImage() ; }
-            else if( src == joinLinesMI){ joinLines( sel ) ; }
+            else if( src == joinLinesMI) { joinLines( sel ) ; }
+            else if( src == redFont    ) { setFontColor( "red", sel ) ; }
+            else if( src == greenFont  ) { setFontColor( "green", sel ) ; }
+            else if( src == blueFont   ) { setFontColor( "blue", sel ) ; }
         }
         catch( Exception e1 ) {
             logger.error( "Error performing edit action.", e1 ) ;
         }
+    }
+    
+    private void setFontColor( String color, SelectedContent sel ) 
+        throws Exception {
+        encapsulate( sel, "{{@" + color + " ", "}}", false ) ;
     }
     
     private void doCopy( ActionEvent e ) throws Exception {
@@ -284,6 +303,9 @@ public class PopupEditMenu extends JMenu implements ActionListener {
             String replacementStr = prefix ;
             if( escapeSlash ) {
                 replacementStr += escapeSlash( sel.content ) ;
+            }
+            else {
+                replacementStr += sel.content ;
             }
             replacementStr += suffix ;
             
