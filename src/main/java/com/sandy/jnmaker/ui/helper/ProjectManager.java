@@ -57,14 +57,16 @@ public class ProjectManager {
     }
     
     public void setProjectConfigFile( File file ) throws Exception {
-        
+
         obtainObjectReferences() ;
-        if( closeProject() ) {
-            ObjectRepository.getWordRepository().clear() ;
-            loadState( file ) ;
-            this.projectConfigFile = file ;
-            saveAppState() ;
-            setMainFrameTitle() ;
+        if( file.exists() ) {
+            if( closeProject() ) {
+                ObjectRepository.getWordRepository().clear() ;
+                loadState( file ) ;
+                this.projectConfigFile = file ;
+                saveAppState() ;
+                setMainFrameTitle() ;
+            }
         }
     }
     
@@ -92,6 +94,7 @@ public class ProjectManager {
             try {
                 if( !file.getName().endsWith( ".jnmp" ) ) {
                     file = new File( file.getParentFile(), file.getName() + ".jnmp" ) ;
+                    file.createNewFile() ;
                 }
                 setProjectConfigFile( file ) ;
             }
