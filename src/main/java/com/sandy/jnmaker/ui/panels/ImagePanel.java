@@ -23,8 +23,8 @@ import javax.swing.filechooser.FileFilter ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
-import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.ui.ScalableImagePanel ;
+import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
@@ -43,6 +43,9 @@ public class ImagePanel extends JPanel
     private List<File>          openedFiles   = new ArrayList<>() ;
     private List<File>          originalFiles = new ArrayList<>() ;
     private JFileChooser        fileChooser   = new JFileChooser() ;
+    
+    // The sub images should be saved as <text>_[Ch.No.].[Fig.No.].[Sub.Fig.No]
+    private String lastSavedImgName = null ;
     
     public ImagePanel() {
         
@@ -234,7 +237,7 @@ public class ImagePanel extends JPanel
     public void subImageSelected( BufferedImage image ) {
         
         fileChooser.setCurrentDirectory( this.currentDir ) ;
-        fileChooser.setSelectedFile( new File( "" ) );
+        fileChooser.setSelectedFile( new File( getNextImageFileName() ) );
         int userChoice = fileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
             this.currentDir = fileChooser.getCurrentDirectory() ;
@@ -242,12 +245,54 @@ public class ImagePanel extends JPanel
             if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
                 outputFile = new File( this.currentDir, outputFile.getName() + ".png" ) ;
             }
+            
             try {
                 ImageIO.write( image, "png", outputFile ) ;
+                
+                String fileName = outputFile.getName() ;
+                fileName = fileName.substring( 0, fileName.length()-4 ) ;
+                this.lastSavedImgName = fileName ;
             }
             catch( IOException e ) {
                 e.printStackTrace();
             }
         }
+    }
+    
+    private String getNextImageFileName() {
+        
+        if( this.lastSavedImgName != null ) {
+            String[] parts = this.lastSavedImgName.split( "_" ) ;
+            if( parts.length > 1 ) {
+                String prefix = parts[0] ;
+                int[]  numSeq = extractNumSequence( parts[1] ) ;
+                
+                numSeq[numSeq.length-1]++ ;
+                
+                return createFileName( prefix, numSeq ) ;
+            }
+        }
+        return "" ;
+    }
+    
+    private int[] extractNumSequence( String input ) {
+        
+        String[] inputParts = input.split( "\\." ) ;
+        int[] sequence = new int[inputParts.length] ;
+        
+        for( int i=0; i<inputParts.length; i++ ) {
+            sequence[i] = Integer.parseInt( inputParts[i].trim() ) ;
+        }
+        return sequence ;
+    }
+    
+    private String createFileName( String prefix, int[] numSeq ) {
+        
+        StringBuilder buffer = new StringBuilder( prefix + "_" ) ;
+        for( int i=0; i<numSeq.length-1; i++ ) {
+            buffer.append( numSeq[i] ).append( "." ) ;
+        }
+        buffer.append( numSeq[numSeq.length-1] ) ;
+        return buffer.toString() ;
     }
 }
