@@ -264,29 +264,38 @@ public class ImagePanel extends JPanel
         if( this.lastSavedImgName != null ) {
             String[] parts = this.lastSavedImgName.split( "_" ) ;
             if( parts.length > 1 ) {
-                String prefix = parts[0] ;
-                int[]  numSeq = extractNumSequence( parts[1] ) ;
+                String   prefix = parts[0] ;
+                String[] clSeq  = parts[1].split( "\\." ) ;
                 
-                numSeq[numSeq.length-1]++ ;
+                clSeq = incrementClassificationSequence( clSeq ) ;
                 
-                return createFileName( prefix, numSeq ) ;
+                return createFileName( prefix, clSeq ) ;
             }
         }
         return "" ;
     }
     
-    private int[] extractNumSequence( String input ) {
+    private String[] incrementClassificationSequence( String[] inputSeq ) {
         
-        String[] inputParts = input.split( "\\." ) ;
-        int[] sequence = new int[inputParts.length] ;
+        int lastElementIndex = inputSeq.length-1 ;
+        String lastElement   = inputSeq[lastElementIndex] ;
         
-        for( int i=0; i<inputParts.length; i++ ) {
-            sequence[i] = Integer.parseInt( inputParts[i].trim() ) ;
+        try {
+            int intForm = Integer.parseInt( lastElement ) ;
+            inputSeq[lastElementIndex] = Integer.toString( ++intForm ) ;
         }
-        return sequence ;
+        catch( Exception e ) {
+            char lastChar = lastElement.charAt( lastElement.length()-1 ) ;
+            lastChar++ ;
+            
+            String newSeq = lastElement.substring( 0, lastElement.length()-1 ) + 
+                            Character.toString( lastChar ) ;
+            inputSeq[lastElementIndex] = newSeq ;
+        }
+        return inputSeq ;
     }
     
-    private String createFileName( String prefix, int[] numSeq ) {
+    private String createFileName( String prefix, String[] numSeq ) {
         
         StringBuilder buffer = new StringBuilder( prefix + "_" ) ;
         for( int i=0; i<numSeq.length-1; i++ ) {
