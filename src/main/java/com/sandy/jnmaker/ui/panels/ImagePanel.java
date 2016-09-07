@@ -27,6 +27,8 @@ import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.ui.helper.seqgen.SequenceGenerator ;
+import com.sandy.jnmaker.ui.helper.seqgen.Sequencer ;
 
 public class ImagePanel extends JPanel 
     implements ActionListener, TabCloseListener, ScalableImagePanelListener {
@@ -44,8 +46,7 @@ public class ImagePanel extends JPanel
     private List<File>          originalFiles = new ArrayList<>() ;
     private JFileChooser        fileChooser   = new JFileChooser() ;
     
-    // The sub images should be saved as <text>_[Ch.No.].[Fig.No.].[Sub.Fig.No]
-    private String lastSavedImgName = null ;
+    private SequenceGenerator sequenceGenerator = null ;
     
     public ImagePanel() {
         
@@ -238,8 +239,10 @@ public class ImagePanel extends JPanel
         
         fileChooser.setCurrentDirectory( this.currentDir ) ;
         fileChooser.setSelectedFile( new File( getNextImageFileName() ) );
+
         int userChoice = fileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
+        
             this.currentDir = fileChooser.getCurrentDirectory() ;
             File outputFile = fileChooser.getSelectedFile() ;
             if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
@@ -251,7 +254,15 @@ public class ImagePanel extends JPanel
                 
                 String fileName = outputFile.getName() ;
                 fileName = fileName.substring( 0, fileName.length()-4 ) ;
-                this.lastSavedImgName = fileName ;
+                
+                if( this.sequenceGenerator == null ) {
+                    this.sequenceGenerator = Sequencer.identifySequence( fileName ) ;
+                }
+                else {
+                    if( !this.sequenceGenerator.isMatchingSequence( fileName ) ) {
+                        this.sequenceGenerator = Sequencer.identifySequence( fileName ) ;
+                    }
+                }
             }
             catch( IOException e ) {
                 e.printStackTrace();
@@ -260,48 +271,9 @@ public class ImagePanel extends JPanel
     }
     
     private String getNextImageFileName() {
-        
-        if( this.lastSavedImgName != null ) {
-            String[] parts = this.lastSavedImgName.split( "_" ) ;
-            if( parts.length > 1 ) {
-                String   prefix = parts[0] ;
-                String[] clSeq  = parts[1].split( "\\." ) ;
-                
-                clSeq = incrementClassificationSequence( clSeq ) ;
-                
-                return createFileName( prefix, clSeq ) ;
-            }
+        if( this.sequenceGenerator != null ) {
+            return this.sequenceGenerator.getNextSequence() ;
         }
         return "" ;
-    }
-    
-    private String[] incrementClassificationSequence( String[] inputSeq ) {
-        
-        int lastElementIndex = inputSeq.length-1 ;
-        String lastElement   = inputSeq[lastElementIndex] ;
-        
-        try {
-            int intForm = Integer.parseInt( lastElement ) ;
-            inputSeq[lastElementIndex] = Integer.toString( ++intForm ) ;
-        }
-        catch( Exception e ) {
-            char lastChar = lastElement.charAt( lastElement.length()-1 ) ;
-            lastChar++ ;
-            
-            String newSeq = lastElement.substring( 0, lastElement.length()-1 ) + 
-                            Character.toString( lastChar ) ;
-            inputSeq[lastElementIndex] = newSeq ;
-        }
-        return inputSeq ;
-    }
-    
-    private String createFileName( String prefix, String[] numSeq ) {
-        
-        StringBuilder buffer = new StringBuilder( prefix + "_" ) ;
-        for( int i=0; i<numSeq.length-1; i++ ) {
-            buffer.append( numSeq[i] ).append( "." ) ;
-        }
-        buffer.append( numSeq[numSeq.length-1] ) ;
-        return buffer.toString() ;
     }
 }
