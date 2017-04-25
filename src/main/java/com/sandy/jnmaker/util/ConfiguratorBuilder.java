@@ -38,7 +38,8 @@ public class ConfiguratorBuilder {
         
         configurator.registerConfigurableObject( "JoveNotesMaker", getApp() ) ;
         configurator.registerConfigurableObject( "WordnicAdapter", getWordnicAdapter() ) ;
-        configurator.registerConfigurableObject( "AppConfig",      getAppConfig() );
+        configurator.registerConfigurableObject( "AppConfig",      getAppConfig() ) ;
+        configurator.registerConfigurableObject( "IndexingDaemon", getIndexingDaemon() ) ;
     }
     
     private void registerConfigProperties( Configurator configurator ) {

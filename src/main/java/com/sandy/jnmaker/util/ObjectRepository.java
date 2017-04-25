@@ -5,6 +5,7 @@ import com.sandy.common.objfactory.SpringObjectFactory ;
 import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.JoveNotesMaker ;
+import com.sandy.jnmaker.indexer.IndexingDaemon ;
 import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.ProjectManager ;
@@ -24,6 +25,7 @@ public class ObjectRepository {
     private static ProjectManager      projectManager = null ;
     private static WordRepository      wordRepository = null ;
     private static NotesCreatorDialog  curNotesDialog = null ;
+    private static IndexingDaemon      indexingDaemon = null ;
     
     public static NotesCreatorDialog getCurNotesDialog() {
         return curNotesDialog;
@@ -119,5 +121,13 @@ public class ObjectRepository {
     
     public static EventBus getBus() {
         return bus ;
+    }
+    
+    public static void setIndexingDaemon( IndexingDaemon daemon ) {
+        indexingDaemon = daemon ;
+    }
+    
+    public static IndexingDaemon getIndexingDaemon() {
+        return indexingDaemon ;
     }
 }

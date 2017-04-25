@@ -6,3 +6,21 @@
 # word meanings and sound clips.
 #
 #AppConfig.joveNotesMediaDir=/home/sandeep/projects/workspace/jove_notes_media/_spellbee
+
+# The workspace directory for jove notes maker within which application
+# specific files etc would be created.
+AppConfig.workspaceDir=/home/sandeep/projects/workspace/jove_notes_maker
+
+# The list of jovenotes source directories which need to be parsed and 
+# indexed by the background indexer.
+#IndexingDaemon.sourceDirectories=\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-I:\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-II:\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-III:\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-VII:\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-VIII:\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-IX:\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-X:\
+#/home/sandeep/Documents/StudyNotes/JoveNotes-IIT:\
+#/home/sandeep/Documents/StudyNotes/JoveNotesSampleContent:\
+#/home/sandeep/Documents/StudyNotes/JoveNotesParth
