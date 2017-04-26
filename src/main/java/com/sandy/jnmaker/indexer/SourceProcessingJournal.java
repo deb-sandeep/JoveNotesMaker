@@ -5,9 +5,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList ;
+import java.util.Collection ;
 import java.util.Date;
-import java.util.Iterator ;
+import java.util.List ;
 import java.util.Properties;
+import java.util.TreeSet ;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -21,11 +24,14 @@ public class SourceProcessingJournal {
 
     private static final Logger log = Logger.getLogger( SourceProcessingJournal.class ) ;
     
-    private Properties journal     = new Properties() ;
-    private File       journalFile = null ;
+    private Properties journal           = new Properties() ;
+    private File       journalFile       = null ;
+    private List<File> sourceDirectories = null ;
     
-    public SourceProcessingJournal( File journalFile ) 
+    public SourceProcessingJournal( File journalFile, List<File> sourceDirectories ) 
         throws Exception {
+        
+        this.sourceDirectories = sourceDirectories ;
         
         if( journalFile.exists() ) {
             this.journalFile = journalFile ;
@@ -34,6 +40,7 @@ public class SourceProcessingJournal {
         else {
             log.info( "Journal file " + journalFile.getAbsolutePath() + 
                       " does not exist. Creating a new file." ) ;
+            
             if( !journalFile.createNewFile() ) {
                 throw new Exception( "Journal file " + journalFile.getAbsolutePath() +
                                      " could not be created." ) ;
@@ -42,6 +49,42 @@ public class SourceProcessingJournal {
                 this.journalFile = journalFile ;
             }
         }
+    }
+    
+    public List<File> getFilesForProcessing() throws Exception {
+        
+        List<File> filesForProcessing = new ArrayList<File>() ;
+        
+        TreeSet<String> journalFiles = new TreeSet<>() ;
+        for( Object o : journal.keySet() ) {
+            journalFiles.add( o.toString() ) ;
+        }
+            
+        for( File srcDir : sourceDirectories ) {
+            
+            Collection<File> allFiles = FileUtils.listFiles( srcDir, 
+                                                             new String[]{"jn"}, 
+                                                             true ) ;
+            for( File file : allFiles ) {
+                
+                journalFiles.remove( file.getAbsolutePath() ) ;
+                
+                if( hasFileChanged( file ) ) {
+                    filesForProcessing.add( file ) ;
+                    log.info( "  Selecting file - " + file.getAbsolutePath() ) ;
+                }
+                else {
+                    log.debug( "  Ignoring file - " + file.getAbsolutePath() ) ;
+                }
+            }
+            log.info("\n") ;
+        }
+        
+        for( String delFilePath : journalFiles ) {
+            filesForProcessing.add( new File( delFilePath ) ) ;
+        }
+        
+        return filesForProcessing ;
     }
     
     /**
@@ -117,19 +160,33 @@ public class SourceProcessingJournal {
         writer.close() ;
     }
     
-    public void clean() throws IOException {
+    public void removeFileEntry( File file ) throws IOException {
 
-        Writer writer = new FileWriter( this.journalFile ) ;
+        journal.remove( file.getAbsolutePath() ) ;
         
-        for( Iterator<Object> iter = journal.keySet().iterator(); iter.hasNext(); ) {
-            File file = new File( ( String )iter.next() ) ;
-            if( !file.exists() ) {
-                log.debug( "Removing file " + file.getAbsolutePath() + 
-                           " from journa as it no longer exists." ) ;
-                iter.remove() ;
-            }
-        }
+        Writer writer = new FileWriter( this.journalFile ) ;
         journal.store( writer, null ) ; 
         writer.close() ;
+    }
+
+    public List<File> getFilesForProcessing( File srcDir ) throws Exception {
+        
+        List<File> filesForProcessing = new ArrayList<File>() ;
+            
+        Collection<File> allFiles = FileUtils.listFiles( srcDir, 
+                                                new String[]{"jn"}, true ) ;
+        for( File file : allFiles ) {
+            if( hasFileChanged( file ) ) {
+                filesForProcessing.add( file ) ;
+                log.info( "  Selecting file - " + file.getAbsolutePath() ) ;
+            }
+            else {
+                log.debug( "  Ignoring file - " + file.getAbsolutePath() ) ;
+            }
+        }
+        
+        log.info("\n") ;
+        
+        return filesForProcessing ;
     }
 }
