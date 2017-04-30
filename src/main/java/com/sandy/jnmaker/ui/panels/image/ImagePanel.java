@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.panels.image;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.awt.BorderLayout ;
 import java.awt.Component ;
@@ -41,7 +42,6 @@ public class ImagePanel extends JPanel
     private static final String AC_CLOSE_ALL  = "CLOSE_ALL" ;
     
     private CloseableTabbedPane tabbedPane    = null ;
-    private File                currentDir    = new File( System.getProperty( "user.home" ) ) ;
     private List<File>          openedFiles   = new ArrayList<>() ;
     private List<File>          originalFiles = new ArrayList<>() ;
     private JFileChooser        fileChooser   = new JFileChooser() ;
@@ -152,10 +152,10 @@ public class ImagePanel extends JPanel
         
         File[] selectedFiles = null ;
         
-        fileChooser.setCurrentDirectory( this.currentDir ) ;
+        fileChooser.setCurrentDirectory( getCWD() ) ;
         int userChoice = fileChooser.showOpenDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
-            this.currentDir = fileChooser.getCurrentDirectory() ;
+            setCWD( fileChooser.getCurrentDirectory() ) ;
             selectedFiles = fileChooser.getSelectedFiles() ;
         }
         
@@ -217,14 +217,6 @@ public class ImagePanel extends JPanel
         return !this.originalFiles.equals( this.openedFiles ) ;
     }
 
-    public File getCurrentDir() {
-        return currentDir;
-    }
-
-    public void setCurrentDir( File currentDir ) {
-        this.currentDir = currentDir;
-    }
-
     @Override
     public void tabClosing( ActionEvent e ) {
         
@@ -237,16 +229,16 @@ public class ImagePanel extends JPanel
     @Override
     public void subImageSelected( BufferedImage image ) {
         
-        fileChooser.setCurrentDirectory( this.currentDir ) ;
+        fileChooser.setCurrentDirectory( getCWD() ) ;
         fileChooser.setSelectedFile( new File( getNextImageFileName() ) );
 
         int userChoice = fileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
         
-            this.currentDir = fileChooser.getCurrentDirectory() ;
+            setCWD( fileChooser.getCurrentDirectory() ) ;
             File outputFile = fileChooser.getSelectedFile() ;
             if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
-                outputFile = new File( this.currentDir, outputFile.getName() + ".png" ) ;
+                outputFile = new File( getCWD(), outputFile.getName() + ".png" ) ;
             }
             
             try {

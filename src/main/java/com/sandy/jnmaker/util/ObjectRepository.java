@@ -1,5 +1,7 @@
 package com.sandy.jnmaker.util;
 
+import java.io.File ;
+
 import com.sandy.common.bus.EventBus ;
 import com.sandy.common.objfactory.SpringObjectFactory ;
 import com.sandy.common.util.StateManager ;
@@ -26,6 +28,7 @@ public class ObjectRepository {
     private static WordRepository      wordRepository = null ;
     private static NotesCreatorDialog  curNotesDialog = null ;
     private static IndexingDaemon      indexingDaemon = null ;
+    private static File                currentWorkDir = new File( System.getProperty( "user.home" ) ) ;
     
     public static NotesCreatorDialog getCurNotesDialog() {
         return curNotesDialog;
@@ -129,5 +132,18 @@ public class ObjectRepository {
     
     public static IndexingDaemon getIndexingDaemon() {
         return indexingDaemon ;
+    }
+    
+    public static void setCWD( File file ) {
+        if( file.isDirectory() ) {
+            currentWorkDir = file ;
+        }
+        else {
+            throw new IllegalArgumentException( "File is not a directory." ) ;
+        }
+    }
+    
+    public static File getCWD() {
+        return currentWorkDir ;
     }
 }

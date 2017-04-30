@@ -1,7 +1,7 @@
 package com.sandy.jnmaker.ui.panels.rawtxt;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -65,7 +65,6 @@ public class RawTextPanel extends JPanel implements WordSource {
     
     private int  fontSize    = 12 ;
     private File currentFile = null ;
-    private File currentDir  = new File( System.getProperty( "user.home" ) ) ;
     
     public RawTextPanel() {
         setUpUI() ;
@@ -107,9 +106,9 @@ public class RawTextPanel extends JPanel implements WordSource {
                 this.textPane.setText( content ) ;
                 this.originalText = content ;
                 this.currentFile  = file ;
-                this.currentDir   = file.getParentFile() ;
                 
-                ObjectRepository.getWordRepository().offer( this.originalText ) ;
+                setCWD( file.getParentFile() ) ;
+                getWordRepository().offer( this.originalText ) ;
                 scrollToBookmarkPosition() ;
             }
             catch( Exception e ) {
@@ -357,10 +356,10 @@ public class RawTextPanel extends JPanel implements WordSource {
         
         File selectedFile = null ;
         
-        fileChooser.setCurrentDirectory( this.currentDir ) ;
+        fileChooser.setCurrentDirectory( getCWD() ) ;
         int userChoice = fileChooser.showOpenDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
-            this.currentDir = fileChooser.getCurrentDirectory() ;
+            setCWD( fileChooser.getCurrentDirectory() ) ;
             selectedFile = fileChooser.getSelectedFile() ;
         }
         
@@ -401,11 +400,11 @@ public class RawTextPanel extends JPanel implements WordSource {
     
     public void saveFileAs() {
         
-        fileChooser.setCurrentDirectory( this.currentDir ) ;
+        fileChooser.setCurrentDirectory( getCWD() ) ;
         fileChooser.setDialogTitle( "Save file as" );
         int userChoice = fileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
-            this.currentDir = fileChooser.getCurrentDirectory() ;
+            setCWD( fileChooser.getCurrentDirectory() ) ;
             File selectedFile = fileChooser.getSelectedFile() ;
             
             try {

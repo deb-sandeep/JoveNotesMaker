@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui.helper ;
 
-import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.io.File ;
 import java.io.FileInputStream ;
@@ -34,7 +34,6 @@ public class ProjectManager {
             
         "RawTextPanel.fontSize",
         "RawTextPanel.currentFile",
-        "ImagePanel.currentDir",
         "ImagePanel.openedFiles",
         "JoveNotesPanel.fontSize",
         "JoveNotesPanel.currentFile"
@@ -61,7 +60,7 @@ public class ProjectManager {
         obtainObjectReferences() ;
         if( file.exists() ) {
             if( closeProject() ) {
-                ObjectRepository.getWordRepository().clear() ;
+                getWordRepository().clear() ;
                 loadState( file ) ;
                 this.projectConfigFile = file ;
                 saveAppState() ;
