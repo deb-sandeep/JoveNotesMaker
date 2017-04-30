@@ -5,6 +5,8 @@ import static javax.swing.JOptionPane.showMessageDialog ;
 import java.awt.event.ActionEvent ;
 import java.util.List ;
 
+import javax.swing.event.ListSelectionEvent ;
+
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
@@ -27,6 +29,19 @@ public class SearchInputPanel extends SearchInputPanelUI {
     @Override
     public void actionPerformed( ActionEvent e ) {
         
+        if( e.getSource() == super.searchBtn || 
+            e.getSource() == super.queryTF ) {
+            
+            searchAndDisplayResults() ;
+        }
+        else if( e.getSource() == super.moveSelectedBtn ) {
+            
+            copySelectedResultsToNotesPane() ;
+        }
+    }
+    
+    private void searchAndDisplayResults() {
+        
         String queryStr = super.queryTF.getText() ;
         if( StringUtil.isEmptyOrNull( queryStr ) ) {
             return ;
@@ -41,13 +56,29 @@ public class SearchInputPanel extends SearchInputPanelUI {
             showMessageDialog( this, "Error in query\n" + e1.getMessage() ) ;
             return ;
         }
-        
-        processResults( results ) ;
+        super.tableModel.setSearchResults( results ) ;
     }
     
-    private void processResults( List<NoteInfo> results ) {
-        for( NoteInfo info : results ) {
-            log.debug( info.getContent() ) ;
+    @Override
+    public void valueChanged( ListSelectionEvent e ) {
+
+        if( !e.getValueIsAdjusting() ) {
+            StringBuilder buffer = new StringBuilder() ;
+            
+            int viewRows[] = resultsTable.getSelectedRows() ;
+            for( int viewRow : viewRows ) {
+                int modelRow = resultsTable.convertRowIndexToModel( viewRow ) ;
+                
+                NoteInfo result = tableModel.getResult( modelRow ) ;
+                buffer.append( result.getContent() )
+                      .append( "\n\n" ) ;
+            }
+            
+            super.srcViewPane.setText( buffer.toString() ) ;
         }
+    }
+    
+    private void copySelectedResultsToNotesPane() {
+        
     }
 }

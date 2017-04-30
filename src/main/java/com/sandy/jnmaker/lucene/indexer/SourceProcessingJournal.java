@@ -173,7 +173,7 @@ public class SourceProcessingJournal {
         
         String absPath = file.getAbsolutePath() ;
         for( File srcDir : sourceDirectories ) {
-            if( absPath.startsWith( srcDir.getAbsolutePath() ) ) 
+            if( absPath.startsWith( srcDir.getAbsolutePath() + File.separator ) ) 
                 return srcDir ;
         }
         return null ;
