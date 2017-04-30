@@ -28,7 +28,7 @@ import com.sandy.common.ui.SwingUtils ;
 import com.sandy.common.util.Configurator ;
 import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;
-import com.sandy.jnmaker.indexer.IndexingDaemon ;
+import com.sandy.jnmaker.lucene.indexer.IndexingDaemon ;
 import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.ProjectManager ;

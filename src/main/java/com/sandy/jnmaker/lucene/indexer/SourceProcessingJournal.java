@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.indexer;
+package com.sandy.jnmaker.lucene.indexer;
 
 import java.io.File;
 import java.io.FileReader;
@@ -189,4 +189,15 @@ public class SourceProcessingJournal {
         
         return filesForProcessing ;
     }
+    
+    public File getSourceDirForFile( File file ) {
+        
+        String absPath = file.getAbsolutePath() ;
+        for( File srcDir : sourceDirectories ) {
+            if( absPath.startsWith( srcDir.getAbsolutePath() ) ) 
+                return srcDir ;
+        }
+        return null ;
+    }
 }
+

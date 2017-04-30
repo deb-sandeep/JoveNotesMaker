@@ -48,6 +48,7 @@ public class MainFrame extends AbstractMainFrame {
     @Override
     public void handleWindowClosing() {
         if( ObjectRepository.getProjectManager().closeProject() ) {
+            ObjectRepository.getIndexingDaemon().shutDown() ;
             super.handleWindowClosing() ;
         }
     }

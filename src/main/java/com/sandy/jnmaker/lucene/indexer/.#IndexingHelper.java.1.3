@@ -1,0 +1,168 @@
+/**
+ * Copyright Cognizant Technologies Solution Pvt. Ltd. 2010. All rights 
+ * reserved. No part of this program may be photocopied reproduced or 
+ * translated to another program language without prior written consent of 
+ * Cognizant Technologies Solution Pvt. Ltd.
+ */
+
+package com.sandy.pass.biz.indexer;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.Properties;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+
+
+/**
+ * This class contains static helper methods used by indexer
+ * 
+ * @author Vivek Kant (vivek.kant@cognizant.com)
+ */
+public class IndexingHelper {
+	
+	public static final Logger logger = Logger.getLogger( IndexingHelper.class ) ;
+	
+	public static final String META_FILENAME = "meta.properties" ;
+
+	/**
+	 * This utility method helps to get the meta property file for a given
+	 * record.
+	 * 
+	 * @param ctDir The root content directory
+	 * @param id The identifier of the presentation
+	 * 
+	 * @return The properties object
+	 */
+	public static Properties getMetaForId( File ctDir, String id )
+	                                            throws Exception {
+
+		File dir = new File( ctDir, id ) ;
+		File pfile = new File( dir, META_FILENAME ) ;
+
+		logger.debug( "Loading meta file at " + pfile.getAbsolutePath() ) ;
+		
+		Properties props = getPropertiesFromFile( pfile ) ;
+		
+		logger.debug( "Props are" + props ) ;
+
+		return props ;
+	}
+
+	/**
+	 * This method reads a property file and load it into the object. The load
+	 * method of {@link Properties} is not used because of it does not take 
+	 * spaces in keys and "\" starts an escape sequence.
+	 * 
+	 * @param file The file to load
+	 * 
+	 * @return The properties object
+	 * @throws Exception
+	 */
+	public static Properties getPropertiesFromFile( File file ) throws Exception {
+	    
+	    logger.debug( "Reading document properties from " + file.getAbsolutePath() ) ;
+		Properties props = new Properties() ;
+		BufferedReader buf = new BufferedReader( new FileReader( file ) ) ;
+		String line = null ;
+		while( ( line = buf.readLine() ) != null ) {
+			if ( line.indexOf( '=' ) != -1 && 
+				!line.trim().startsWith( "#" ) ) {
+				String key = line.substring( 0, line.indexOf( '=' ) ).trim() ;
+				String val = line.substring( line.indexOf( '=' ) + 1 ).trim() ;
+				props.setProperty( key, val ) ;
+			}
+		}
+		
+		return props ;
+	}
+	
+	/**
+	 * This utility method adds a property to the document
+	 * 
+	 * @param doc The document to which property is to be added
+	 * @param props The property object to obtain the value from
+	 * @param key The key of the property value
+	 */
+	public static void addPropertyToDocument( Document doc, 
+											  Properties props, String key ) {
+		
+		String value = props.getProperty( key ) != null ? 
+				props.getProperty( key ).trim() : "" ;
+		Field field = new Field( key, value, Field.Store.YES, Field.Index.NOT_ANALYZED ) ;
+		doc.add( field ) ;
+	}
+	
+	/**
+	 * This utility method adds a field to the document.
+	 * 
+	 * @param doc The document to which the field is to be added
+	 * @param id The identifier of the field
+	 * @param value The value of the field
+	 */
+	public static void addFieldToDocument( Document doc, 
+										   String id, String value ) {
+		
+		Field field = new Field( id, value, Field.Store.YES, Field.Index.NOT_ANALYZED ) ;
+		doc.add( field ) ;
+	}
+	
+	/**
+	 * This method adds a file to the document as a field
+	 * 
+	 * @param doc The document to which the field is to be added
+	 * @param id The identifier of the field
+	 * @param file The file of which content are to be added
+	 * @throws Exception
+	 */
+	public static void addFileToDocument( Document doc, 
+										  String id, File file ) throws Exception {
+		if ( file.exists() ) {
+			
+			String contents = FileUtils.readFileToString( file, "UTF-16" ) ;
+			
+			Field field = new Field( id, contents, Field.Store.NO, Field.Index.ANALYZED ) ;
+			doc.add( field ) ;
+			
+			logger.debug( "Content file added to index : " + file ) ;
+		
+		} else {
+			logger.error( "Content file not found : " + file ) ;
+		}
+	}
+	
+	/**
+	 * This method returns a slide identifier
+	 * 
+	 * @param id The presentation id
+	 * @param number The index of the slide ( 1 throw num-slides)
+	 * 
+	 * @return The slide identifier
+	 */
+	public static String getSlideID( String id, int number ) {
+		return id + "_" + number ;
+	}
+	
+	/**
+	 * This method returns the slide number given the slide ID
+	 * 
+	 * @param slideId The slide identifier
+	 * @return The slide number in the presentation
+	 */
+	public static int getSlideNumber( String slideId ) {
+		
+		int slide = 0 ;
+		if ( slideId.indexOf( '_' ) != -1 ) {
+			slide = Integer.parseInt( slideId.substring( 
+									  slideId.indexOf( '_') ).trim() ) ;
+		}
+		
+		return slide ;
+	}
+	
+	
+}

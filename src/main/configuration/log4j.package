@@ -7,4 +7,6 @@ log4j.appender.CONSOLE.layout.ConversionPattern=%m%n
 
 log4j.logger.org.apache=WARN
 log4j.logger.org.springframework=WARN
+log4j.logger.org.eclipse.xtext.parser=WARN
+log4j.logger.org.eclipse.xtext.linking.impl=WARN
 
