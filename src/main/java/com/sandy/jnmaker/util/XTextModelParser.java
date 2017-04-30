@@ -13,10 +13,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 public class XTextModelParser {
 
     private static final String DEF_EMF_REG_METHOD = "createInjectorAndDoEMFRegistration" ;
+    private static final String BOOTSTRAP_CLS_NAME = "com.sandy.xtext.JoveNotesStandaloneSetup" ;
 
-    public XTextModelParser( String bootstrapClassName )
+    public XTextModelParser()
         throws Exception {
-        this( bootstrapClassName, DEF_EMF_REG_METHOD ) ;
+        this( BOOTSTRAP_CLS_NAME, DEF_EMF_REG_METHOD ) ;
     }
     
     public XTextModelParser( String bootstrapClassName, 

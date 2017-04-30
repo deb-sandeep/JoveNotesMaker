@@ -42,7 +42,7 @@ public abstract class SearchInputPanelUI extends JPanel
     protected JTextField        queryTF     = null ;
     protected JButton           searchBtn   = null ;
     protected JButton           moveSelectedBtn= null ;
-    protected JoveNotesTextPane srcViewPane = null ;
+    protected JoveNotesTextPane jnSrcPane = null ;
     protected JTable            resultsTable= null ;
     
     protected SearchResultsTableModel               tableModel = null ;
@@ -116,9 +116,10 @@ public abstract class SearchInputPanelUI extends JPanel
 
     private Component getSourceViewerPanel() {
         
-        srcViewPane = new JoveNotesTextPane() ;
+        jnSrcPane = new JoveNotesTextPane() ;
+        jnSrcPane.setFont( new Font( "Courier", Font.PLAIN, 11 ) ) ;        
         
-        JScrollPane sp = new JScrollPane( srcViewPane, 
+        JScrollPane sp = new JScrollPane( jnSrcPane, 
                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) ;
         

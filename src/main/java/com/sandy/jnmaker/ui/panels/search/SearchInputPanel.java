@@ -74,7 +74,7 @@ public class SearchInputPanel extends SearchInputPanelUI {
                       .append( "\n\n" ) ;
             }
             
-            super.srcViewPane.setText( buffer.toString() ) ;
+            super.jnSrcPane.setText( buffer.toString() ) ;
         }
     }
     

@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.lucene.search;
 
 import static com.sandy.jnmaker.lucene.indexer.LuceneHelper.getLuceneFSDir ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.io.File ;
 import java.util.ArrayList ;
@@ -58,6 +59,9 @@ public class Searcher {
 		Map<String, Boolean> noteInfoHashMap = new HashMap<String, Boolean>() ;
 		TopScoreDocCollector collector = null ;
 		
+		ChapterInfo currentJNChapter = null ;
+		currentJNChapter = getMainFrame().getJNPanel().getChapterInfo() ;
+		
 		try {
             Query q = parser.parse( queryStr ) ;
             collector = TopScoreDocCollector.create( 100 ) ;
@@ -75,9 +79,11 @@ public class Searcher {
             	NoteInfo noteInfo = getNoteInfoFromDoc( doc ) ;
             	String   noteHash = noteInfo.getHash() ;
             	
-            	if( !noteInfoHashMap.containsKey( noteHash ) ) {
-            	    noteInfoHashMap.put( noteHash, true ) ;
-            	    results.add( noteInfo ) ;
+            	if( !noteInfo.getChapter().equals( currentJNChapter ) ) {
+                    if( !noteInfoHashMap.containsKey( noteHash ) ) {
+                        noteInfoHashMap.put( noteHash, true ) ;
+                        results.add( noteInfo ) ;
+                    }
             	}
             }
             log.debug( "Ignoring " + numSimilar + " similar results" ) ;

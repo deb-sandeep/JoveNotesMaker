@@ -1,6 +1,9 @@
 package com.sandy.jnmaker.ui.panels.jn ;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
+import static com.sandy.jnmaker.util.ObjectRepository.getIndexingDaemon ;
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.getWordRepository ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -26,6 +29,7 @@ import org.apache.commons.lang.StringUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.lucene.ChapterInfo ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.menu.actions.Actions ;
 import com.sandy.jnmaker.ui.panels.common.JoveNotesTextPane ;
@@ -47,7 +51,7 @@ public class JoveNotesPanel extends JPanel {
     private File currentFile = null ;
     private File currentDir  = new File( System.getProperty( "user.home" ) ) ;
     
-    public JoveNotesPanel() {
+    public JoveNotesPanel() throws Exception {
         setUpUI() ;
         setUpFileChooser() ;
         ObjectRepository.getWordRepository().addWordSource( textPane ) ;
@@ -82,7 +86,7 @@ public class JoveNotesPanel extends JPanel {
                 this.currentFile  = file ;
                 this.currentDir   = file.getParentFile() ;
                 
-                ObjectRepository.getWordRepository().offer( this.originalText ) ;
+                getWordRepository().offer( this.originalText ) ;
             }
             catch( Exception e ) {
                 logger.error( "Error while opening file.", e ) ;
@@ -91,6 +95,19 @@ public class JoveNotesPanel extends JPanel {
             }
         }
         displayFileName() ;
+    }
+    
+    public ChapterInfo getChapterInfo() {
+        ChapterInfo info = null ;
+        if( currentFile != null ) {
+            try {
+                info = getIndexingDaemon().getChapterInfo( currentFile ) ;
+            }
+            catch( Exception e ) {
+                logger.error( "Could not get chapter info", e ) ;
+            }
+        }
+        return info ;
     }
     
     private void displayFileName() {
@@ -173,7 +190,7 @@ public class JoveNotesPanel extends JPanel {
                 else if( e.getKeyCode()   == KeyEvent.VK_R && 
                          e.getModifiers() == ( KeyEvent.CTRL_MASK | 
                                                KeyEvent.SHIFT_MASK ) ) {
-                    ObjectRepository.getMainFrame().shiftFocusToRawText() ;
+                    getMainFrame().shiftFocusToRawText() ;
                 }
             }
         } );

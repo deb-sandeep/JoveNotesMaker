@@ -44,7 +44,7 @@ public class IndexingDaemon extends Thread {
         journal = new SourceProcessingJournal( journalFile, sourceDirectories ) ;
         log.debug( "Source processing journal loaded." ) ;
         
-        modelParser = new XTextModelParser( "com.sandy.xtext.JoveNotesStandaloneSetup" ) ;
+        modelParser = new XTextModelParser() ;
         log.debug( "Model parser loaded" ) ;
         
         indexer = new Indexer() ;
@@ -193,6 +193,16 @@ public class IndexingDaemon extends Thread {
                 }
             }
         }
+    }
+    
+    public ChapterInfo getChapterInfo( File file ) 
+        throws Exception {
+        
+        JoveNotes      ast        = (JoveNotes) modelParser.parseFile( file ) ;
+        ChapterDetails chpDetails = ast.getChapterDetails() ;
+        ChapterInfo    ci         = getChapterInfo( file, chpDetails ) ;
+        
+        return ci ;
     }
     
     private ChapterInfo getChapterInfo( File file, ChapterDetails cd ) {

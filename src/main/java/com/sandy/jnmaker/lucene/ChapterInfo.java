@@ -77,4 +77,52 @@ public class ChapterInfo {
         
         return LuceneHelper.getMD5( idBase ) ;
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31 ;
+        int result = 1 ;
+        result = prime * result
+                + ( ( chapterName == null ) ? 0 : chapterName.hashCode() ) ;
+        result = prime * result + chapterNum ;
+        result = prime * result
+                + ( ( srcPath == null ) ? 0 : srcPath.hashCode() ) ;
+        result = prime * result + subChapterNum ;
+        result = prime * result
+                + ( ( subject == null ) ? 0 : subject.hashCode() ) ;
+        result = prime * result
+                + ( ( syllabus == null ) ? 0 : syllabus.hashCode() ) ;
+        return result ;
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        
+        if( this == obj ) { 
+            return true ; 
+        }
+        
+        if( obj == null ) { 
+            return false ; 
+        }
+        
+        if( !( obj instanceof ChapterInfo ) ) { 
+            return false ; 
+        }
+
+        ChapterInfo other = (ChapterInfo) obj ;
+        if( srcPath == null ) {
+            if( other.srcPath != null ) { 
+                return false ; 
+            }
+        }
+        else if( srcPath.equals( other.srcPath ) ) { 
+            return true ; 
+        }
+        
+        return false ;
+    }
 }
