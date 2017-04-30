@@ -34,8 +34,8 @@ import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.MainFrame ;
-import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.ui.menu.actions.Actions ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 import com.sandy.jnmaker.util.WordRepository.WordSource ;

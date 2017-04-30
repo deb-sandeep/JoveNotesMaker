@@ -72,7 +72,7 @@ public class IndexingDaemon extends Thread {
             this.daemonThread = this ;
             try {
                 indexFiles() ;
-                Thread.sleep( 10000 ) ;
+                Thread.sleep( 5*60000 ) ;
             }
             catch( InterruptedException e ) {
                 log.debug( "Daemon is interrupted." ) ;
@@ -163,6 +163,7 @@ public class IndexingDaemon extends Thread {
                                file.getAbsolutePath(), e ) ;
                 }
             }
+            Thread.yield() ;
         }
     }
     

@@ -7,8 +7,8 @@ import com.sandy.common.util.WorkspaceManager ;
 import com.sandy.jnmaker.JoveNotesMaker ;
 import com.sandy.jnmaker.lucene.indexer.IndexingDaemon ;
 import com.sandy.jnmaker.ui.MainFrame ;
-import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.ProjectManager ;
+import com.sandy.jnmaker.ui.menu.actions.Actions ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 
 public class ObjectRepository {

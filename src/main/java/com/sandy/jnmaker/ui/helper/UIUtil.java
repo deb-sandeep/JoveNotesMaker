@@ -21,7 +21,7 @@ import javax.swing.UIDefaults ;
 import javax.swing.text.JTextComponent ;
 
 import com.sandy.common.ui.SwingUtils ;
-import com.sandy.jnmaker.ui.actions.AbstractBaseAction ;
+import com.sandy.jnmaker.ui.menu.actions.AbstractBaseAction ;
 
 public class UIUtil {
 

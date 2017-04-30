@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.actions;
+package com.sandy.jnmaker.ui.menu.actions;
 
 import javax.swing.AbstractAction ;
 import javax.swing.Icon ;

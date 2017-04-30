@@ -1,11 +1,11 @@
-package com.sandy.jnmaker.ui.helper;
+package com.sandy.jnmaker.ui.menu;
 
 import java.awt.event.KeyEvent ;
 
 import javax.swing.JMenu ;
 import javax.swing.JMenuBar ;
 
-import com.sandy.jnmaker.ui.actions.Actions ;
+import com.sandy.jnmaker.ui.menu.actions.Actions ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
 @SuppressWarnings( "serial" )
@@ -46,6 +46,8 @@ public class AppMenu extends JMenuBar {
         menu.addSeparator() ;
         menu.add( actions.getZoomInRawAction() ) ;
         menu.add( actions.getZoomOutRawAction() ) ;
+        menu.addSeparator() ;
+        menu.add( new ToggleInputEditorMenu() ) ;
         
         return menu ;
     }

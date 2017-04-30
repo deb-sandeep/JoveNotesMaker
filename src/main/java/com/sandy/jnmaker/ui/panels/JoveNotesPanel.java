@@ -26,8 +26,8 @@ import org.apache.commons.lang.StringUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
-import com.sandy.jnmaker.ui.actions.Actions ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.ui.menu.actions.Actions ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class JoveNotesPanel extends JPanel {

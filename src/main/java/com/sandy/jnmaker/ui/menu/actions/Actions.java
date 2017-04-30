@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.actions;
+package com.sandy.jnmaker.ui.menu.actions;
 
 import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 import static com.sandy.jnmaker.util.ObjectRepository.getProjectManager ;
@@ -215,7 +215,7 @@ public class Actions {
     public AbstractBaseAction getJCMapToolAction() {
         return jcMapToolAction ;
     }
-
+    
     @SuppressWarnings( "serial" )
     private AbstractBaseAction constructAction( String actionId ) {
         

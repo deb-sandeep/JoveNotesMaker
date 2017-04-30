@@ -77,7 +77,7 @@ public class SourceProcessingJournal {
                     log.debug( "  Ignoring file - " + file.getAbsolutePath() ) ;
                 }
             }
-            log.info("\n") ;
+            Thread.yield() ;
         }
         
         for( String delFilePath : journalFiles ) {
@@ -169,27 +169,6 @@ public class SourceProcessingJournal {
         writer.close() ;
     }
 
-    public List<File> getFilesForProcessing( File srcDir ) throws Exception {
-        
-        List<File> filesForProcessing = new ArrayList<File>() ;
-            
-        Collection<File> allFiles = FileUtils.listFiles( srcDir, 
-                                                new String[]{"jn"}, true ) ;
-        for( File file : allFiles ) {
-            if( hasFileChanged( file ) ) {
-                filesForProcessing.add( file ) ;
-                log.info( "  Selecting file - " + file.getAbsolutePath() ) ;
-            }
-            else {
-                log.debug( "  Ignoring file - " + file.getAbsolutePath() ) ;
-            }
-        }
-        
-        log.info("\n") ;
-        
-        return filesForProcessing ;
-    }
-    
     public File getSourceDirForFile( File file ) {
         
         String absPath = file.getAbsolutePath() ;
