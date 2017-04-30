@@ -7,7 +7,7 @@ import org.apache.log4j.Logger ;
 import com.sandy.jnmaker.tools.AbstractTool ;
 import com.sandy.jnmaker.tools.AbstractToolConfigPanel ;
 import com.sandy.jnmaker.ui.MainFrame ;
-import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
+import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class MatrixMappingTool extends AbstractTool {

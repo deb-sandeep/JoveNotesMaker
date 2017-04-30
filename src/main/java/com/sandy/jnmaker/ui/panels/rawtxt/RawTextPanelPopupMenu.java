@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.panels;
+package com.sandy.jnmaker.ui.panels.rawtxt;
 
 import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 

@@ -17,9 +17,9 @@ import javax.swing.filechooser.FileFilter ;
 import org.apache.commons.beanutils.BeanUtilsBean ;
 import org.apache.log4j.Logger ;
 
-import com.sandy.jnmaker.ui.panels.ImagePanel ;
-import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
-import com.sandy.jnmaker.ui.panels.RawTextPanel ;
+import com.sandy.jnmaker.ui.panels.image.ImagePanel ;
+import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
+import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
 public class ProjectManager {

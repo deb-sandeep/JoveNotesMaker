@@ -34,6 +34,23 @@ public class IndexingDaemon extends Thread {
         super( "JoveNotesMaker indexing daemon" ) ;
         super.setDaemon( true ) ;
     }
+    
+    public void initialize() throws Exception {
+        
+        log.debug( "Initializing indexing daemon" ) ;
+        File workspaceDir = getAppConfig().getWorkspaceDir() ;
+        File journalFile  = new File( workspaceDir, "jnm-journal.txt" ) ;
+        
+        journal = new SourceProcessingJournal( journalFile, sourceDirectories ) ;
+        log.debug( "Source processing journal loaded." ) ;
+        
+        modelParser = new XTextModelParser( "com.sandy.xtext.JoveNotesStandaloneSetup" ) ;
+        log.debug( "Model parser loaded" ) ;
+        
+        indexer = new Indexer() ;
+        indexer.initialize() ;
+        log.debug( "Indexer initialized." ) ;
+    }
 
     public void setSourceDirectories( String paths ) {
         
@@ -60,14 +77,6 @@ public class IndexingDaemon extends Thread {
     
     public void run() {
         
-        try {
-            initialize() ;
-        }
-        catch( Exception e ) {
-            log.error( "Exception in initializing indexing daemon.", e ) ;
-            return ;
-        }
-        
         while( keepRunning ) {
             this.daemonThread = this ;
             try {
@@ -90,23 +99,6 @@ public class IndexingDaemon extends Thread {
         catch( Exception e ) {
             log.error( "Error closing indexer", e ) ;
         }
-    }
-    
-    private void initialize() throws Exception {
-        
-        log.debug( "Initializing indexing daemon" ) ;
-        File workspaceDir = getAppConfig().getWorkspaceDir() ;
-        File journalFile  = new File( workspaceDir, "jnm-journal.txt" ) ;
-        
-        journal = new SourceProcessingJournal( journalFile, sourceDirectories ) ;
-        log.debug( "Source processing journal loaded." ) ;
-        
-        modelParser = new XTextModelParser( "com.sandy.xtext.JoveNotesStandaloneSetup" ) ;
-        log.debug( "Model parser loaded" ) ;
-        
-        indexer = new Indexer() ;
-        indexer.initialize() ;
-        log.debug( "Indexer initialized." ) ;
     }
     
     private void indexFiles() throws Exception {
@@ -237,6 +229,7 @@ public class IndexingDaemon extends Thread {
         String filePath   = file.getAbsolutePath() ;
         String relPath    = filePath.substring( srcDirPath.length() + 1 ) ;
         
-        return relPath.substring( 0, relPath.indexOf( File.separatorChar ) ) ;
+        String syllabus = relPath.substring( 0, relPath.indexOf( File.separatorChar ) ) ;
+        return syllabus ;
     }
 }

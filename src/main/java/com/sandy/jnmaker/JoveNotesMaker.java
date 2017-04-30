@@ -89,6 +89,9 @@ public class JoveNotesMaker {
         ConfiguratorBuilder builder = new ConfiguratorBuilder( APP_ID, cmdLine ) ;
         Configurator configurator = builder.createConfigurator() ;
         configurator.initialize() ;
+        
+        // Initialize the indexing daemon.
+        getIndexingDaemon().initialize() ;
     }
     
     private void postInitialize() throws Exception {

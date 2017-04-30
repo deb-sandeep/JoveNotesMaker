@@ -1,11 +1,10 @@
-package com.sandy.jnmaker.ui.panels;
+package com.sandy.jnmaker.ui.panels.search;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
 import java.awt.Component ;
 import java.awt.Font ;
 import java.awt.Insets ;
-import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
@@ -13,21 +12,23 @@ import java.awt.event.KeyEvent ;
 import javax.swing.JButton ;
 import javax.swing.JPanel ;
 import javax.swing.JSplitPane ;
-import javax.swing.JTextArea ;
+import javax.swing.JTextField ;
 
 import org.apache.log4j.Logger ;
 
+import com.sandy.jnmaker.ui.panels.common.JoveNotesTextPane ;
+
 @SuppressWarnings( "serial" )
-public class SearchInputPanel extends JPanel 
+public abstract class SearchInputPanelUI extends JPanel 
     implements ActionListener {
     
-    private static final Logger log = Logger.getLogger( SearchInputPanel.class ) ;
+    static final Logger log = Logger.getLogger( SearchInputPanelUI.class ) ;
     
-    private JTextArea         queryTA     = null ;
-    private JButton           searchBtn   = null ;
-    private JoveNotesTextPane srcViewPane = null ;
+    protected JTextField        queryTF     = null ;
+    protected JButton           searchBtn   = null ;
+    protected JoveNotesTextPane srcViewPane = null ;
 
-    public SearchInputPanel() {
+    public SearchInputPanelUI() {
         setUpUI() ;
     }
     
@@ -62,22 +63,20 @@ public class SearchInputPanel extends JPanel
 
     private Component getQueryPanel() {
         
-        this.queryTA = getQueryTextArea() ;
+        this.queryTF   = getQueryTextField() ;
         this.searchBtn = getSearchButton() ;
         
         JPanel panel = new JPanel( new BorderLayout() ) ;
-        panel.add( queryTA, BorderLayout.CENTER ) ;
+        panel.add( queryTF, BorderLayout.CENTER ) ;
         panel.add( searchBtn, BorderLayout.EAST ) ;
         return panel ;
     }
     
-    private JTextArea getQueryTextArea() {
-        JTextArea ta = new JTextArea() ;
-        ta.setRows( 2 ) ;
+    private JTextField getQueryTextField() {
+        JTextField ta = new JTextField() ;
         ta.setFont( new Font( "Courier", Font.PLAIN, 12 ) ) ;
         ta.setBackground( Color.BLACK ) ;
         ta.setForeground( Color.YELLOW ) ; 
-        ta.setWrapStyleWord( true ) ;
         ta.addKeyListener( new KeyAdapter() {
             @Override
             public void keyPressed( KeyEvent e ) {
@@ -90,7 +89,7 @@ public class SearchInputPanel extends JPanel
     }
     
     private JButton getSearchButton() {
-        JButton b = new JButton() ;
+        JButton b = new JButton( "Search" ) ;
         b.setMargin( new Insets( 0, 0, 0, 0 ) ) ;
         b.setBorderPainted( false ) ;
         b.setFocusPainted( true ) ;
@@ -109,8 +108,4 @@ public class SearchInputPanel extends JPanel
         return panel ;
     }
 
-    @Override
-    public void actionPerformed( ActionEvent e ) {
-        log.debug( "Process query" ) ;
-    }
 }

@@ -1,13 +1,19 @@
-package com.sandy.jnmaker.ui.panels ;
+package com.sandy.jnmaker.ui.panels.rawtxt;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
 import java.awt.Font ;
+import java.awt.Rectangle ;
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
+import java.awt.event.MouseAdapter ;
+import java.awt.event.MouseEvent ;
 import java.io.File ;
+import java.io.IOException ;
+import java.nio.file.Files ;
 
 import javax.swing.BoxLayout ;
 import javax.swing.JComponent ;
@@ -16,9 +22,10 @@ import javax.swing.JLabel ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
+import javax.swing.JTextPane ;
+import javax.swing.SwingUtilities ;
 import javax.swing.filechooser.FileFilter ;
 import javax.swing.text.BadLocationException ;
-import javax.swing.text.DefaultCaret ;
 import javax.swing.text.Document ;
 
 import org.apache.commons.io.FileUtils ;
@@ -26,29 +33,48 @@ import org.apache.commons.lang.StringUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.menu.actions.Actions ;
+import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
+import com.sandy.jnmaker.util.WordRepository.WordSource ;
 
-public class JoveNotesPanel extends JPanel {
+public class RawTextPanel extends JPanel implements WordSource {
 
-    private static final long serialVersionUID = -6820796056331113968L;
+    private static final long serialVersionUID = -6820796056331113968L ;
     private static final Logger logger = Logger.getLogger( RawTextPanel.class ) ;
-
-    private JFileChooser      fileChooser   = new JFileChooser() ;
-    private JLabel            fileNameLabel = new JLabel() ;
-    private JoveNotesTextPane textPane      = new JoveNotesTextPane() ;
     
-    private String originalText = null ;
+    private static final String BOOKMARK_MARKER = "// here" ;
+
+    @SuppressWarnings( "serial" )
+    private JTextPane textPane = new JTextPane() { 
+        // This is a work around for the bizzare wrapping behavior of JTextPane.
+        // This fix seems to be working, but in future if we see problems 
+        // follow the advise here - https://community.oracle.com/message/10692405
+        public boolean getScrollableTracksViewportWidth() {
+            return true ;
+        }        
+    } ;
+    private JLabel       fileNameLabel = new JLabel() ;
+    private JFileChooser fileChooser   = new JFileChooser() ;
+    
+    private RawTextPanelPopupMenu popup = new RawTextPanelPopupMenu( this ) ;
+    
+    private String originalText = "" ;
     
     private int  fontSize    = 12 ;
     private File currentFile = null ;
     private File currentDir  = new File( System.getProperty( "user.home" ) ) ;
     
-    public JoveNotesPanel() {
+    public RawTextPanel() {
         setUpUI() ;
         setUpFileChooser() ;
-        ObjectRepository.getWordRepository().addWordSource( textPane ) ;
+        ObjectRepository.getWordRepository().addWordSource( this ) ;
+    }
+    
+    JTextPane getTextPane() {
+        return this.textPane ;
     }
     
     public int getFontSize() {
@@ -63,6 +89,10 @@ public class JoveNotesPanel extends JPanel {
     public File getCurrentFile() {
         return currentFile;
     }
+    
+    public void captureFocus() {
+        textPane.requestFocus() ;
+    }
 
     public void setCurrentFile( File file ) {
         
@@ -70,7 +100,6 @@ public class JoveNotesPanel extends JPanel {
             this.textPane.setText( "" ) ;
             this.originalText = "" ;
             this.currentFile = null ;
-            this.fileNameLabel.setText( "** Scratch file **" ) ;
         }
         else {
             try {
@@ -81,6 +110,7 @@ public class JoveNotesPanel extends JPanel {
                 this.currentDir   = file.getParentFile() ;
                 
                 ObjectRepository.getWordRepository().offer( this.originalText ) ;
+                scrollToBookmarkPosition() ;
             }
             catch( Exception e ) {
                 logger.error( "Error while opening file.", e ) ;
@@ -120,18 +150,18 @@ public class JoveNotesPanel extends JPanel {
     
     private JComponent getToolbar() {
         
-        JPanel panel = new JPanel() ;
+        JPanel  panel   = new JPanel() ;
         Actions actions = ObjectRepository.getUiActions() ;
         
         panel.setLayout( new BoxLayout(panel, BoxLayout.Y_AXIS) ) ;
         
-        panel.add( getActionBtn( actions.getNewJNFileAction() ) ) ;
-        panel.add( getActionBtn( actions.getOpenJNFileAction() ) ) ;
-        panel.add( getActionBtn( actions.getSaveJNFileAction() ) ) ;
-        panel.add( getActionBtn( actions.getSaveAsJNFileAction() ) ) ;
-        panel.add( getActionBtn( actions.getCloseJNFileAction() ) ) ;
-        panel.add( getActionBtn( actions.getZoomInJNAction() ) ) ;
-        panel.add( getActionBtn( actions.getZoomOutJNAction() ) ) ;
+        panel.add( getActionBtn( actions.getNewRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getOpenRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getSaveRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getSaveAsRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getCloseRawFileAction() ) ) ;
+        panel.add( getActionBtn( actions.getZoomInRawAction() ) ) ;
+        panel.add( getActionBtn( actions.getZoomOutRawAction() ) ) ;
         
         UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, panel ) ;
         
@@ -141,12 +171,14 @@ public class JoveNotesPanel extends JPanel {
     private JComponent getDocumentEditorPanel() {
         
         configureTextArea() ;
-        JScrollPane sp = new JScrollPane( textPane, 
+        JScrollPane scrollPane = new JScrollPane( textPane, 
                                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) ;
+        
+        scrollPane.getVerticalScrollBar().setUnitIncrement( 5 ) ;
         UIUtil.setScrollBarBackground( UIUtil.EDITOR_BG_COLOR, 
-                                       sp.getVerticalScrollBar() ) ;
-        return sp ;
+                                       scrollPane.getVerticalScrollBar() ) ;
+        return scrollPane ;
     }
     
     private JLabel getFileNameLabel() {
@@ -159,25 +191,82 @@ public class JoveNotesPanel extends JPanel {
     
     private void configureTextArea() {
         
-        UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
-        
         textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
-        textPane.addKeyListener( new KeyAdapter() {
-            @Override public void keyPressed( KeyEvent e ) {
-                if( e.getKeyCode()   == KeyEvent.VK_S && 
-                    e.getModifiers() == KeyEvent.CTRL_MASK ) {
-                    saveFile() ;
-                }
-                else if( e.getKeyCode()   == KeyEvent.VK_R && 
-                         e.getModifiers() == ( KeyEvent.CTRL_MASK | 
-                                               KeyEvent.SHIFT_MASK ) ) {
-                    ObjectRepository.getMainFrame().shiftFocusToRawText() ;
+        textPane.addMouseListener( new MouseAdapter() {
+            public void mouseClicked( MouseEvent e ) {
+                if( e.getButton() == MouseEvent.BUTTON3 ) {
+                    handleMakeNotesTrigger( e ) ;
                 }
             }
-        } );
+        } ) ;
+        textPane.addKeyListener( new KeyAdapter() {
+            @Override public void keyPressed( KeyEvent e ) {
+                int keyCode   = e.getKeyCode() ;
+                int modifiers = e.getModifiers() ;
+                handleEditorControlKeyStrokes( modifiers, keyCode ) ;
+            }
+        } ) ;
         
-        DefaultCaret caret = ( DefaultCaret )textPane.getCaret() ;
-        caret.setUpdatePolicy( DefaultCaret.ALWAYS_UPDATE ) ;    
+        UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
+        textPane.setForeground( UIUtil.STRING_COLOR ) ;
+        textPane.setCaretColor( Color.GREEN ) ;
+    }
+    
+    private void handleEditorControlKeyStrokes( int modifiers, int keyCode ) {
+        
+        if( modifiers == KeyEvent.CTRL_MASK ) {
+            switch( keyCode ) {
+                case KeyEvent.VK_S:
+                    saveFile() ;
+                    break ;
+                case KeyEvent.VK_W:
+                    closeFile() ;
+                    break ;
+            }
+        }
+        else if( modifiers == ( KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK ) ) {
+            String selectedText = textPane.getSelectedText() ;
+            MainFrame mainFrame = getMainFrame() ;
+            
+            switch( keyCode ) {
+                case KeyEvent.VK_Q: 
+                    mainFrame.createNote( selectedText, NoteType.QA ) ;
+                    break ;
+                case KeyEvent.VK_F: 
+                    mainFrame.createNote( selectedText, NoteType.FIB ) ;
+                    break ;
+                case KeyEvent.VK_T: 
+                    mainFrame.createNote( selectedText, NoteType.TRUE_FALSE ) ;
+                    break ;
+                case KeyEvent.VK_W: 
+                    mainFrame.createNote( selectedText, NoteType.WORD_MEANING ) ;
+                    break ;
+                case KeyEvent.VK_S: 
+                    mainFrame.createNote( selectedText, NoteType.SPELLBEE ) ;
+                    break ;
+                case KeyEvent.VK_D: 
+                    mainFrame.createNote( selectedText, NoteType.DEFINITION ) ;
+                    break ;
+                case KeyEvent.VK_E: 
+                    mainFrame.createNote( selectedText, NoteType.EVENT ) ;
+                    break ;
+                case KeyEvent.VK_X: 
+                    mainFrame.createNote( selectedText, NoteType.EXERCISE ) ;
+                    break ;
+                case KeyEvent.VK_SLASH: 
+                    mainFrame.createNote( selectedText, NoteType.COMMENT ) ;
+                    break ;
+                case KeyEvent.VK_B: 
+                    reviseBookmark() ;
+                    break ;
+                case KeyEvent.VK_G: 
+                    scrollToBookmarkPosition() ;
+                    break ;
+                case KeyEvent.VK_N:
+                    mainFrame.shiftFocusToNotes() ;
+                    break ;
+            }
+        }
     }
     
     private void setUpFileChooser() {
@@ -188,13 +277,21 @@ public class JoveNotesPanel extends JPanel {
             
             @Override
             public String getDescription() {
-                return "JoveNotes source files" ;
+                return "Text files onlly" ;
             }
             
             @Override
             public boolean accept( File file ) {
-                if( file.isDirectory() || file.getName().endsWith( ".jn" ) ) {
-                    return true ;
+                try {
+                    String contentType =  Files.probeContentType( file.toPath() ) ;
+                    if( file.isDirectory() || 
+                        ( contentType != null && 
+                          contentType.startsWith( "text/" ) ) ) {
+                        return true ;
+                    }
+                }
+                catch( IOException e ) {
+                    e.printStackTrace();
                 }
                 return false ;
             }
@@ -235,15 +332,8 @@ public class JoveNotesPanel extends JPanel {
     public boolean isEditorDirty() {
         
         boolean isDirty = false ;
-        if( this.currentFile != null ) {
-            if( !this.textPane.getText().equals( this.originalText ) ) {
-                isDirty = true ;
-            }
-        }
-        else {
-            if( StringUtil.isNotEmptyOrNull( this.textPane.getText() ) ) {
-                isDirty = true ;
-            }
+        if( !this.textPane.getText().equals( this.originalText ) ) {
+            isDirty = true ;
         }
         return isDirty ;
     }
@@ -251,9 +341,9 @@ public class JoveNotesPanel extends JPanel {
     public boolean handleDirtyFileOnExit() {
         
         int choice = JOptionPane.showConfirmDialog( this,  
-                "There are unsaved changes. Save before exit?\n" + 
-                "Yes to save, No to discard and Cancel to abort exit." ) ;
-   
+                     "There are unsaved changes. Save before exit?\n" + 
+                     "Yes to save, No to discard and Cancel to abort exit." ) ;
+        
         if( choice == JOptionPane.CANCEL_OPTION ) {
             return false ;
         }
@@ -273,6 +363,7 @@ public class JoveNotesPanel extends JPanel {
             this.currentDir = fileChooser.getCurrentDirectory() ;
             selectedFile = fileChooser.getSelectedFile() ;
         }
+        
         return selectedFile ;
     }
     
@@ -348,18 +439,59 @@ public class JoveNotesPanel extends JPanel {
         this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
     }
 
-    public void addNote( String fmtNote ) {
+    private void handleMakeNotesTrigger( MouseEvent e ) {
+        String selectedText = textPane.getSelectedText() ;
+        popup.enableJNMenuItems( StringUtil.isNotEmptyOrNull( selectedText ) ) ;
+        popup.show( selectedText, e.getX(), e.getY() ) ;
+    }
+    
+    public void scrollToBookmarkPosition() {
+        
+        SwingUtilities.invokeLater( new Runnable() {
+            @Override
+            public void run() {
+                Document document = textPane.getDocument() ;
+                
+                try {
+                    int pos = document.getText( 0, document.getLength() )
+                                      .toLowerCase()
+                                      .indexOf( BOOKMARK_MARKER ) ;
+                    if( pos > -1 ){
+                        Rectangle viewRect = textPane.modelToView( pos ) ;
+                        viewRect.y += textPane.getVisibleRect().height - 20 ;
+                        textPane.scrollRectToVisible( viewRect ) ;
+                        textPane.setCaretPosition( pos ) ;
+                    }
+                } 
+                catch ( Exception e ) {
+                    e.printStackTrace() ;
+                }
+            }
+        } );
+    }
+    
+    public void reviseBookmark() {
         
         try {
-            Document doc = textPane.getDocument() ;
-            doc.insertString( textPane.getCaretPosition(), fmtNote, null ) ;
+            Document document = textPane.getDocument() ;
+            int pos = document.getText( 0, document.getLength() )
+                    .toLowerCase()
+                    .indexOf( BOOKMARK_MARKER ) ;
+            
+            if( pos > -1 ) {
+                document.remove( pos, BOOKMARK_MARKER.length() ) ;
+            }
+            
+            document.insertString( textPane.getCaretPosition(), 
+                                   BOOKMARK_MARKER, null ) ;
         }
         catch( BadLocationException e ) {
             e.printStackTrace();
         }
     }
 
-    public void captureFocus() {
-        textPane.requestFocus() ;
+    @Override
+    public String getTextForWordRepository() {
+        return textPane.getText() ;
     }
 }

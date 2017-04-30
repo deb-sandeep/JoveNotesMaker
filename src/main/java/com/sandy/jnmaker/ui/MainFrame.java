@@ -10,24 +10,28 @@ import java.awt.event.WindowEvent ;
 import java.awt.event.WindowFocusListener ;
 
 import javax.swing.JMenuBar ;
+import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JSplitPane ;
+
+import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.menu.AppMenu ;
 import com.sandy.jnmaker.ui.menu.ToggleInputEditorMenu.InputEditorMode ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
-import com.sandy.jnmaker.ui.panels.ImagePanel ;
-import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
-import com.sandy.jnmaker.ui.panels.RawTextPanel ;
-import com.sandy.jnmaker.ui.panels.SearchInputPanel ;
+import com.sandy.jnmaker.ui.panels.image.ImagePanel ;
+import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
+import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
+import com.sandy.jnmaker.ui.panels.search.SearchInputPanel ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
+@SuppressWarnings( "serial" )
 public class MainFrame extends AbstractMainFrame {
 
-    private static final long serialVersionUID = -793491630867632079L ;
+    private static final Logger log = Logger.getLogger( MainFrame.class ) ;
     
     private JPanel           inputEditorPanel = null ;
     private SearchInputPanel searchPanel      = null ;
@@ -45,8 +49,16 @@ public class MainFrame extends AbstractMainFrame {
     @Override
     protected Component getCenterComponent() {
         
-        JSplitPane bottomSP = createBottomSplitPane() ;
-        JSplitPane baseSP   = createBaseSplitPane( bottomSP ) ; 
+        JSplitPane baseSP = null ;
+        try {
+            JSplitPane bottomSP = createBottomSplitPane() ;
+            baseSP = createBaseSplitPane( bottomSP ) ;
+        }
+        catch( Exception e ) {
+            JOptionPane.showMessageDialog( this, "Error in creating UI." + 
+                                           "Msg = " + e.getMessage() ) ;
+            log.error( "Error creating UI", e ) ;
+        } 
         
         return baseSP ;
     }
@@ -74,7 +86,7 @@ public class MainFrame extends AbstractMainFrame {
         return new AppMenu() ;
     }
 
-    private JSplitPane createBottomSplitPane() {
+    private JSplitPane createBottomSplitPane() throws Exception {
         
         this.jnPanel = new JoveNotesPanel() ;
         this.inputEditorPanel = getInputEditorPanel() ;
@@ -89,7 +101,7 @@ public class MainFrame extends AbstractMainFrame {
         return splitPane ;
     }
     
-    private JPanel getInputEditorPanel() {
+    private JPanel getInputEditorPanel() throws Exception {
         
         this.rawTextPanel     = new RawTextPanel() ;
         this.searchPanel      = new SearchInputPanel() ;

@@ -33,7 +33,7 @@ import com.sandy.jnmaker.ui.notedialogs.qa.QAPanel ;
 import com.sandy.jnmaker.ui.notedialogs.spellbee.SpellbeePanel ;
 import com.sandy.jnmaker.ui.notedialogs.truefalse.TFPanel ;
 import com.sandy.jnmaker.ui.notedialogs.wm.WMPanel ;
-import com.sandy.jnmaker.ui.panels.JoveNotesPanel ;
+import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 

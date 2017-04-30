@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.panels;
+package com.sandy.jnmaker.ui.panels.common;
 
 import java.awt.Color ;
 import java.util.regex.Matcher ;
