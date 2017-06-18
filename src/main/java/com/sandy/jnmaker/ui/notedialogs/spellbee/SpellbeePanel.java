@@ -153,7 +153,10 @@ public class SpellbeePanel extends SpellbeePanelUI implements ActionListener {
         
         FileUtils.writeStringToFile( prnFile, pronunciationTF.getText().trim() ) ;
         FileUtils.writeStringToFile( descFile, meaningTF.getText().trim() ) ;
-        FileUtils.copyFile( soundClip, clipFile ) ;
+        
+        if( soundClip != null && soundClip.exists() ) {
+            FileUtils.copyFile( soundClip, clipFile ) ;
+        }
         
         saveDownloadedContentAsJSON( word ) ;
     }
