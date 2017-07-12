@@ -54,7 +54,7 @@ public class IndexingDaemon extends Thread {
 
     public void setSourceDirectories( String paths ) {
         
-        String[] dirs = paths.split( ":" ) ;
+        String[] dirs = paths.split( File.pathSeparator ) ;
         for( String dir : dirs ) {
             File file = new File( dir ) ;
             if( !file.exists() ) {
