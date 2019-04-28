@@ -209,6 +209,8 @@ public class RawTextPanel extends JPanel implements WordSource {
         UIUtil.setTextPaneBackground( UIUtil.EDITOR_BG_COLOR, textPane ) ;
         textPane.setForeground( UIUtil.STRING_COLOR ) ;
         textPane.setCaretColor( Color.GREEN ) ;
+        textPane.setSelectedTextColor( Color.BLACK ) ;
+        textPane.setSelectionColor( Color.GRAY );
     }
     
     private void handleEditorControlKeyStrokes( int modifiers, int keyCode ) {

@@ -19,6 +19,7 @@ import static com.sandy.jnmaker.util.ObjectRepository.setWordnicAdapter ;
 import java.awt.SplashScreen ;
 
 import javax.swing.SwingUtilities ;
+import javax.swing.UIManager ;
 
 import org.apache.log4j.Logger ;
 
@@ -47,7 +48,7 @@ public class JoveNotesMaker {
     public void launch( String[] args ) throws Exception {
         
         preInitialize( args ) ;
-        SwingUtils.setNimbusLookAndFeel() ;
+//        SwingUtils.setNimbusLookAndFeel() ;
         SwingUtilities.invokeLater( new Runnable() {
             @Override
             public void run() {
