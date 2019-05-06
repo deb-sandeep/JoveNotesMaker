@@ -4,11 +4,15 @@ import java.net.URLEncoder;
 import java.util.ArrayList ;
 import java.util.List ;
 
+import org.apache.log4j.Logger ;
+
 import com.wordnik.client.api.WordApi ;
 import com.wordnik.client.model.Definition ;
 import com.wordnik.client.model.TextPron;
 
 public class WordnicAdapter {
+    
+    static final Logger log = Logger.getLogger( WordnicAdapter.class ) ;
 
     private String apiKey = null ;
     
@@ -55,11 +59,17 @@ public class WordnicAdapter {
         WordApi api = new WordApi() ;
         api.getInvoker().addDefaultHeader( "api_key", getApiKey() ) ; 
         
-        List<TextPron> pronounciations = api.getTextPronunciations( 
-                URLEncoder.encode( word, "UTF-8" ), null, null, "true", 1 ) ;
-        if( !pronounciations.isEmpty() ) {
-            return pronounciations.get(0).getRaw() ;
+        try {
+            List<TextPron> pronounciations = api.getTextPronunciations( 
+                    URLEncoder.encode( word, "UTF-8" ), null, null, "true", 1 ) ;
+            if( pronounciations != null && !pronounciations.isEmpty() ) {
+                return pronounciations.get(0).getRaw() ;
+            }
         }
-        return null ;
+        catch( Exception e ) {
+            log.error( "Error downloading pronunciation", e ) ;
+        }
+        
+        return "" ;
     }
 }
