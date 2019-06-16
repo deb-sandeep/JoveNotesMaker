@@ -6,6 +6,11 @@ public class Sequencer {
         SequenceGenerator seqGen = null ;
         
         String[] parts    = inputSequence.split( "_" ) ;
+        
+        if( parts.length <= 1 ) {
+            return new NoActionSequenceGenerator( parts[0], parts ) ;
+        }
+        
         String   prefix   = parts[0].trim() ;
         String[] seqParts = parts[1].trim().split( "\\." ) ;
         
@@ -15,6 +20,9 @@ public class Sequencer {
             seqGen = new NumericIncrementSequenceGenerator( prefix, seqParts ) ;
         }
         else if( lastSeqPart.matches( "[0-9]+Ans" ) ) {
+            seqGen = new QASequenceGenerator( prefix, seqParts ) ;
+        }
+        else if( lastSeqPart.matches( "[0-9]+Hdr" ) ) {
             seqGen = new QASequenceGenerator( prefix, seqParts ) ;
         }
         else if( lastSeqPart.matches( "[0-9]+[A-Z]" ) ||

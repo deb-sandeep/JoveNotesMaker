@@ -14,6 +14,10 @@ public class TFPanel extends TFPanelUI {
 
     public TFPanel( String selectedText ) {
         
+        if( selectedText == null ) {
+            selectedText = "" ;
+        }
+        
         if( !selectedText.endsWith( "." ) ) {
             selectedText += "." ;
         }
