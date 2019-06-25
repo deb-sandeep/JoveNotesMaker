@@ -5,7 +5,7 @@ public class Sequencer {
     public static SequenceGenerator identifySequence( String inputSequence ) {
         SequenceGenerator seqGen = null ;
         
-        String[] parts    = inputSequence.split( "_" ) ;
+        String[] parts = inputSequence.split( "_" ) ;
         
         if( parts.length <= 1 ) {
             return new NoActionSequenceGenerator( parts[0], parts ) ;
@@ -28,6 +28,11 @@ public class Sequencer {
         else if( lastSeqPart.matches( "[0-9]+[A-Z]" ) ||
                  lastSeqPart.matches( "[0-9]+[a-z]" ) ) {
             seqGen = new LCharIncrementSequenceGenerator( prefix, seqParts ) ;
+        }
+        else if( prefix.equals( "Phy" ) ||
+                 prefix.equals( "Chem" ) || 
+                 prefix.equals( "Math" ) ) {
+            seqGen = new JEETestQuestionSequenceGenerator( parts ) ;
         }
         else {
             seqGen = new NoActionSequenceGenerator( prefix, seqParts ) ;

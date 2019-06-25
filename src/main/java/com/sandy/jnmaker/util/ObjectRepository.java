@@ -28,7 +28,7 @@ public class ObjectRepository {
     private static WordRepository      wordRepository = null ;
     private static NotesCreatorDialog  curNotesDialog = null ;
     private static IndexingDaemon      indexingDaemon = null ;
-    private static File                currentWorkDir = new File( System.getProperty( "user.home" ) ) ;
+    private static File                currentWorkDir = new File( System.getProperty( "user.home" ), "Documents/StudyNotes" ) ;
     
     public static NotesCreatorDialog getCurNotesDialog() {
         return curNotesDialog;

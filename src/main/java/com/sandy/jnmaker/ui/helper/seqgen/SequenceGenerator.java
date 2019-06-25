@@ -5,12 +5,17 @@ public abstract class SequenceGenerator {
     private String   prefix = null ;
     private String[] seqParts = null ;
     
+    protected SequenceGenerator() {
+        // To be used by those subclasses who don't want the default
+        // sequence generation behavior
+    }
+    
     protected SequenceGenerator( String prefix, String[] seqParts ) {
         this.prefix = prefix ;
         this.seqParts = seqParts ;
     }
     
-    public final String getNextSequence() {
+    public String getNextSequence() {
         
         String newLastSeqPart = generateNewLastSeqPart() ;
         seqParts[ seqParts.length-1 ] = newLastSeqPart ;

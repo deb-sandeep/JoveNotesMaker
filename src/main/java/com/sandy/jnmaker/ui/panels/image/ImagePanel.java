@@ -22,6 +22,8 @@ import javax.swing.JFileChooser ;
 import javax.swing.JPanel ;
 import javax.swing.filechooser.FileFilter ;
 
+import org.apache.log4j.Logger ;
+
 import com.sandy.common.ui.CloseableTabbedPane ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
 import com.sandy.common.ui.ScalableImagePanel ;
@@ -34,6 +36,8 @@ import com.sandy.jnmaker.ui.helper.seqgen.Sequencer ;
 public class ImagePanel extends JPanel 
     implements ActionListener, TabCloseListener, ScalableImagePanelListener {
 
+    static final Logger log = Logger.getLogger( ImagePanel.class ) ;
+    
     private static final long serialVersionUID = -6820796056331113968L ;
     
     private static final String AC_OPEN_FILES = "OPEN_FILES" ;
@@ -44,7 +48,9 @@ public class ImagePanel extends JPanel
     private CloseableTabbedPane tabbedPane    = null ;
     private List<File>          openedFiles   = new ArrayList<>() ;
     private List<File>          originalFiles = new ArrayList<>() ;
-    private JFileChooser        fileChooser   = new JFileChooser() ;
+    
+    private JFileChooser openFileChooser = new JFileChooser() ;
+    private JFileChooser saveFileChooser = new JFileChooser() ;
     
     private SequenceGenerator sequenceGenerator = null ;
     
@@ -88,9 +94,9 @@ public class ImagePanel extends JPanel
     
     private void setUpFileChooser() {
         
-        fileChooser.setFileSelectionMode( JFileChooser.FILES_ONLY ) ;
-        fileChooser.setMultiSelectionEnabled( true ) ;
-        fileChooser.setFileFilter( new FileFilter() {
+        openFileChooser.setFileSelectionMode( JFileChooser.FILES_ONLY ) ;
+        openFileChooser.setMultiSelectionEnabled( true ) ;
+        openFileChooser.setFileFilter( new FileFilter() {
             
             @Override
             public String getDescription() {
@@ -152,11 +158,11 @@ public class ImagePanel extends JPanel
         
         File[] selectedFiles = null ;
         
-        fileChooser.setCurrentDirectory( getCWD() ) ;
-        int userChoice = fileChooser.showOpenDialog( this ) ;
+        openFileChooser.setCurrentDirectory( getCWD() ) ;
+        int userChoice = openFileChooser.showOpenDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
-            setCWD( fileChooser.getCurrentDirectory() ) ;
-            selectedFiles = fileChooser.getSelectedFiles() ;
+            setCWD( openFileChooser.getCurrentDirectory() ) ;
+            selectedFiles = openFileChooser.getSelectedFiles() ;
         }
         
         return selectedFiles ;
@@ -229,16 +235,15 @@ public class ImagePanel extends JPanel
     @Override
     public void subImageSelected( BufferedImage image ) {
         
-        fileChooser.setCurrentDirectory( getCWD() ) ;
-        fileChooser.setSelectedFile( new File( getNextImageFileName() ) );
+        saveFileChooser.setSelectedFile( new File( getNextImageFileName() ) );
 
-        int userChoice = fileChooser.showSaveDialog( this ) ;
+        int userChoice = saveFileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
         
-            setCWD( fileChooser.getCurrentDirectory() ) ;
-            File outputFile = fileChooser.getSelectedFile() ;
+            File outputFile = saveFileChooser.getSelectedFile() ;
+            
             if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
-                outputFile = new File( getCWD(), outputFile.getName() + ".png" ) ;
+                outputFile = new File( outputFile.getParentFile(), outputFile.getName() + ".png" ) ;
             }
             
             try {
