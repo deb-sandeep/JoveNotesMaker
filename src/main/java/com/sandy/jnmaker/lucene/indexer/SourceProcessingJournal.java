@@ -73,9 +73,6 @@ public class SourceProcessingJournal {
                     filesForProcessing.add( file ) ;
                     log.info( "  Selecting file - " + file.getAbsolutePath() ) ;
                 }
-                else {
-                    log.debug( "  Ignoring file - " + file.getAbsolutePath() ) ;
-                }
             }
             Thread.yield() ;
         }
