@@ -1,13 +1,15 @@
 package com.sandy.jnmaker.ui.panels.image;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;
+import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
 
 import java.awt.BorderLayout ;
 import java.awt.Component ;
 import java.awt.Dimension ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.KeyEvent ;
 import java.awt.image.BufferedImage ;
 import java.io.File ;
 import java.io.IOException ;
@@ -16,10 +18,7 @@ import java.util.ArrayList ;
 import java.util.List ;
 
 import javax.imageio.ImageIO ;
-import javax.swing.BoxLayout ;
-import javax.swing.JComponent ;
-import javax.swing.JFileChooser ;
-import javax.swing.JPanel ;
+import javax.swing.* ;
 import javax.swing.filechooser.FileFilter ;
 
 import org.apache.log4j.Logger ;
@@ -119,6 +118,10 @@ public class ImagePanel extends JPanel
                 return false ;
             }
         } );
+        
+        KeyStroke enter = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
+        InputMap map = saveFileChooser.getInputMap( JFileChooser.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ) ;
+        map.put( enter, "approveSelection" ) ;
     }
     
     public void actionPerformed( ActionEvent e ) {
@@ -264,6 +267,9 @@ public class ImagePanel extends JPanel
             catch( IOException e ) {
                 e.printStackTrace();
             }
+        }
+        else {
+            this.sequenceGenerator.rollbackSequence() ;
         }
     }
     

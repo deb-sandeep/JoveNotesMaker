@@ -5,6 +5,8 @@ public abstract class SequenceGenerator {
     private String   prefix = null ;
     private String[] seqParts = null ;
     
+    private String prevLastSeqPart = null ;
+    
     protected SequenceGenerator() {
         // To be used by those subclasses who don't want the default
         // sequence generation behavior
@@ -17,9 +19,15 @@ public abstract class SequenceGenerator {
     
     public String getNextSequence() {
         
+        prevLastSeqPart = seqParts[ seqParts.length-1 ] ;
+        
         String newLastSeqPart = generateNewLastSeqPart() ;
         seqParts[ seqParts.length-1 ] = newLastSeqPart ;
         return constructSequence() ;
+    }
+    
+    public void rollbackSequence() {
+        seqParts[ seqParts.length-1 ] = prevLastSeqPart ;
     }
     
     private String constructSequence() {

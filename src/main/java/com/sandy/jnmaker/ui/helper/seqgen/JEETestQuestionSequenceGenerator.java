@@ -3,6 +3,7 @@ package com.sandy.jnmaker.ui.helper.seqgen;
 public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
 
     private String[] parts = null ;
+    private String prevLastSeqPart = null ;
     
     public JEETestQuestionSequenceGenerator( String[] parts ) {
         super() ;
@@ -11,10 +12,15 @@ public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
 
     @Override
     public String getNextSequence() {
+        prevLastSeqPart = parts[parts.length-1] ;
         parts[parts.length-1] = generateNewLastSeqPart() ;
         return collateParts() ;
     }
 
+    public void rollbackSequence() {
+        parts[parts.length-1] = prevLastSeqPart ;
+    }
+    
     @Override
     public boolean isMatchingSequence( String sequence ) {
         return collateParts().equals( sequence ) ;
