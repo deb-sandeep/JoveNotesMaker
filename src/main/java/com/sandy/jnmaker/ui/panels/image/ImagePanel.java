@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import java.awt.event.KeyEvent ;
 import java.awt.image.BufferedImage ;
+import java.beans.PropertyChangeListener ;
 import java.io.File ;
 import java.io.IOException ;
 import java.nio.file.Files ;
@@ -119,9 +120,25 @@ public class ImagePanel extends JPanel
             }
         } );
         
-        KeyStroke enter = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
+        bindKeyStrokesForSaveDialog() ;
+    }
+    
+    @SuppressWarnings( "serial" )
+    private void bindKeyStrokesForSaveDialog() {
+        
+        KeyStroke f1 = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
+        KeyStroke f2 = KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ) ;
+        
         InputMap map = saveFileChooser.getInputMap( JFileChooser.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ) ;
-        map.put( enter, "approveSelection" ) ;
+        map.put( f1, "approveSelection" ) ;
+        map.put( f2, "incrementSequence" ) ;
+        
+        ActionMap actionMap = saveFileChooser.getActionMap() ;
+        actionMap.put( "incrementSequence", new AbstractAction() {
+            public void actionPerformed( ActionEvent e ) {
+                saveFileChooser.setSelectedFile( new File( getNextImageFileName() ) );
+            }
+        } ) ;
     }
     
     public void actionPerformed( ActionEvent e ) {
