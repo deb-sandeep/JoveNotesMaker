@@ -5,6 +5,7 @@ import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;
 import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
 
 import java.awt.BorderLayout ;
+import java.awt.Color ;
 import java.awt.Component ;
 import java.awt.Dimension ;
 import java.awt.event.ActionEvent ;
@@ -95,6 +96,7 @@ public class ImagePanel extends JPanel
         tabbedPane = new CloseableTabbedPane() ;
         tabbedPane.addTabCloseListener( this ) ;
         tabbedPane.setMinimumSize( new Dimension( 0, 0 ) ) ;
+        tabbedPane.setForeground( Color.BLUE ) ;
         return tabbedPane ;
     }
     
