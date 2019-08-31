@@ -296,7 +296,9 @@ public class ImagePanel extends JPanel
             }
         }
         else {
-            this.sequenceGenerator.rollbackSequence() ;
+            if( sequenceGenerator != null ) {
+                this.sequenceGenerator.rollbackSequence() ;
+            }
         }
     }
     
