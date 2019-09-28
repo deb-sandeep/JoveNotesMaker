@@ -12,9 +12,22 @@ public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
 
     @Override
     public String getNextSequence() {
-        prevLastSeqPart = parts[parts.length-1] ;
-        parts[parts.length-1] = generateNewLastSeqPart() ;
-        return collateParts() ;
+        String qType    = null ;
+        prevLastSeqPart = parts[ parts.length-1 ] ;
+        
+        if( parts.length > 1 ) {
+            qType = parts[ parts.length - 2 ] ;
+        }
+        
+        String nextSequence = "" ;
+        if( !qType.equals( "LCT" ) ) {
+            parts[parts.length-1] = generateNewLastSeqPart() ;
+            nextSequence = collateParts() ;
+        }
+        else {
+            nextSequence = collateParts() + "_" ;
+        }
+        return nextSequence ;
     }
 
     public void rollbackSequence() {
@@ -28,7 +41,7 @@ public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
 
     @Override
     protected String generateNewLastSeqPart() {
-        String lastSeq = parts[parts.length-1] ;
+        String lastSeq = parts[ parts.length-1 ] ;
         
         if( lastSeq.contains( "." ) ) {
             String[] seqParts = lastSeq.split( "\\." ) ;

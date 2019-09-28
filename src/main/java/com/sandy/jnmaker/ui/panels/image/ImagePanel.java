@@ -16,7 +16,9 @@ import java.io.File ;
 import java.io.IOException ;
 import java.nio.file.Files ;
 import java.util.ArrayList ;
+import java.util.HashMap ;
 import java.util.List ;
+import java.util.Map ;
 
 import javax.imageio.ImageIO ;
 import javax.swing.AbstractAction ;
@@ -46,6 +48,20 @@ public class ImagePanel extends JPanel
     static final Logger log = Logger.getLogger( ImagePanel.class ) ;
     
     private static final long serialVersionUID = -6820796056331113968L ;
+    
+    private static final String[] Q_TYPES = { "_SCA_", "_MCA_", "_LCT_", 
+                                              "_CMT_", "_MMT_", "_NT_",
+                                              "_ART_" } ; 
+    private static final Map<String, String> Q_TYPE_CYCLE = new HashMap<>() ;
+    static {
+        Q_TYPE_CYCLE.put( "_SCA_", "_ART_" ) ;
+        Q_TYPE_CYCLE.put( "_ART_", "_MCA_" ) ;
+        Q_TYPE_CYCLE.put( "_MCA_", "_LCT_" ) ;
+        Q_TYPE_CYCLE.put( "_LCT_", "_CMT_" ) ;
+        Q_TYPE_CYCLE.put( "_CMT_", "_MMT_" ) ;
+        Q_TYPE_CYCLE.put( "_MMT_", "_NT_"  ) ;
+        Q_TYPE_CYCLE.put( "_NT_" , "_SCA_" ) ;
+    }
     
     private static final String AC_OPEN_FILES = "OPEN_FILES" ;
     private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
@@ -136,12 +152,14 @@ public class ImagePanel extends JPanel
         
         KeyStroke f1 = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
         KeyStroke f2 = KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ) ;
+        KeyStroke f3 = KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) ;
         KeyStroke backQuote = KeyStroke.getKeyStroke( KeyEvent.VK_BACK_QUOTE, KeyEvent.VK_SHIFT ) ;
         
         InputMap map = saveFileChooser.getInputMap( JFileChooser.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ) ;
         map.put( f1, "approveSelection" ) ;
         map.put( backQuote, "approveSelection" ) ;
         map.put( f2, "incrementSequence" ) ;
+        map.put( f3, "changeQType" ) ;
         
         ActionMap actionMap = saveFileChooser.getActionMap() ;
         actionMap.put( "incrementSequence", new AbstractAction() {
@@ -149,6 +167,27 @@ public class ImagePanel extends JPanel
                 saveFileChooser.setSelectedFile( new File( getNextImageFileName() ) );
             }
         } ) ;
+        
+        actionMap.put( "changeQType", new AbstractAction() {
+            public void actionPerformed( ActionEvent e ) {
+                File selFile = saveFileChooser.getSelectedFile() ;
+                saveFileChooser.setSelectedFile( changeQTypeInSelectedFileName( selFile ) );
+            }
+        } ) ;
+    }
+    
+    private File changeQTypeInSelectedFileName( File selFile ) {
+        
+        String fileName = selFile.getName() ;
+        for( String qType : Q_TYPES ) {
+            if( fileName.contains( qType ) ) {
+                String nextQType = Q_TYPE_CYCLE.get( qType ) ;
+                fileName = fileName.replace( qType, nextQType ) ;
+                break ;
+            }
+        }
+
+        return new File( selFile.getParent(), fileName ) ;
     }
     
     public void actionPerformed( ActionEvent e ) {
