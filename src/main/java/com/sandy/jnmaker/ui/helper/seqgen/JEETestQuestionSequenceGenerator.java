@@ -4,6 +4,7 @@ public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
 
     private String[] parts = null ;
     private String prevLastSeqPart = null ;
+    private int savedLCTQNum = -1 ;
     
     public JEETestQuestionSequenceGenerator( String[] parts ) {
         super() ;
@@ -25,7 +26,19 @@ public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
             nextSequence = collateParts() ;
         }
         else {
-            nextSequence = collateParts() + "_" ;
+            if( this.savedLCTQNum != -1 ) {
+                String[] newParts = new String[ this.parts.length + 1 ] ;
+                System.arraycopy( this.parts, 0, newParts, 0, this.parts.length ) ;
+                newParts[ newParts.length-1 ] = String.valueOf( this.savedLCTQNum ) ;
+                
+                this.parts = newParts ;
+                this.savedLCTQNum = -1 ;
+                
+                nextSequence = collateParts() ;
+            }
+            else {
+                nextSequence = collateParts() + "_" ;
+            }
         }
         return nextSequence ;
     }
@@ -36,11 +49,14 @@ public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
     
     @Override
     public boolean isMatchingSequence( String sequence ) {
-        return collateParts().equals( sequence ) ;
+        return sequence.startsWith( "Phy_Q_"  ) || 
+               sequence.startsWith( "Chem_Q_"  ) ||
+               sequence.startsWith( "Math_Q_"  ) ;
     }
 
     @Override
     protected String generateNewLastSeqPart() {
+        
         String lastSeq = parts[ parts.length-1 ] ;
         
         if( lastSeq.contains( "." ) ) {
@@ -85,5 +101,13 @@ public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
         }
         buffer.deleteCharAt( buffer.length()-1 ) ;
         return buffer.toString() ;
+    }
+
+    public void saveLCTContext( int qNum ) {
+        this.savedLCTQNum = qNum ;
+    }
+    
+    public void saveNewFileNameContext( String fileName ) {
+        this.parts = fileName.split( "_" ) ;
     }
 }

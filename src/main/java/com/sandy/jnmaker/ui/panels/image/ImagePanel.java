@@ -39,6 +39,7 @@ import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.ui.helper.seqgen.JEETestQuestionSequenceGenerator ;
 import com.sandy.jnmaker.ui.helper.seqgen.SequenceGenerator ;
 import com.sandy.jnmaker.ui.helper.seqgen.Sequencer ;
 
@@ -153,6 +154,8 @@ public class ImagePanel extends JPanel
         KeyStroke f1 = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
         KeyStroke f2 = KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ) ;
         KeyStroke f3 = KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) ;
+        KeyStroke f4 = KeyStroke.getKeyStroke( KeyEvent.VK_F4, 0 ) ;
+        
         KeyStroke backQuote = KeyStroke.getKeyStroke( KeyEvent.VK_BACK_QUOTE, KeyEvent.VK_SHIFT ) ;
         
         InputMap map = saveFileChooser.getInputMap( JFileChooser.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ) ;
@@ -160,6 +163,7 @@ public class ImagePanel extends JPanel
         map.put( backQuote, "approveSelection" ) ;
         map.put( f2, "incrementSequence" ) ;
         map.put( f3, "changeQType" ) ;
+        map.put( f4, "incrementLCT" ) ;
         
         ActionMap actionMap = saveFileChooser.getActionMap() ;
         actionMap.put( "incrementSequence", new AbstractAction() {
@@ -174,15 +178,66 @@ public class ImagePanel extends JPanel
                 saveFileChooser.setSelectedFile( changeQTypeInSelectedFileName( selFile ) );
             }
         } ) ;
+
+        actionMap.put( "incrementLCT", new AbstractAction() {
+            public void actionPerformed( ActionEvent e ) {
+                File selFile = saveFileChooser.getSelectedFile() ;
+                saveFileChooser.setSelectedFile( incrementLCTPassage( selFile ) );
+            }
+        } ) ;
+    }
+    
+    private File incrementLCTPassage( File selFile ) {
+        
+        JEETestQuestionSequenceGenerator sg = null ;
+        String fileName = selFile.getName() ;
+        
+        if( fileName.contains( "_LCT_" ) ) {
+            int lctIndex = fileName.indexOf( "_LCT_" ) ;
+            
+            String temp = fileName.substring( lctIndex + "_LCT_".length() ) ;
+            
+            String[] parts = temp.split( "_" ) ;
+            int passageNum = -1 ;
+            int qNum = -1 ;
+            
+            passageNum = Integer.parseInt( parts[0] ) ;
+            
+            if( parts.length == 2 ) {
+                qNum = Integer.parseInt( parts[1] ) ;
+            }
+            
+            passageNum++ ;
+            
+            String newFileName = fileName.substring( 0, lctIndex ) ;
+            newFileName += "_LCT_" + passageNum ;
+            
+            if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
+                sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
+                sg.saveLCTContext( qNum ) ;
+                sg.saveNewFileNameContext( newFileName ) ;
+            }
+            
+            return new File( selFile.getParent(), newFileName ) ;
+        }
+        return selFile ;
     }
     
     private File changeQTypeInSelectedFileName( File selFile ) {
         
+        JEETestQuestionSequenceGenerator sg = null ;
         String fileName = selFile.getName() ;
+        
         for( String qType : Q_TYPES ) {
             if( fileName.contains( qType ) ) {
                 String nextQType = Q_TYPE_CYCLE.get( qType ) ;
                 fileName = fileName.replace( qType, nextQType ) ;
+                
+                if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
+                    sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
+                    sg.saveNewFileNameContext( fileName ) ;
+                }
+                
                 break ;
             }
         }
@@ -304,7 +359,7 @@ public class ImagePanel extends JPanel
     @Override
     public void subImageSelected( BufferedImage image ) {
         
-        saveFileChooser.setSelectedFile( new File( getNextImageFileName() ) );
+        saveFileChooser.setSelectedFile( new File( getNextImageFileName() ) ) ;
 
         int userChoice = saveFileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
@@ -328,6 +383,12 @@ public class ImagePanel extends JPanel
                     if( !this.sequenceGenerator.isMatchingSequence( fileName ) ) {
                         this.sequenceGenerator = Sequencer.identifySequence( fileName ) ;
                     }
+                }
+                
+                if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
+                    JEETestQuestionSequenceGenerator sg = null ;
+                    sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
+                    sg.saveNewFileNameContext( fileName ) ;
                 }
             }
             catch( IOException e ) {
