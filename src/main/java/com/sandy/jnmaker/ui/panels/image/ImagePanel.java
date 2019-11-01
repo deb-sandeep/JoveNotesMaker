@@ -27,6 +27,7 @@ import javax.swing.BoxLayout ;
 import javax.swing.InputMap ;
 import javax.swing.JComponent ;
 import javax.swing.JFileChooser ;
+import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.KeyStroke ;
 import javax.swing.filechooser.FileFilter ;
@@ -368,6 +369,18 @@ public class ImagePanel extends JPanel
             
             if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
                 outputFile = new File( outputFile.getParentFile(), outputFile.getName() + ".png" ) ;
+            }
+            
+            if( outputFile.exists() ) {
+                int choice = JOptionPane.showConfirmDialog( this, "File exists. Overwrite?" ) ;
+                if( choice == JOptionPane.NO_OPTION || 
+                    choice == JOptionPane.CANCEL_OPTION ) {
+                    if( sequenceGenerator != null ) {
+                        this.sequenceGenerator.rollbackSequence() ;
+                    }
+                    log.debug( "Not saving image" ) ;
+                    return ;
+                }
             }
             
             try {
