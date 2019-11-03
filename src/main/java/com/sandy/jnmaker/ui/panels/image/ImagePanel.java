@@ -32,9 +32,11 @@ import javax.swing.JPanel ;
 import javax.swing.KeyStroke ;
 import javax.swing.filechooser.FileFilter ;
 
+import org.apache.commons.lang.ArrayUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
+import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
@@ -358,60 +360,117 @@ public class ImagePanel extends JPanel
     }
 
     @Override
-    public void subImageSelected( BufferedImage image ) {
+    public void subImageSelected( BufferedImage image, int selMod ) {
         
-        saveFileChooser.setSelectedFile( new File( getNextImageFileName() ) ) ;
-
-        int userChoice = saveFileChooser.showSaveDialog( this ) ;
-        if( userChoice == JFileChooser.APPROVE_OPTION ) {
+        File outputFile = getUserApprovedOutputFile( selMod ) ;
         
-            File outputFile = saveFileChooser.getSelectedFile() ;
-            
-            if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
-                outputFile = new File( outputFile.getParentFile(), outputFile.getName() + ".png" ) ;
+        if( outputFile != null ) {
+            writeSelectedImageToFile( image, outputFile ) ;
+        }
+    }
+    
+    private File getUserApprovedOutputFile( int selMod ) {
+        
+        String nextImageFileName = getNextImageFileName() ;
+        boolean showSaveFileDialog = true ;
+        
+        if( nextImageFileName != null ) {
+            if( selMod == DrawingCanvas.MARK_END_MODIFIER_CENTER_BTN ) {
+                nextImageFileName = cycleSubjectInFileName( nextImageFileName ) ;
             }
-            
-            if( outputFile.exists() ) {
-                int choice = JOptionPane.showConfirmDialog( this, "File exists. Overwrite?" ) ;
-                if( choice == JOptionPane.NO_OPTION || 
-                    choice == JOptionPane.CANCEL_OPTION ) {
-                    if( sequenceGenerator != null ) {
-                        this.sequenceGenerator.rollbackSequence() ;
-                    }
-                    log.debug( "Not saving image" ) ;
-                    return ;
-                }
+            else {
+                showSaveFileDialog = false ;
             }
+            saveFileChooser.setSelectedFile( 
+                    new File( saveFileChooser.getCurrentDirectory(), 
+                              nextImageFileName ) ) ;
+        }
+        
+        
+        File outputFile = null ;
+        if( selMod == DrawingCanvas.MARK_END_MODIFIER_LEFT_BTN ||
+            showSaveFileDialog ) {
             
-            try {
-                ImageIO.write( image, "png", outputFile ) ;
-                
-                String fileName = outputFile.getName() ;
-                fileName = fileName.substring( 0, fileName.length()-4 ) ;
-                
-                if( this.sequenceGenerator == null ) {
-                    this.sequenceGenerator = Sequencer.identifySequence( fileName ) ;
+            int userChoice = saveFileChooser.showSaveDialog( this ) ;
+            
+            if( userChoice != JFileChooser.APPROVE_OPTION ) {
+                if( sequenceGenerator != null ) {
+                    this.sequenceGenerator.rollbackSequence() ;
                 }
-                else {
-                    if( !this.sequenceGenerator.isMatchingSequence( fileName ) ) {
-                        this.sequenceGenerator = Sequencer.identifySequence( fileName ) ;
-                    }
-                }
-                
-                if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
-                    JEETestQuestionSequenceGenerator sg = null ;
-                    sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
-                    sg.saveNewFileNameContext( fileName ) ;
-                }
+                return null ;
             }
-            catch( IOException e ) {
-                e.printStackTrace();
+            else {
+                outputFile = saveFileChooser.getSelectedFile() ;
             }
         }
         else {
-            if( sequenceGenerator != null ) {
-                this.sequenceGenerator.rollbackSequence() ;
+            outputFile = saveFileChooser.getSelectedFile() ;
+        }
+        
+        if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
+            outputFile = new File( outputFile.getParentFile(), outputFile.getName() + ".png" ) ;
+        }
+        
+        if( outputFile.exists() ) {
+            int choice = JOptionPane.showConfirmDialog( this, "File exists. Overwrite?" ) ;
+            if( choice == JOptionPane.NO_OPTION || 
+                choice == JOptionPane.CANCEL_OPTION ) {
+                
+                if( sequenceGenerator != null ) {
+                    this.sequenceGenerator.rollbackSequence() ;
+                }
+                return null ;
             }
+        }
+
+        return outputFile ;
+    }
+    
+    private String cycleSubjectInFileName( String fileName ) {
+        String[] parts = fileName.split( "_" ) ;
+        String curSubject = parts[0] ;
+        
+        if( curSubject.equals( "Phy" ) ) {
+            parts[0] = "Chem" ;
+        }
+        else if( curSubject.equals( "Chem" ) ) {
+            parts[0] = "Math" ;
+        }
+        else if( curSubject.equals( "Math" ) ) {
+            parts[0] = "Phy" ;
+        }
+        
+        parts[ parts.length-1 ] = "1" ;
+        
+        return String.join( "_", parts ) ;
+    }
+
+    private void writeSelectedImageToFile( BufferedImage image,
+                                           File outputFile ) {
+        
+        try {
+            ImageIO.write( image, "png", outputFile ) ;
+            
+            String fileName = outputFile.getName() ;
+            fileName = fileName.substring( 0, fileName.length()-4 ) ;
+            
+            if( this.sequenceGenerator == null ) {
+                this.sequenceGenerator = Sequencer.identifySequence( fileName ) ;
+            }
+            else {
+                if( !this.sequenceGenerator.isMatchingSequence( fileName ) ) {
+                    this.sequenceGenerator = Sequencer.identifySequence( fileName ) ;
+                }
+            }
+            
+            if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
+                JEETestQuestionSequenceGenerator sg = null ;
+                sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
+                sg.saveNewFileNameContext( fileName ) ;
+            }
+        }
+        catch( IOException e ) {
+            e.printStackTrace() ;
         }
     }
     
@@ -419,6 +478,6 @@ public class ImagePanel extends JPanel
         if( this.sequenceGenerator != null ) {
             return this.sequenceGenerator.getNextSequence() ;
         }
-        return "" ;
+        return null ;
     }
 }
