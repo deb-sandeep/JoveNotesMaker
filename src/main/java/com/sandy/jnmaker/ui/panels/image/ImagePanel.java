@@ -32,12 +32,11 @@ import javax.swing.JPanel ;
 import javax.swing.KeyStroke ;
 import javax.swing.filechooser.FileFilter ;
 
-import org.apache.commons.lang.ArrayUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
-import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
+import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
