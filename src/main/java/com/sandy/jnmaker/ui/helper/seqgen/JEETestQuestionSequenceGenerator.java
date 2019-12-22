@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui.helper.seqgen;
 
-public class JEETestQuestionSequenceGenerator extends SequenceGenerator {
+public class JEETestQuestionSequenceGenerator extends AbstractSequenceGenerator {
 
     private String[] parts = null ;
     private String prevLastSeqPart = null ;

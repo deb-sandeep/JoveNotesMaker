@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui.helper.seqgen;
 
-public class NumericIncrementSequenceGenerator extends SequenceGenerator {
+public class NumericIncrementSequenceGenerator extends AbstractSequenceGenerator {
 
     public NumericIncrementSequenceGenerator( String prefix, String[] seqParts ) {
         super( prefix, seqParts ) ;

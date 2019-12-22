@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui.helper.seqgen;
 
-public class LCharIncrementSequenceGenerator extends SequenceGenerator {
+public class LCharIncrementSequenceGenerator extends AbstractSequenceGenerator {
 
     public LCharIncrementSequenceGenerator( String prefix, String[] seqParts ) {
         super( prefix, seqParts ) ;

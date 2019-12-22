@@ -29,19 +29,21 @@ import javax.swing.JComponent ;
 import javax.swing.JFileChooser ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
+import javax.swing.JScrollPane ;
+import javax.swing.JTextArea ;
 import javax.swing.KeyStroke ;
 import javax.swing.filechooser.FileFilter ;
 
-import org.apache.commons.lang.ArrayUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
-import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
+import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.ui.helper.seqgen.AITSSequenceGenerator ;
 import com.sandy.jnmaker.ui.helper.seqgen.JEETestQuestionSequenceGenerator ;
 import com.sandy.jnmaker.ui.helper.seqgen.SequenceGenerator ;
 import com.sandy.jnmaker.ui.helper.seqgen.Sequencer ;
@@ -71,6 +73,7 @@ public class ImagePanel extends JPanel
     private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
     private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
     private static final String AC_CLOSE_ALL  = "CLOSE_ALL" ;
+    private static final String AC_SET_SEQ    = "SET_SEQUENCE" ;
     
     private CloseableTabbedPane tabbedPane    = null ;
     private List<File>          openedFiles   = new ArrayList<>() ;
@@ -104,6 +107,7 @@ public class ImagePanel extends JPanel
         panel.add( getActionBtn( "zoom_in",   AC_ZOOM_IN,    this ) ) ;
         panel.add( getActionBtn( "zoom_out",  AC_ZOOM_OUT,   this ) ) ;
         panel.add( getActionBtn( "close_all", AC_CLOSE_ALL,  this ) ) ;
+        panel.add( getActionBtn( "set_seq",   AC_SET_SEQ,    this ) ) ;
         panel.setMinimumSize( new Dimension( 0, 0 ) ) ;
         
         UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, panel ) ;
@@ -263,6 +267,9 @@ public class ImagePanel extends JPanel
                 break ;
             case AC_CLOSE_ALL :
                 closeAll() ;
+                break ;
+            case AC_SET_SEQ :
+                setSequence() ;
                 break ;
         }
     }
@@ -447,7 +454,6 @@ public class ImagePanel extends JPanel
 
     private void writeSelectedImageToFile( BufferedImage image,
                                            File outputFile ) {
-        
         try {
             ImageIO.write( image, "png", outputFile ) ;
             
@@ -479,5 +485,25 @@ public class ImagePanel extends JPanel
             return this.sequenceGenerator.getNextSequence() ;
         }
         return null ;
+    }
+    
+    private void setSequence() {
+        JTextArea ta = new JTextArea(20, 20);
+        switch( JOptionPane.showConfirmDialog( null, new JScrollPane(ta) ) ) {
+            case JOptionPane.OK_OPTION:
+                String input = ta.getText() ;
+                if( StringUtil.isEmptyOrNull( input ) ) {
+                    this.sequenceGenerator = null ;
+                }
+                else {
+                    try {
+                        this.sequenceGenerator = new AITSSequenceGenerator( input ) ;
+                    }
+                    catch( Exception e ) {
+                        JOptionPane.showMessageDialog( this, "Invalid config." ) ;
+                    }
+                }
+                break;
+        }
     }
 }

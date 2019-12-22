@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui.helper.seqgen;
 
-public class NoActionSequenceGenerator extends SequenceGenerator {
+public class NoActionSequenceGenerator extends AbstractSequenceGenerator {
 
     public NoActionSequenceGenerator( String prefix, String[] seqParts ) {
         super( prefix, seqParts ) ;

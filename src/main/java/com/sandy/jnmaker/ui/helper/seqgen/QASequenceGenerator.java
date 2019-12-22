@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui.helper.seqgen;
 
-public class QASequenceGenerator extends SequenceGenerator {
+public class QASequenceGenerator extends AbstractSequenceGenerator {
 
     public QASequenceGenerator( String prefix, String[] seqParts ) {
         super( prefix, seqParts ) ;
