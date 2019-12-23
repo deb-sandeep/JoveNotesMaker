@@ -5,6 +5,8 @@ import java.util.List ;
 
 import org.apache.log4j.Logger ;
 
+import com.sandy.common.util.StringUtil ;
+
 public class AITSSequenceGenerator implements SequenceGenerator {
     
     static final Logger log = Logger.getLogger( AITSSequenceGenerator.class ) ;
@@ -28,7 +30,11 @@ public class AITSSequenceGenerator implements SequenceGenerator {
         
         for( int i=0; i<lines.length; i++ ) {
             String line = lines[i].trim() ;
-            if( i==0 ) {
+            if( StringUtil.isEmptyOrNull( line ) ) {
+                continue ;
+            }
+            
+            if( paperId == null ) {
                 paperId = line ;
             }
             else {
