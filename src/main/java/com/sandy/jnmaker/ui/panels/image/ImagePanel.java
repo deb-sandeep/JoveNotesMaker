@@ -19,6 +19,8 @@ import java.util.ArrayList ;
 import java.util.HashMap ;
 import java.util.List ;
 import java.util.Map ;
+import java.util.regex.Matcher ;
+import java.util.regex.Pattern ;
 
 import javax.imageio.ImageIO ;
 import javax.swing.AbstractAction ;
@@ -75,6 +77,8 @@ public class ImagePanel extends JPanel
     private static final String AC_CLOSE_ALL  = "CLOSE_ALL" ;
     private static final String AC_SET_SEQ    = "SET_SEQUENCE" ;
     
+    private static Pattern LCT_PARA_PATTERN = Pattern.compile( ".*_LCT_(\\d+)\\.png" ) ;
+    
     private CloseableTabbedPane tabbedPane    = null ;
     private List<File>          openedFiles   = new ArrayList<>() ;
     private List<File>          originalFiles = new ArrayList<>() ;
@@ -83,6 +87,7 @@ public class ImagePanel extends JPanel
     private JFileChooser saveFileChooser = new JFileChooser() ;
     
     private SequenceGenerator sequenceGenerator = null ;
+    private int lastLCTPassageNumber = 0 ;
     
     public ImagePanel() {
         
@@ -162,6 +167,8 @@ public class ImagePanel extends JPanel
         KeyStroke f2 = KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ) ;
         KeyStroke f3 = KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) ;
         KeyStroke f4 = KeyStroke.getKeyStroke( KeyEvent.VK_F4, 0 ) ;
+        KeyStroke f5 = KeyStroke.getKeyStroke( KeyEvent.VK_F5, 0 ) ;
+        KeyStroke f6 = KeyStroke.getKeyStroke( KeyEvent.VK_F6, 0 ) ;
         
         KeyStroke backQuote = KeyStroke.getKeyStroke( KeyEvent.VK_BACK_QUOTE, KeyEvent.VK_SHIFT ) ;
         
@@ -171,6 +178,8 @@ public class ImagePanel extends JPanel
         map.put( f2, "incrementSequence" ) ;
         map.put( f3, "changeQType" ) ;
         map.put( f4, "incrementLCT" ) ;
+        map.put( f5, "incrementLCTPassageNumber" ) ;
+        map.put( f6, "stripLCT" ) ;
         
         ActionMap actionMap = saveFileChooser.getActionMap() ;
         actionMap.put( "incrementSequence", new AbstractAction() {
@@ -192,6 +201,53 @@ public class ImagePanel extends JPanel
                 saveFileChooser.setSelectedFile( incrementLCTPassage( selFile ) );
             }
         } ) ;
+        
+        actionMap.put( "incrementLCTPassageNumber", new AbstractAction() {
+            public void actionPerformed( ActionEvent e ) {
+                File selFile = saveFileChooser.getSelectedFile() ;
+                saveFileChooser.setSelectedFile( incrementLCTPassageNumber( selFile ) );
+            }
+        } ) ;
+        
+        actionMap.put( "stripLCT", new AbstractAction() {
+            public void actionPerformed( ActionEvent e ) {
+                File selFile = saveFileChooser.getSelectedFile() ;
+                saveFileChooser.setSelectedFile( stripLCT( selFile ) );
+            }
+        } ) ;
+    }
+    
+    private File incrementLCTPassageNumber( File selFile ) {
+
+        JEETestQuestionSequenceGenerator sg = null ;
+        String fileName = selFile.getName() ;
+        
+        String qNumStr = fileName.substring( fileName.lastIndexOf( '_' ) + 1 ) ;
+        String newFileName = fileName.substring( 0, fileName.lastIndexOf( "_" ) ) ;
+        
+        newFileName += "_LCT_" + (this.lastLCTPassageNumber+1) ;
+        
+        if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
+            sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
+            sg.saveLCTContext( Integer.parseInt( qNumStr ) ) ;
+            sg.saveNewFileNameContext( newFileName ) ;
+        }
+        
+        return new File( selFile.getParent(), newFileName ) ;
+    }
+    
+    private File stripLCT( File selFile ) {
+        
+        String fileName = selFile.getName() ;
+        if( fileName.contains( "_LCT_" ) ) {
+            String qNumStr = fileName.substring( fileName.lastIndexOf( '_' ) + 1 ) ;
+            String newFileName = fileName.substring( 0, fileName.lastIndexOf( "_LCT_" ) ) ;
+            
+            newFileName += "_" + qNumStr ;
+            
+            return new File( selFile.getParent(), newFileName ) ;
+        }
+        return selFile ;
     }
     
     private File incrementLCTPassage( File selFile ) {
@@ -429,8 +485,18 @@ public class ImagePanel extends JPanel
                 return null ;
             }
         }
-
+        
+        saveLastLCTPassageNumber( outputFile ) ;
+        
         return outputFile ;
+    }
+    
+    private void saveLastLCTPassageNumber( File file ) {
+        
+        Matcher m = LCT_PARA_PATTERN.matcher( file.getName() ) ;
+        if( m.matches() ) {
+            this.lastLCTPassageNumber = Integer.parseInt( m.group( 1 ) ) ;
+        }        
     }
     
     private String cycleSubjectInFileName( String fileName ) {

@@ -14,7 +14,30 @@ public class RegexPOC {
     private static final Logger logger = Logger.getLogger( RegexPOC.class ) ;
     
     public static void main( String[] args ) throws Exception {
-        new RegexPOC().runPOC() ;
+        new RegexPOC().test2() ;
+    }
+    
+    private void test1() throws Exception {
+        String fileName = "Phy_Q_YG201_LCT_43.png" ;
+        Pattern p = Pattern.compile( ".*_LCT_(\\d+)\\.png" ) ;
+        Matcher m = p.matcher( fileName ) ;
+        if( m.matches() ) {
+            logger.debug( "Is a LCT passage" ) ;
+            logger.debug( "The para num is " + m.group(1) ) ;
+        }        
+        else {
+            logger.debug( "Is not a LCT passage" ) ;
+        }
+    }
+    
+    private void test2() {
+        
+        String fileName = "Phy_Q_YG201_43.png" ;
+        String temp = fileName.substring( fileName.lastIndexOf( '_' ) + 1,
+                                          fileName.indexOf( ".png" ) ) ;
+        String baseFileName = fileName.substring( 0, fileName.lastIndexOf( "_" ) ) ;
+        
+        logger.debug( baseFileName ) ;
     }
     
     private void runPOC() throws Exception {
