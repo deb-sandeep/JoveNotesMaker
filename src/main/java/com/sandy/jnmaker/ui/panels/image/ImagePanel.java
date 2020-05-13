@@ -513,7 +513,7 @@ public class ImagePanel extends JPanel
             parts[0] = "Phy" ;
         }
         
-        parts[ parts.length-1 ] = "1" ;
+//        parts[ parts.length-1 ] = "1" ;
         
         return String.join( "_", parts ) ;
     }
