@@ -120,7 +120,7 @@ public class MainFrame extends AbstractMainFrame {
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
         
-        splitPane.setDividerLocation( 0.0d ) ;
+        splitPane.setDividerLocation( 1.0d ) ;
         splitPane.add( this.imagePanel ) ;
         splitPane.add( bottomComponent ) ;
         setCommonScrollPaneAttributes( splitPane ) ;
