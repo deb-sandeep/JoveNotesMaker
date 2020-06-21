@@ -46,6 +46,7 @@ import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.helper.seqgen.AITSSequenceGenerator ;
+import com.sandy.jnmaker.ui.helper.seqgen.JEEQuestion ;
 import com.sandy.jnmaker.ui.helper.seqgen.JEETestQuestionSequenceGenerator ;
 import com.sandy.jnmaker.ui.helper.seqgen.SequenceGenerator ;
 import com.sandy.jnmaker.ui.helper.seqgen.Sequencer ;
@@ -168,7 +169,6 @@ public class ImagePanel extends JPanel
         KeyStroke f3 = KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) ;
         KeyStroke f4 = KeyStroke.getKeyStroke( KeyEvent.VK_F4, 0 ) ;
         KeyStroke f5 = KeyStroke.getKeyStroke( KeyEvent.VK_F5, 0 ) ;
-        KeyStroke f6 = KeyStroke.getKeyStroke( KeyEvent.VK_F6, 0 ) ;
         
         KeyStroke backQuote = KeyStroke.getKeyStroke( KeyEvent.VK_BACK_QUOTE, KeyEvent.VK_SHIFT ) ;
         
@@ -177,9 +177,8 @@ public class ImagePanel extends JPanel
         map.put( backQuote, "approveSelection" ) ;
         map.put( f2, "incrementSequence" ) ;
         map.put( f3, "changeQType" ) ;
-        map.put( f4, "incrementLCT" ) ;
-        map.put( f5, "incrementLCTPassageNumber" ) ;
-        map.put( f6, "stripLCT" ) ;
+        map.put( f4, "incrementLCTPassage" ) ;
+        map.put( f5, "stripLCTGroupNumber" ) ;
         
         ActionMap actionMap = saveFileChooser.getActionMap() ;
         actionMap.put( "incrementSequence", new AbstractAction() {
@@ -195,95 +194,59 @@ public class ImagePanel extends JPanel
             }
         } ) ;
 
-        actionMap.put( "incrementLCT", new AbstractAction() {
+        actionMap.put( "incrementLCTPassage", new AbstractAction() {
             public void actionPerformed( ActionEvent e ) {
                 File selFile = saveFileChooser.getSelectedFile() ;
                 saveFileChooser.setSelectedFile( incrementLCTPassage( selFile ) );
             }
         } ) ;
-        
-        actionMap.put( "incrementLCTPassageNumber", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
-                File selFile = saveFileChooser.getSelectedFile() ;
-                saveFileChooser.setSelectedFile( incrementLCTPassageNumber( selFile ) );
-            }
-        } ) ;
-        
-        actionMap.put( "stripLCT", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
-                File selFile = saveFileChooser.getSelectedFile() ;
-                saveFileChooser.setSelectedFile( stripLCT( selFile ) );
-            }
-        } ) ;
-    }
-    
-    private File incrementLCTPassageNumber( File selFile ) {
 
-        JEETestQuestionSequenceGenerator sg = null ;
-        String fileName = selFile.getName() ;
-        
-        String qNumStr = fileName.substring( fileName.lastIndexOf( '_' ) + 1 ) ;
-        String newFileName = fileName.substring( 0, fileName.lastIndexOf( "_" ) ) ;
-        
-        newFileName += "_LCT_" + (this.lastLCTPassageNumber+1) ;
-        
-        if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
-            sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
-            sg.saveLCTContext( Integer.parseInt( qNumStr ) ) ;
-            sg.saveNewFileNameContext( newFileName ) ;
-        }
-        
-        return new File( selFile.getParent(), newFileName ) ;
-    }
-    
-    private File stripLCT( File selFile ) {
-        
-        String fileName = selFile.getName() ;
-        if( fileName.contains( "_LCT_" ) ) {
-            String qNumStr = fileName.substring( fileName.lastIndexOf( '_' ) + 1 ) ;
-            String newFileName = fileName.substring( 0, fileName.lastIndexOf( "_LCT_" ) ) ;
-            
-            newFileName += "_" + qNumStr ;
-            
-            return new File( selFile.getParent(), newFileName ) ;
-        }
-        return selFile ;
+        actionMap.put( "stripLCTGroupNumber", new AbstractAction() {
+            public void actionPerformed( ActionEvent e ) {
+                File selFile = saveFileChooser.getSelectedFile() ;
+                saveFileChooser.setSelectedFile( stripLCTGroupNumber( selFile ) );
+            }
+        } ) ;
     }
     
     private File incrementLCTPassage( File selFile ) {
         
         JEETestQuestionSequenceGenerator sg = null ;
         String fileName = selFile.getName() ;
+        JEEQuestion question = new JEEQuestion( fileName ) ;
         
-        if( fileName.contains( "_LCT_" ) ) {
-            int lctIndex = fileName.indexOf( "_LCT_" ) ;
-            
-            String temp = fileName.substring( lctIndex + "_LCT_".length() ) ;
-            
-            String[] parts = temp.split( "_" ) ;
-            int passageNum = -1 ;
-            int qNum = -1 ;
-            
-            passageNum = Integer.parseInt( parts[0] ) ;
-            
-            if( parts.length == 2 ) {
-                qNum = Integer.parseInt( parts[1] ) ;
-            }
-            
-            passageNum++ ;
-            
-            String newFileName = fileName.substring( 0, lctIndex ) ;
-            newFileName += "_LCT_" + passageNum ;
-            
-            if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
-                sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
-                sg.saveLCTContext( qNum ) ;
-                sg.saveNewFileNameContext( newFileName ) ;
-            }
-            
-            return new File( selFile.getParent(), newFileName ) ;
+        question.qType = "LCT" ;
+        question.qGroupNumber = lastLCTPassageNumber + 1 ;
+        
+        int qNum = question.qNumber ;
+        question.qNumber = -1 ;
+        
+        String newFileName = question.getFileName() ;
+        
+        if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
+            sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
+            sg.saveLCTContext( qNum ) ;
+            sg.saveNewFileNameContext( newFileName ) ;
         }
-        return selFile ;
+
+        return new File( selFile.getParent(), newFileName ) ;
+    }
+    
+    private File stripLCTGroupNumber( File selFile ) {
+        
+        JEETestQuestionSequenceGenerator sg = null ;
+        String fileName = selFile.getName() ;
+        JEEQuestion question = new JEEQuestion( fileName ) ;
+        
+        question.qGroupNumber = -1 ;
+        String newFileName = question.getFileName() ;
+        
+        if( this.sequenceGenerator instanceof JEETestQuestionSequenceGenerator ) {
+            sg = ( JEETestQuestionSequenceGenerator )this.sequenceGenerator ;
+            sg.saveNewFileNameContext( newFileName ) ;
+        }
+
+        return new File( selFile.getParent(), newFileName ) ;
     }
     
     private File changeQTypeInSelectedFileName( File selFile ) {
