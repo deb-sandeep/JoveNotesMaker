@@ -16,7 +16,7 @@ public class JEEQuestion {
         String fName = fileName ;
         
         if( fName.endsWith( ".png" ) ) {
-            fileName.substring( 0, fileName.length()-4 ) ;
+            fName = fileName.substring( 0, fileName.length()-4 ) ;
         }
         
         if( fName.contains( "(" ) ) {

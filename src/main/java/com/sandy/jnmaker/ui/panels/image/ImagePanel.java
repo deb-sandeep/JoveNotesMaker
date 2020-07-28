@@ -89,6 +89,7 @@ public class ImagePanel extends JPanel
     
     private SequenceGenerator sequenceGenerator = null ;
     private int lastLCTPassageNumber = 0 ;
+    private String lastSubject = null ;
     
     public ImagePanel() {
         
@@ -449,14 +450,22 @@ public class ImagePanel extends JPanel
             }
         }
         
-        saveLastLCTPassageNumber( outputFile ) ;
+        saveState( outputFile ) ;
         
         return outputFile ;
     }
     
-    private void saveLastLCTPassageNumber( File file ) {
+    private void saveState( File file ) {
         
-        Matcher m = LCT_PARA_PATTERN.matcher( file.getName() ) ;
+        String fileName = file.getName() ;
+        JEEQuestion q = new JEEQuestion( fileName ) ;
+        
+        if( lastSubject != null && !q.sub.equals( lastSubject ) ) {
+            lastLCTPassageNumber = 0 ;
+        }
+        lastSubject = q.sub ;
+        
+        Matcher m = LCT_PARA_PATTERN.matcher( fileName ) ;
         if( m.matches() ) {
             this.lastLCTPassageNumber = Integer.parseInt( m.group( 1 ) ) ;
         }        
