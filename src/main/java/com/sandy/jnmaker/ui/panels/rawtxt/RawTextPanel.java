@@ -82,7 +82,7 @@ public class RawTextPanel extends JPanel implements WordSource {
 
     public void setFontSize( int fontSize ) {
         this.fontSize = fontSize;
-        this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Trebuchet MS", Font.PLAIN, fontSize ) ) ;
     }
 
     public File getCurrentFile() {
@@ -230,7 +230,7 @@ public class RawTextPanel extends JPanel implements WordSource {
             MainFrame mainFrame = getMainFrame() ;
             
             switch( keyCode ) {
-                case KeyEvent.VK_Q: 
+                case KeyEvent.VK_A: 
                     mainFrame.createNote( selectedText, NoteType.QA ) ;
                     break ;
                 case KeyEvent.VK_F: 
