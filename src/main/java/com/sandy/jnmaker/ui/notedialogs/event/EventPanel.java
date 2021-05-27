@@ -16,11 +16,10 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
+@SuppressWarnings( {"serial", "deprecation"} )
 public class EventPanel extends EventPanelUI 
     implements ActionListener {
 
-    private static final long serialVersionUID = -270534844782994062L;
-    
     private JPopupMenu popupMenu  = null ;
     private JMenuItem  markTimeMI = null ;
 

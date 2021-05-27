@@ -1,31 +1,15 @@
 package com.sandy.jnmaker ;
 
-import static com.sandy.jnmaker.util.ObjectRepository.getIndexingDaemon ;
-import static com.sandy.jnmaker.util.ObjectRepository.getProjectManager ;
-import static com.sandy.jnmaker.util.ObjectRepository.getWkspManager ;
-import static com.sandy.jnmaker.util.ObjectRepository.setApp ;
-import static com.sandy.jnmaker.util.ObjectRepository.setAppConfig ;
-import static com.sandy.jnmaker.util.ObjectRepository.setBus ;
-import static com.sandy.jnmaker.util.ObjectRepository.setIndexingDaemon ;
-import static com.sandy.jnmaker.util.ObjectRepository.setMainFrame ;
-import static com.sandy.jnmaker.util.ObjectRepository.setObjectFactory ;
-import static com.sandy.jnmaker.util.ObjectRepository.setProjectManager ;
-import static com.sandy.jnmaker.util.ObjectRepository.setStateMgr ;
-import static com.sandy.jnmaker.util.ObjectRepository.setUiActions ;
-import static com.sandy.jnmaker.util.ObjectRepository.setWkspManager ;
-import static com.sandy.jnmaker.util.ObjectRepository.setWordRepository ;
-import static com.sandy.jnmaker.util.ObjectRepository.setWordnicAdapter ;
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
 
 import java.awt.SplashScreen ;
 
 import javax.swing.SwingUtilities ;
-import javax.swing.UIManager ;
 
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.bus.EventBus ;
 import com.sandy.common.objfactory.SpringObjectFactory ;
-import com.sandy.common.ui.SwingUtils ;
 import com.sandy.common.util.Configurator ;
 import com.sandy.common.util.StateManager ;
 import com.sandy.common.util.WorkspaceManager ;

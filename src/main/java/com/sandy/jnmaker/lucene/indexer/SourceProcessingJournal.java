@@ -28,6 +28,7 @@ public class SourceProcessingJournal {
     private File       journalFile       = null ;
     private List<File> sourceDirectories = null ;
     
+    @SuppressWarnings( "resource" )
     public SourceProcessingJournal( File journalFile, List<File> sourceDirectories ) 
         throws Exception {
         

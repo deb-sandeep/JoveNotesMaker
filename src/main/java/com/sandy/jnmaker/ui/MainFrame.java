@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui;
 
-import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
+import static com.sandy.common.ui.SwingUtils.* ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
 
 import java.awt.CardLayout ;
@@ -21,7 +21,7 @@ import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.menu.AppMenu ;
 import com.sandy.jnmaker.ui.menu.ToggleInputEditorMenu.InputEditorMode ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
-import com.sandy.jnmaker.ui.panels.image.ImagePanel ;
+import com.sandy.jnmaker.ui.panels.image.K12QuestionsImagePanel ;
 import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
 import com.sandy.jnmaker.ui.panels.search.SearchInputPanel ;
@@ -36,7 +36,7 @@ public class MainFrame extends AbstractMainFrame {
     private JPanel           inputEditorPanel = null ;
     private SearchInputPanel searchPanel      = null ;
     private RawTextPanel     rawTextPanel     = null ;
-    private ImagePanel       imagePanel       = null ;
+    private K12QuestionsImagePanel imagePanel = null ;
     private JoveNotesPanel   jnPanel          = null ;
     
     private NotesCreatorDialog notesCreator = null ;
@@ -116,7 +116,7 @@ public class MainFrame extends AbstractMainFrame {
     
     private JSplitPane createBaseSplitPane( Component bottomComponent ) {
         
-        this.imagePanel = new ImagePanel() ;
+        this.imagePanel = new K12QuestionsImagePanel() ;
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
         
@@ -146,11 +146,11 @@ public class MainFrame extends AbstractMainFrame {
         this.rawTextPanel = rawTextPanel;
     }
 
-    public ImagePanel getImagePanel() {
+    public K12QuestionsImagePanel getImagePanel() {
         return this.imagePanel;
     }
 
-    public void setImagePanel( ImagePanel imagePanel ) {
+    public void setImagePanel( K12QuestionsImagePanel imagePanel ) {
         this.imagePanel = imagePanel;
     }
 

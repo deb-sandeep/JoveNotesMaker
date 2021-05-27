@@ -15,7 +15,7 @@ import javax.swing.text.BadLocationException ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
-@SuppressWarnings( "serial" )
+@SuppressWarnings( {"serial", "deprecation"} )
 public class ExercisePanel extends ExercisePanelUI implements ActionListener {
     
     public ExercisePanel( String selectedText ) {

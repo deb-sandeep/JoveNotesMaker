@@ -1,7 +1,10 @@
 package com.sandy.jnmaker.ui.panels.rawtxt;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.getWordRepository ;
+import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -40,14 +43,13 @@ import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 import com.sandy.jnmaker.util.WordRepository.WordSource ;
 
+@SuppressWarnings( {"serial", "deprecation"} )
 public class RawTextPanel extends JPanel implements WordSource {
 
-    private static final long serialVersionUID = -6820796056331113968L ;
     private static final Logger logger = Logger.getLogger( RawTextPanel.class ) ;
     
     private static final String BOOKMARK_MARKER = "// here" ;
 
-    @SuppressWarnings( "serial" )
     private JTextPane textPane = new JTextPane() { 
         // This is a work around for the bizzare wrapping behavior of JTextPane.
         // This fix seems to be working, but in future if we see problems 

@@ -25,6 +25,7 @@ public class LargeCaret extends DefaultCaret {
         repaint() ;
     }
 
+    @SuppressWarnings( "deprecation" )
     public void paint( Graphics g ) {
         
         JTextComponent comp = getComponent() ;

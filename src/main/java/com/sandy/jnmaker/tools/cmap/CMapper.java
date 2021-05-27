@@ -15,6 +15,7 @@ import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.ui.notedialogs.qa.QAPanel ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
+@SuppressWarnings( {"deprecation"} )
 public class CMapper {
     
     private JCMap cMapper = null ;

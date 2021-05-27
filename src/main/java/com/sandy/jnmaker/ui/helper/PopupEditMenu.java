@@ -34,6 +34,7 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
+@SuppressWarnings( "deprecation" )
 public class PopupEditMenu extends JMenu implements ActionListener {
 
     private static final long serialVersionUID = 1L ;

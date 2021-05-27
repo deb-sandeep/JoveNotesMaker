@@ -20,6 +20,7 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
+@SuppressWarnings( {"deprecation"} )
 public class FIBPanel extends FIBPanelUI implements ActionListener {
 
     private static final long serialVersionUID = -6630383705812553661L ;

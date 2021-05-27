@@ -18,10 +18,9 @@ import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
+@SuppressWarnings( {"serial", "deprecation"} )
 public class QAPanel extends QAPanelUI {
 
-    private static final long serialVersionUID = 3958957198034168755L ;
-    
     private File ansImgFile = null ;
 
     public QAPanel( String selectedText ) {

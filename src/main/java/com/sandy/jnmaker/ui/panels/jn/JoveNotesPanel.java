@@ -34,9 +34,9 @@ import com.sandy.jnmaker.ui.panels.common.JoveNotesTextPane ;
 import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
+@SuppressWarnings( {"serial", "deprecation"} )
 public class JoveNotesPanel extends JPanel {
 
-    private static final long serialVersionUID = -6820796056331113968L;
     private static final Logger logger = Logger.getLogger( RawTextPanel.class ) ;
 
     private JFileChooser      fileChooser   = new JFileChooser() ;

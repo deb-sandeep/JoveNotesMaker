@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+@SuppressWarnings( {"deprecation"} )
 public class XTextModelParser {
 
     private static final String DEF_EMF_REG_METHOD = "createInjectorAndDoEMFRegistration" ;
