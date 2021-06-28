@@ -3,6 +3,7 @@ package com.sandy.jnmaker.util;
 public enum NoteType {
 
     QA, 
+    QA_Q,
     FIB, 
     TRUE_FALSE, 
     DEFINITION, 

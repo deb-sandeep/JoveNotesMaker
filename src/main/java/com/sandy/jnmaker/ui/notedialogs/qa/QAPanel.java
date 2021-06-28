@@ -23,13 +23,18 @@ public class QAPanel extends QAPanelUI {
 
     private File ansImgFile = null ;
 
-    public QAPanel( String selectedText ) {
+    public QAPanel( String selectedText, boolean asQuestion ) {
         
         UIUtil.associateEditMenu( this.questionTextArea ) ;
         UIUtil.associateEditMenu( this.answerTextArea ) ;
         setUpListeners() ;
         
-        this.answerTextArea.setText( selectedText ) ;
+        if( asQuestion ) {
+            this.questionTextArea.setText( selectedText ) ;
+        }
+        else {
+            this.answerTextArea.setText( selectedText ) ;
+        }
     }
     
     private void setUpListeners() {

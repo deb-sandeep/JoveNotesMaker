@@ -260,7 +260,14 @@ public class K12QuestionsImagePanel extends JPanel
                 }
             }
             
-            lastQuestion = new ExQuestion( outputFile.getName() ) ;
+            try {
+                lastQuestion = new ExQuestion( outputFile.getName() ) ;
+            }
+            catch( Exception e ) {
+                lastQuestion = null ;
+                log.debug(  "Not recognized as an exercise question. Saving as is." ) ;
+            }
+
             lastSavedDir = outputFile.getParentFile() ;
             
             writeSelectedImageToFile( image, outputFile ) ;
