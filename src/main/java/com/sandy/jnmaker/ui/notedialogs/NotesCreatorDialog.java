@@ -211,6 +211,7 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
                 break ;
             case QA_Q:
                 panel = new QAPanel( selectedText, true ) ;
+                break ;
             case FIB:
                 panel = new FIBPanel( selectedText ) ;
                 break ;
