@@ -46,6 +46,8 @@ public class UIUtil {
         button.setPreferredSize( new Dimension( 30, 30 ) );
         button.setAction( action ) ;
         button.setText( null ) ;
+        button.setOpaque( true ) ;
+        button.setBackground( Color.GRAY ) ;
         
         return button ;
     }
@@ -63,6 +65,8 @@ public class UIUtil {
         button.setPreferredSize( new Dimension( 30, 30 ) );
         button.setActionCommand( actionCmd ) ;
         button.addActionListener( listener ) ;
+        button.setOpaque( true ) ;
+        button.setBackground( Color.GRAY ) ;
         
         return button ;
     }

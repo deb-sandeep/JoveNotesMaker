@@ -17,7 +17,7 @@ public class RegexPOC {
         new RegexPOC().test2() ;
     }
     
-    private void test1() throws Exception {
+    public void test1() throws Exception {
         String fileName = "Phy_Q_YG201_LCT_43.png" ;
         Pattern p = Pattern.compile( ".*_LCT_(\\d+)\\.png" ) ;
         Matcher m = p.matcher( fileName ) ;
@@ -38,9 +38,10 @@ public class RegexPOC {
         String baseFileName = fileName.substring( 0, fileName.lastIndexOf( "_" ) ) ;
         
         logger.debug( baseFileName ) ;
+        logger.debug( temp ) ;
     }
     
-    private void runPOC() throws Exception {
+    public void runPOC() throws Exception {
         
         Pattern pattern = Pattern.compile( getConfigParamPattern(), Pattern.DOTALL ) ;
         String  input   = getConfigParamString() ;

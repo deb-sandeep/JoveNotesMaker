@@ -155,6 +155,8 @@ public class RawTextPanel extends JPanel implements WordSource {
         Actions actions = ObjectRepository.getUiActions() ;
         
         panel.setLayout( new BoxLayout(panel, BoxLayout.Y_AXIS) ) ;
+        panel.setOpaque( true ) ;
+        panel.setBackground( Color.GRAY ) ;
         
         panel.add( getActionBtn( actions.getNewRawFileAction() ) ) ;
         panel.add( getActionBtn( actions.getOpenRawFileAction() ) ) ;
@@ -215,6 +217,15 @@ public class RawTextPanel extends JPanel implements WordSource {
         textPane.setSelectionColor( Color.GRAY );
     }
     
+    private String getProcessedText( String text ) {
+        
+        text = ( text != null ) ? text.trim() : "" ;
+        if( text.length() > 1 ) {
+            text = text.substring( 0, 1 ).toUpperCase() + text.substring( 1 ) ;
+        }
+        return text ;
+    }
+    
     private void handleEditorControlKeyStrokes( int modifiers, int keyCode ) {
         
         if( modifiers == KeyEvent.CTRL_MASK ) {
@@ -230,6 +241,8 @@ public class RawTextPanel extends JPanel implements WordSource {
         else if( modifiers == ( KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK ) ) {
             String selectedText = textPane.getSelectedText() ;
             MainFrame mainFrame = getMainFrame() ;
+            
+            selectedText = getProcessedText( selectedText ) ;
             
             switch( keyCode ) {
                 case KeyEvent.VK_A: 

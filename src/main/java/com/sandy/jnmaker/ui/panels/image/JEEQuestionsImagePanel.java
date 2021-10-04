@@ -110,6 +110,9 @@ public class JEEQuestionsImagePanel extends JPanel
         
         JPanel panel = new JPanel() ;
         panel.setLayout( new BoxLayout(panel, BoxLayout.Y_AXIS) ) ;
+        panel.setOpaque( true ) ;
+        panel.setBackground( Color.GRAY ) ;
+
         panel.add( getActionBtn( "file_open", AC_OPEN_FILES, this ) ) ;
         panel.add( getActionBtn( "zoom_in",   AC_ZOOM_IN,    this ) ) ;
         panel.add( getActionBtn( "zoom_out",  AC_ZOOM_OUT,   this ) ) ;

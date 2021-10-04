@@ -140,7 +140,9 @@ public class JoveNotesPanel extends JPanel {
         Actions actions = ObjectRepository.getUiActions() ;
         
         panel.setLayout( new BoxLayout(panel, BoxLayout.Y_AXIS) ) ;
-        
+        panel.setOpaque( true ) ;
+        panel.setBackground( Color.GRAY ) ;
+
         panel.add( getActionBtn( actions.getNewJNFileAction() ) ) ;
         panel.add( getActionBtn( actions.getOpenJNFileAction() ) ) ;
         panel.add( getActionBtn( actions.getSaveJNFileAction() ) ) ;
@@ -367,6 +369,10 @@ public class JoveNotesPanel extends JPanel {
     public void addNote( String fmtNote ) {
         
         try {
+            if( fmtNote != null ) {
+                fmtNote.replace( " teh ", " the " ) ;
+            }
+            
             Document doc = textPane.getDocument() ;
             doc.insertString( textPane.getCaretPosition(), fmtNote, null ) ;
         }
