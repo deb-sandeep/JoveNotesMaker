@@ -118,7 +118,7 @@ public class MainFrame extends AbstractMainFrame {
         
         this.imagePanel = new K12QuestionsImagePanel() ;
         
-        JSplitPane splitPane = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT ) ;
+        JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
         
         splitPane.setDividerLocation( 1.0d ) ;
         splitPane.add( this.imagePanel ) ;
