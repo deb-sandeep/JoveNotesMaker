@@ -12,6 +12,8 @@ import javax.swing.text.StyleConstants ;
 import javax.swing.text.StyleContext ;
 import javax.swing.text.StyledDocument ;
 
+import org.apache.log4j.Logger ;
+
 import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.util.JNSrcTokenizer ;
@@ -19,9 +21,10 @@ import com.sandy.jnmaker.util.JNSrcTokenizer.Token ;
 import com.sandy.jnmaker.util.JNSrcTokenizer.TokenType ;
 import com.sandy.jnmaker.util.WordRepository.WordSource ;
 
+@SuppressWarnings( "serial" )
 public class JoveNotesTextPane extends JTextPane implements WordSource {
 
-    private static final long serialVersionUID = 1L ;
+    static final Logger log = Logger.getLogger( JoveNotesTextPane.class ) ;
     
     private static String[] JN_KEYWORDS = {
             "@img", 
@@ -36,6 +39,7 @@ public class JoveNotesTextPane extends JTextPane implements WordSource {
             "@youtube",
             "@doc",
             "@var",
+            "@compiler_break",
             "\""
     } ;
     

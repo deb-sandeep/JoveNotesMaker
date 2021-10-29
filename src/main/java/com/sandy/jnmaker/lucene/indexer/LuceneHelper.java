@@ -48,31 +48,33 @@ public class LuceneHelper {
     
     public static void addFieldToDocument( Document doc, 
                                            String key, String value ) {
-
-        Field field = null ;
-        switch( key ) {
-            case NOTE_ID :
-            case CHAPTER_ID :
-                field = new StringField( key, value, Store.NO ) ;
-                break ;
-                
-            case SRC_PATH :
-            case MEDIA_PATHS :
-            case CHAPTER_NUM :
-            case SUB_CHAPTER_NUM :
-                field = new StringField( key, value, Store.YES ) ;
-                break ;
-                
-            case NOTE_TYPE :
-            case SUBJECT :
-            case CHAPTER_NAME :
-            case NOTE_TEXT :
-            case SYLLABUS :
-                field = new TextField( key, value, Store.YES ) ;
-                break ;
-        }
         
-        doc.add( field ) ;
+        Field field = null ;
+        
+        if( value != null ) {
+            switch( key ) {
+                case NOTE_ID :
+                case CHAPTER_ID :
+                    field = new StringField( key, value, Store.NO ) ;
+                    break ;
+                    
+                case SRC_PATH :
+                case MEDIA_PATHS :
+                case CHAPTER_NUM :
+                case SUB_CHAPTER_NUM :
+                    field = new StringField( key, value, Store.YES ) ;
+                    break ;
+                    
+                case NOTE_TYPE :
+                case SUBJECT :
+                case CHAPTER_NAME :
+                case NOTE_TEXT :
+                case SYLLABUS :
+                    field = new TextField( key, value, Store.YES ) ;
+                    break ;
+            }
+            doc.add( field ) ;
+        }
     }
     
     public static String getFileContentMD5( File file ) throws Exception {

@@ -44,6 +44,7 @@ public class JNSrcTokenizer {
             "@tn" ,
             "@true_false" ,
             "@wm",
+            "@compiler_break",
     } ;
     
     private static final String[] PUNCTUATIONS = {
