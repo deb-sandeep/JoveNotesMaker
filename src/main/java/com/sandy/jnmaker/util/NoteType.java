@@ -11,5 +11,6 @@ public enum NoteType {
     SPELLBEE, 
     COMMENT, 
     EVENT,
-    EXERCISE
+    EXERCISE,
+    MATCHING
 }

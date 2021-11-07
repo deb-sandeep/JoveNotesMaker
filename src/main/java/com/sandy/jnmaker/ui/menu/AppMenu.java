@@ -41,7 +41,6 @@ public class AppMenu extends JMenuBar {
         menu.add( actions.getNewRawFileAction() ) ;
         menu.add( actions.getOpenRawFileAction() ) ;
         menu.add( actions.getSaveRawFileAction() ) ;
-        menu.add( actions.getSaveAsRawFileAction() ) ;
         menu.add( actions.getCloseRawFileAction() ) ;
         menu.addSeparator() ;
         menu.add( actions.getZoomInRawAction() ) ;
@@ -59,7 +58,6 @@ public class AppMenu extends JMenuBar {
         menu.add( actions.getNewJNFileAction() ) ;
         menu.add( actions.getOpenJNFileAction() ) ;
         menu.add( actions.getSaveJNFileAction() ) ;
-        menu.add( actions.getSaveAsJNFileAction() ) ;
         menu.add( actions.getCloseJNFileAction() ) ;
         menu.addSeparator() ;
         menu.add( actions.getZoomInJNAction() ) ;

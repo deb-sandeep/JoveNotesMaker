@@ -146,7 +146,6 @@ public class JoveNotesPanel extends JPanel {
         panel.add( getActionBtn( actions.getNewJNFileAction() ) ) ;
         panel.add( getActionBtn( actions.getOpenJNFileAction() ) ) ;
         panel.add( getActionBtn( actions.getSaveJNFileAction() ) ) ;
-        panel.add( getActionBtn( actions.getSaveAsJNFileAction() ) ) ;
         panel.add( getActionBtn( actions.getCloseJNFileAction() ) ) ;
         panel.add( getActionBtn( actions.getZoomInJNAction() ) ) ;
         panel.add( getActionBtn( actions.getZoomOutJNAction() ) ) ;

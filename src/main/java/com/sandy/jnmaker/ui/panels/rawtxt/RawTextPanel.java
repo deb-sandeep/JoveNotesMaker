@@ -5,6 +5,8 @@ import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;
 import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 import static com.sandy.jnmaker.util.ObjectRepository.getWordRepository ;
 import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
+import static com.sandy.common.ui.SwingUtils.* ;
+
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -25,6 +27,7 @@ import javax.swing.JLabel ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
+import javax.swing.JSplitPane ;
 import javax.swing.JTextPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.filechooser.FileFilter ;
@@ -68,6 +71,8 @@ public class RawTextPanel extends JPanel implements WordSource {
     private int  fontSize    = 12 ;
     private File currentFile = null ;
     
+    private ScratchTextPanel scratchPanel = new ScratchTextPanel() ;
+    
     public RawTextPanel() {
         setUpUI() ;
         setUpFileChooser() ;
@@ -83,8 +88,12 @@ public class RawTextPanel extends JPanel implements WordSource {
     }
 
     public void setFontSize( int fontSize ) {
+        
         this.fontSize = fontSize;
-        this.textPane.setFont( new Font( "Trebuchet MS", Font.PLAIN, fontSize ) ) ;
+        
+        Font newFont = new Font( "Trebuchet MS", Font.PLAIN, fontSize ) ;
+        this.textPane.setFont( newFont ) ;
+        this.scratchPanel.setFontSize( this.fontSize ) ;
     }
 
     public File getCurrentFile() {
@@ -101,6 +110,7 @@ public class RawTextPanel extends JPanel implements WordSource {
             this.textPane.setText( "" ) ;
             this.originalText = "" ;
             this.currentFile = null ;
+            this.scratchPanel.setCurrentFile( null ) ;
         }
         else {
             try {
@@ -112,6 +122,8 @@ public class RawTextPanel extends JPanel implements WordSource {
                 setCWD( file.getParentFile() ) ;
                 getWordRepository().offer( this.originalText ) ;
                 scrollToBookmarkPosition() ;
+                
+                setScratchFile() ;
             }
             catch( Exception e ) {
                 logger.error( "Error while opening file.", e ) ;
@@ -120,6 +132,13 @@ public class RawTextPanel extends JPanel implements WordSource {
             }
         }
         displayFileName() ;
+    }
+    
+    private void setScratchFile() {
+        
+        File parentDir = this.currentFile.getParentFile() ;
+        File scratchFile = new File( parentDir, "scratch.txt" ) ;
+        this.scratchPanel.setCurrentFile( scratchFile ) ;
     }
     
     private void displayFileName() {
@@ -161,7 +180,6 @@ public class RawTextPanel extends JPanel implements WordSource {
         panel.add( getActionBtn( actions.getNewRawFileAction() ) ) ;
         panel.add( getActionBtn( actions.getOpenRawFileAction() ) ) ;
         panel.add( getActionBtn( actions.getSaveRawFileAction() ) ) ;
-        panel.add( getActionBtn( actions.getSaveAsRawFileAction() ) ) ;
         panel.add( getActionBtn( actions.getCloseRawFileAction() ) ) ;
         panel.add( getActionBtn( actions.getZoomInRawAction() ) ) ;
         panel.add( getActionBtn( actions.getZoomOutRawAction() ) ) ;
@@ -172,6 +190,16 @@ public class RawTextPanel extends JPanel implements WordSource {
     }
     
     private JComponent getDocumentEditorPanel() {
+        
+        JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ; 
+        splitPane.setDividerLocation( (int)(0.6 * getScreenHeight()) ) ;
+        splitPane.setDividerSize( 2 ) ;
+        splitPane.add( getRawTextEditorPanel() ) ;
+        splitPane.add( scratchPanel ) ;
+        return splitPane ;
+    }
+    
+    private JComponent getRawTextEditorPanel() {
         
         configureTextArea() ;
         JScrollPane scrollPane = new JScrollPane( textPane, 
@@ -284,6 +312,12 @@ public class RawTextPanel extends JPanel implements WordSource {
                 case KeyEvent.VK_N:
                     mainFrame.shiftFocusToNotes() ;
                     break ;
+                case KeyEvent.VK_I:
+                    this.scratchPanel.captureFocus() ;
+                    break ;
+                case KeyEvent.VK_DOWN:
+                    this.scratchPanel.addText( selectedText ) ;
+                    break ;
             }
         }
     }
@@ -354,7 +388,7 @@ public class RawTextPanel extends JPanel implements WordSource {
         if( !this.textPane.getText().equals( this.originalText ) ) {
             isDirty = true ;
         }
-        return isDirty ;
+        return isDirty | this.scratchPanel.isEditorDirty() ;
     }
     
     public boolean handleDirtyFileOnExit() {
@@ -405,6 +439,8 @@ public class RawTextPanel extends JPanel implements WordSource {
                     String txt = doc.getText( 0, doc.getLength() ) ;
                     FileUtils.write( this.currentFile, txt, "UTF-8" ) ;
                     this.originalText = txt ;
+                    
+                    this.scratchPanel.saveFile() ;
                 }
                 catch( Exception e ) {
                     logger.error( "Could not save file contents", e ) ;
@@ -455,7 +491,8 @@ public class RawTextPanel extends JPanel implements WordSource {
                 this.fontSize = 8 ;
             }
         }
-        this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
+        
+        this.setFontSize( this.fontSize ) ;
     }
 
     private void handleMakeNotesTrigger( MouseEvent e ) {

@@ -7,11 +7,9 @@ import static java.awt.event.InputEvent.CTRL_DOWN_MASK ;
 import static java.awt.event.KeyEvent.VK_1 ;
 import static java.awt.event.KeyEvent.VK_2 ;
 import static java.awt.event.KeyEvent.VK_3 ;
-import static java.awt.event.KeyEvent.VK_4 ;
 import static java.awt.event.KeyEvent.VK_5 ;
 import static java.awt.event.KeyEvent.VK_6 ;
 import static java.awt.event.KeyEvent.VK_7 ;
-import static java.awt.event.KeyEvent.VK_A ;
 import static java.awt.event.KeyEvent.VK_C ;
 import static java.awt.event.KeyEvent.VK_F1 ;
 import static java.awt.event.KeyEvent.VK_F2 ;
@@ -56,7 +54,6 @@ public class Actions {
     private AbstractBaseAction openRawFileAction   = null ;
     private AbstractBaseAction closeRawFileAction  = null ;
     private AbstractBaseAction saveRawFileAction   = null ;
-    private AbstractBaseAction saveAsRawFileAction = null ;
     private AbstractBaseAction zoomInRawAction     = null ;
     private AbstractBaseAction zoomOutRawAction    = null ;
     
@@ -64,7 +61,6 @@ public class Actions {
     private AbstractBaseAction openJNFileAction   = null ;
     private AbstractBaseAction closeJNFileAction  = null ;
     private AbstractBaseAction saveJNFileAction   = null ;
-    private AbstractBaseAction saveAsJNFileAction = null ;
     private AbstractBaseAction zoomInJNAction     = null ;
     private AbstractBaseAction zoomOutJNAction    = null ;
     
@@ -82,7 +78,6 @@ public class Actions {
         { "newRawFile",    "New raw file",     "file_new",    VK_N,     VK_1, CTRL_DOWN_MASK },
         { "openRawFile",   "Open raw file",    "file_open",   VK_O,     VK_2, CTRL_DOWN_MASK },
         { "saveRawFile",   "Save raw file",    "file_save",   VK_S,     VK_3, CTRL_DOWN_MASK },
-        { "saveAsRawFile", "Save as raw file", "file_save_as",VK_A,     VK_4, CTRL_DOWN_MASK },
         { "closeRawFile",  "Close raw file",   "file_close",  VK_C,     VK_5, CTRL_DOWN_MASK },
         { "zoomInRaw",     "Zoom in",          "zoom_in",     VK_PLUS,  VK_6, CTRL_DOWN_MASK },
         { "zoomOutRaw",    "Zoom out",         "zoom_out",    VK_MINUS, VK_7, CTRL_DOWN_MASK },
@@ -90,7 +85,6 @@ public class Actions {
         { "newJNFile",     "New JN file",     "file_new",    VK_N,      VK_1, ALT_DOWN_MASK },
         { "openJNFile",    "Open JN file",    "file_open",   VK_O,      VK_2, ALT_DOWN_MASK },
         { "saveJNFile",    "Save JN file",    "file_save",   VK_S,      VK_3, ALT_DOWN_MASK },
-        { "saveAsJNFile",  "Save as JN file", "file_save_as",VK_A,      VK_4, ALT_DOWN_MASK },
         { "closeJNFile",   "Close JN file",   "file_close",  VK_C,      VK_5, ALT_DOWN_MASK },
         { "zoomInJN",      "Zoom in",         "zoom_in",     VK_PLUS,   VK_6, ALT_DOWN_MASK },
         { "zoomOutJN",     "Zoom out",        "zoom_out",    VK_MINUS,  VK_7, ALT_DOWN_MASK },
@@ -111,14 +105,12 @@ public class Actions {
         openRawFileAction   = constructAction( "openRawFile"   ) ;
         closeRawFileAction  = constructAction( "closeRawFile"  ) ;
         saveRawFileAction   = constructAction( "saveRawFile"   ) ;
-        saveAsRawFileAction = constructAction( "saveAsRawFile" ) ;
         zoomInRawAction     = constructAction( "zoomInRaw"     ) ;
         zoomOutRawAction    = constructAction( "zoomOutRaw"    ) ;
 
         newJNFileAction    = constructAction( "newJNFile"    ) ;
         openJNFileAction   = constructAction( "openJNFile"   ) ;
         saveJNFileAction   = constructAction( "saveJNFile"   ) ;
-        saveAsJNFileAction = constructAction( "saveAsJNFile" ) ;
         closeJNFileAction  = constructAction( "closeJNFile"  ) ;
         zoomInJNAction     = constructAction( "zoomInJN"     ) ;
         zoomOutJNAction    = constructAction( "zoomOutJN"    ) ;
@@ -148,10 +140,6 @@ public class Actions {
         return saveRawFileAction;
     }
 
-    public AbstractBaseAction getSaveAsRawFileAction() {
-        return saveAsRawFileAction;
-    }
-    
     public AbstractBaseAction getExitAppAction() {
         return exitAppAction ;
     }
@@ -178,10 +166,6 @@ public class Actions {
 
     public AbstractBaseAction getSaveJNFileAction() {
         return saveJNFileAction;
-    }
-
-    public AbstractBaseAction getSaveAsJNFileAction() {
-        return saveAsJNFileAction;
     }
 
     public AbstractBaseAction getZoomInJNAction() {
@@ -288,11 +272,6 @@ public class Actions {
     }
     
     @SuppressWarnings( "unused" )
-    private void saveAsRawFile() {
-        getMainFrame().getRawTextPanel().saveFileAs() ;
-    }
-    
-    @SuppressWarnings( "unused" )
     private void zoomInRaw() {
         getMainFrame().getRawTextPanel().zoom( true ) ;
     }
@@ -320,11 +299,6 @@ public class Actions {
     @SuppressWarnings( "unused" )
     private void saveJNFile() {
         getMainFrame().getJNPanel().saveFile() ;
-    }
-    
-    @SuppressWarnings( "unused" )
-    private void saveAsJNFile() {
-        getMainFrame().getJNPanel().saveFileAs() ;
     }
     
     @SuppressWarnings( "unused" )
