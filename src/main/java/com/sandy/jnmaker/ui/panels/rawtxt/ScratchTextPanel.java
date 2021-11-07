@@ -63,7 +63,7 @@ public class ScratchTextPanel extends JPanel implements WordSource {
 
     public void setFontSize( int fontSize ) {
         this.fontSize = fontSize;
-        this.textPane.setFont( new Font( "Trebuchet MS", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Courier New", Font.PLAIN, fontSize ) ) ;
     }
 
     public File getCurrentFile() {
