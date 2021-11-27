@@ -1,12 +1,12 @@
-package com.sandy.jnmaker.ui.notedialogs.matching;
+package com.sandy.jnmaker.ui.notedialogs.rawnotes;
 
 import com.sandy.jnmaker.ui.notedialogs.AbstractNotePanel ;
 
-public abstract class MatchingPanelUI extends AbstractNotePanel {
+public abstract class RawNotesPanelUI extends AbstractNotePanel {
 
     private static final long serialVersionUID = 1L;
 
-    public MatchingPanelUI() {
+    public RawNotesPanelUI() {
         initComponents();
     }
 
@@ -20,20 +20,20 @@ public abstract class MatchingPanelUI extends AbstractNotePanel {
 
         javax.swing.JLabel label = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        matchingTF = new javax.swing.JTextArea();
+        rawNotesTF = new javax.swing.JTextArea();
 
         setBackground(java.awt.Color.lightGray);
 
         label.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
         label.setText("Edit matching note");
 
-        matchingTF.setColumns(20);
-        matchingTF.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N
-        matchingTF.setLineWrap(true);
-        matchingTF.setRows(5);
-        matchingTF.setTabSize(4);
-        matchingTF.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(matchingTF);
+        rawNotesTF.setColumns(20);
+        rawNotesTF.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N
+        rawNotesTF.setLineWrap(true);
+        rawNotesTF.setRows(5);
+        rawNotesTF.setTabSize(4);
+        rawNotesTF.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(rawNotesTF);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -61,7 +61,7 @@ public abstract class MatchingPanelUI extends AbstractNotePanel {
 
 
     // Variables declaration - do not modify                     
-    protected javax.swing.JTextArea matchingTF;
+    protected javax.swing.JTextArea rawNotesTF;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration                   
 }

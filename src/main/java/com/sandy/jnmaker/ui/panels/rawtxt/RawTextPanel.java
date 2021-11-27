@@ -193,7 +193,8 @@ public class RawTextPanel extends JPanel implements WordSource {
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ; 
         splitPane.setDividerLocation( (int)(0.6 * getScreenHeight()) ) ;
-        splitPane.setDividerSize( 2 ) ;
+        splitPane.setDividerSize( 5 ) ;
+        splitPane.setOneTouchExpandable( true ) ;
         splitPane.add( getRawTextEditorPanel() ) ;
         splitPane.add( scratchPanel ) ;
         return splitPane ;

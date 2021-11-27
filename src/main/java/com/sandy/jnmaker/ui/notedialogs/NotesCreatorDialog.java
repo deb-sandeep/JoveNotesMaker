@@ -29,8 +29,9 @@ import com.sandy.jnmaker.ui.notedialogs.definition.DefinitionPanel ;
 import com.sandy.jnmaker.ui.notedialogs.event.EventPanel ;
 import com.sandy.jnmaker.ui.notedialogs.exercise.ExercisePanel ;
 import com.sandy.jnmaker.ui.notedialogs.fib.FIBPanel ;
-import com.sandy.jnmaker.ui.notedialogs.matching.MatchingPanel ;
 import com.sandy.jnmaker.ui.notedialogs.qa.QAPanel ;
+import com.sandy.jnmaker.ui.notedialogs.rawnotes.MatchingPanel ;
+import com.sandy.jnmaker.ui.notedialogs.rawnotes.MultiChoicePanel ;
 import com.sandy.jnmaker.ui.notedialogs.spellbee.SpellbeePanel ;
 import com.sandy.jnmaker.ui.notedialogs.truefalse.TFPanel ;
 import com.sandy.jnmaker.ui.notedialogs.wm.WMPanel ;
@@ -202,6 +203,11 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
             case MATCHING:
                 titleText = "Edit @match note." ;
                 break ;
+            case MULTI_CHOICE:
+                titleText = "Edit @multi_choice note." ;
+                break ;
+            default:
+                break ;
         }
         return titleText ;
     }
@@ -242,6 +248,11 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
                 break ;
             case MATCHING:
                 panel = new MatchingPanel( selectedText ) ;
+                break ;
+            case MULTI_CHOICE:
+                panel = new MultiChoicePanel( selectedText ) ;
+                break ;
+            default:
                 break ;
         }
         

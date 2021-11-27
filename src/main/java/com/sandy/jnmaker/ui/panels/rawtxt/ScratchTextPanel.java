@@ -191,6 +191,9 @@ public class ScratchTextPanel extends JPanel implements WordSource {
                 case KeyEvent.VK_M: 
                     mainFrame.createNote( selectedText, NoteType.MATCHING ) ;
                     break ;
+                case KeyEvent.VK_C: 
+                    mainFrame.createNote( selectedText, NoteType.MULTI_CHOICE ) ;
+                    break ;
                 case KeyEvent.VK_N:
                     mainFrame.shiftFocusToNotes() ;
                     break ;

@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.notedialogs.matching ;
+package com.sandy.jnmaker.ui.notedialogs.rawnotes ;
 
 import java.io.BufferedReader ;
 import java.io.IOException ;
@@ -12,7 +12,7 @@ import org.apache.log4j.Logger ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
-public class MatchingPanel extends MatchingPanelUI {
+public class MatchingPanel extends RawNotesPanelUI {
 
     private static final long serialVersionUID = 1L ;
     private static final Logger logger = Logger.getLogger( MatchingPanel.class ) ;
@@ -23,24 +23,24 @@ public class MatchingPanel extends MatchingPanelUI {
     
     public MatchingPanel( String selectedText ) {
         
-        UIUtil.associateEditMenu( matchingTF ) ;
+        UIUtil.associateEditMenu( rawNotesTF ) ;
         setUpListeners() ;
         parseMatchingInput( selectedText ) ;
-        matchingTF.setText( constructMatchingNote() ) ;
+        rawNotesTF.setText( constructMatchingNote() ) ;
     }
     
     private void setUpListeners() {
-        super.bindOkPressEventCapture( this.matchingTF ) ;
+        super.bindOkPressEventCapture( this.rawNotesTF ) ;
     }
     
     protected void captureFocus() {
-        matchingTF.requestFocus() ;
+        rawNotesTF.requestFocus() ;
     }
 
     @Override
     public String getFormattedNote() {
         
-        return matchingTF.getText().trim() ;
+        return rawNotesTF.getText().trim() ;
     }
     
     private void parseMatchingInput( String text ) {
