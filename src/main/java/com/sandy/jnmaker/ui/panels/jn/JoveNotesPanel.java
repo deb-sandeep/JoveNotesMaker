@@ -45,7 +45,7 @@ public class JoveNotesPanel extends JPanel {
     
     private String originalText = null ;
     
-    private int  fontSize    = 12 ;
+    private int  fontSize    = 10 ;
     private File currentFile = null ;
     
     public JoveNotesPanel() throws Exception {
@@ -60,7 +60,7 @@ public class JoveNotesPanel extends JPanel {
 
     public void setFontSize( int fontSize ) {
         this.fontSize = fontSize;
-        this.textPane.setFont( new Font( "Trebuchet MS", Font.PLAIN, fontSize ) ) ;
+        this.textPane.setFont( new Font( "Courier", Font.PLAIN, fontSize ) ) ;
     }
 
     public File getCurrentFile() {
