@@ -1,4 +1,4 @@
-package com.sandy.jnmaker.ui.panels.image;
+package com.sandy.jnmaker.ui.panels.image.jee;
 
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
 import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;

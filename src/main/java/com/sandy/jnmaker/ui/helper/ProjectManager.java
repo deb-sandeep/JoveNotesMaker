@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.helper ;
 
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.ObjectRepository.getWordRepository ;
 
 import java.io.File ;
 import java.io.FileInputStream ;
@@ -17,7 +18,7 @@ import javax.swing.filechooser.FileFilter ;
 import org.apache.commons.beanutils.BeanUtilsBean ;
 import org.apache.log4j.Logger ;
 
-import com.sandy.jnmaker.ui.panels.image.K12QuestionsImagePanel ;
+import com.sandy.jnmaker.ui.panels.image.AbstractImagePanel ;
 import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
 import com.sandy.jnmaker.util.ObjectRepository ;
@@ -42,9 +43,9 @@ public class ProjectManager {
     private JFileChooser   fileChooser  = new JFileChooser() ;
     private BeanUtilsBean  beanUtils    = new BeanUtilsBean() ;
     
-    private RawTextPanel           rawTextPanel = null ;
-    private K12QuestionsImagePanel imagePanel   = null ;
-    private JoveNotesPanel         jnPanel      = null ;
+    private RawTextPanel       rawTextPanel = null ;
+    private AbstractImagePanel imagePanel   = null ;
+    private JoveNotesPanel     jnPanel      = null ;
     
     private Map<String, Object> statefulObjects = new HashMap<String, Object>() ;
     
@@ -258,7 +259,7 @@ public class ProjectManager {
                 }
                 return false ;
             }
-        } );
+        } ) ;
     }
     
     private File getSelectedFile( String title ) {

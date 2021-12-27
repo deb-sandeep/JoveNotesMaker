@@ -1,7 +1,8 @@
 package com.sandy.jnmaker.ui.panels.image;
 
-import static com.sandy.jnmaker.ui.helper.UIUtil.* ;
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
+import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;
+import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -9,7 +10,6 @@ import java.awt.Component ;
 import java.awt.Dimension ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
-import java.awt.event.KeyEvent ;
 import java.awt.image.BufferedImage ;
 import java.io.File ;
 import java.io.IOException ;
@@ -18,34 +18,27 @@ import java.util.ArrayList ;
 import java.util.List ;
 
 import javax.imageio.ImageIO ;
-import javax.swing.AbstractAction ;
-import javax.swing.ActionMap ;
 import javax.swing.BoxLayout ;
-import javax.swing.InputMap ;
 import javax.swing.JComponent ;
 import javax.swing.JFileChooser ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
-import javax.swing.KeyStroke ;
 import javax.swing.filechooser.FileFilter ;
 
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
-import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
-import com.sandy.jnmaker.ui.helper.seqgen.ExQuestion ;
 
-public class K12QuestionsImagePanel extends JPanel 
+@SuppressWarnings( "serial" )
+public abstract class AbstractImagePanel extends JPanel 
     implements ActionListener, TabCloseListener, ScalableImagePanelListener {
 
-    static final Logger log = Logger.getLogger( K12QuestionsImagePanel.class ) ;
-    
-    private static final long serialVersionUID = -6820796056331113968L ;
+    static final Logger log = Logger.getLogger( AbstractImagePanel.class ) ;
     
     private static final String AC_OPEN_FILES = "OPEN_FILES" ;
     private static final String AC_ZOOM_IN    = "ZOOM_IN" ;
@@ -56,13 +49,13 @@ public class K12QuestionsImagePanel extends JPanel
     private List<File>          openedFiles   = new ArrayList<>() ;
     private List<File>          originalFiles = new ArrayList<>() ;
     
-    private JFileChooser openFileChooser = new JFileChooser() ;
-    private JFileChooser saveFileChooser = new JFileChooser() ;
+    protected JFileChooser openFileChooser = new JFileChooser() ;
+    protected JFileChooser saveFileChooser = new JFileChooser() ;
     
-    private ExQuestion lastQuestion = null ;
-    private File lastSavedDir = null ;
+    protected File lastSavedDir = null ;
+    protected File lastSavedFile = null ;
     
-    public K12QuestionsImagePanel() {
+    public AbstractImagePanel() {
         
         setUpUI() ;
         setUpFileChooser() ;
@@ -128,7 +121,7 @@ public class K12QuestionsImagePanel extends JPanel
                 }
                 return false ;
             }
-        } );
+        } ) ;
         
         bindKeyStrokesForSaveDialog() ;
     }
@@ -190,12 +183,14 @@ public class K12QuestionsImagePanel extends JPanel
     }
     
     public void closeAll() {
+        
         this.tabbedPane.removeAll() ;
         this.openedFiles.clear() ;
         this.originalFiles.clear() ;
     }
 
     public String getOpenedFiles() {
+        
         StringBuffer paths = new StringBuffer() ;
         for( File file : this.openedFiles ) {
             paths.append( file.getAbsolutePath() + File.pathSeparator ) ;
@@ -204,6 +199,7 @@ public class K12QuestionsImagePanel extends JPanel
     }
 
     public void setOpenedFiles( String paths ) {
+        
         if( StringUtil.isNotEmptyOrNull( paths ) ) {
             
             String[] openedFilePaths = paths.split( File.pathSeparator ) ;
@@ -225,6 +221,7 @@ public class K12QuestionsImagePanel extends JPanel
     }
     
     public void saveFiles() {
+        
         this.originalFiles.clear() ;
         for( File f : this.openedFiles ) {
             this.originalFiles.add( f ) ;
@@ -244,127 +241,8 @@ public class K12QuestionsImagePanel extends JPanel
         this.openedFiles.remove( file ) ;
     }
 
-    @Override
-    public void subImageSelected( BufferedImage image, int selMod ) {
+    protected File getFileViaSaveDialog() {
         
-        File outputFile = getUserApprovedOutputFile( selMod ) ;
-        
-        if( outputFile != null ) {
-            if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
-                outputFile = new File( outputFile.getParentFile(), 
-                                       outputFile.getName() + ".png" ) ;
-            }
-            
-            if( outputFile.exists() ) {
-                int choice = JOptionPane.showConfirmDialog( this, "File exists. Overwrite?" ) ;
-                if( choice == JOptionPane.NO_OPTION || 
-                    choice == JOptionPane.CANCEL_OPTION ) {
-                    return ;
-                }
-            }
-            
-            try {
-                lastQuestion = new ExQuestion( outputFile.getName() ) ;
-            }
-            catch( Exception e ) {
-                lastQuestion = null ;
-                log.debug(  "Not recognized as an exercise question. Saving as is." ) ;
-            }
-
-            lastSavedDir = outputFile.getParentFile() ;
-            
-            writeSelectedImageToFile( image, outputFile ) ;
-        }
-    }
-    
-    private void setSelectedFile( ExQuestion question ) {
-        File outputFile = new File( lastSavedDir, question.getFileName() ) ;
-        saveFileChooser.setSelectedFile( outputFile ) ; 
-    }
-    
-    @SuppressWarnings( "serial" )
-    private void bindKeyStrokesForSaveDialog() {
-        
-        KeyStroke f1 = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
-        KeyStroke f2 = KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ) ;
-        KeyStroke f3 = KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) ;
-        KeyStroke f4 = KeyStroke.getKeyStroke( KeyEvent.VK_F4, 0 ) ;
-        KeyStroke f5 = KeyStroke.getKeyStroke( KeyEvent.VK_F5, 0 ) ;
-        
-        InputMap map = saveFileChooser.getInputMap( JFileChooser.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ) ;
-        map.put( f1, "nextMajorElement"    ) ;
-        map.put( f2, "toggleHeader"   ) ;
-        map.put( f3, "nextMajorElementWithHeader" ) ;
-        map.put( f4, "incrementLCTPassage" ) ;
-        map.put( f5, "stripLCTGroupNumber" ) ;
-        
-        ActionMap actionMap = saveFileChooser.getActionMap() ;
-        actionMap.put( "nextMajorElement", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
-                if( lastQuestion != null ) {
-                    ExQuestion nextQ = lastQuestion.nextMajorElement() ;
-                    setSelectedFile( nextQ ) ;
-                }
-            }
-        } ) ;
-        
-        actionMap.put( "toggleHeader", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
-                File selFile = saveFileChooser.getSelectedFile() ;
-                if( selFile != null ) {
-                    ExQuestion q = new ExQuestion( selFile.getName() ) ;
-                    q.setHeader( !q.isHeader() ) ;
-                    setSelectedFile( q ) ;
-                }
-            }
-        } ) ;
-
-        actionMap.put( "nextMajorElementWithHeader", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
-                if( lastQuestion != null ) {
-                    ExQuestion nextQ = lastQuestion.nextMajorElement() ;
-                    nextQ.setHeader( true ) ;
-                    setSelectedFile( nextQ ) ;
-                }
-            }
-        } ) ;
-
-        actionMap.put( "stripLCTGroupNumber", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
-            }
-        } ) ;
-    }
-    
-    private File getUserApprovedOutputFile( int selMod ) {
-        
-        ExQuestion nextQ = null ;
-        File outputFile = null ;
-        
-        boolean interventionRequired = false ;
-        
-        if( lastQuestion == null || 
-            lastQuestion.nextItemNeedsIntervention() || 
-            selMod == DrawingCanvas.MARK_END_MODIFIER_RIGHT_BTN ) {
-            
-            interventionRequired = true ;
-        }
-        
-        if( lastQuestion != null ) {
-            nextQ = lastQuestion.nextElement() ;
-            outputFile = new File( lastSavedDir, nextQ.getFileName() ) ;
-        }
-        
-        if( interventionRequired ) {
-            if( outputFile != null ) {
-                saveFileChooser.setSelectedFile( outputFile ) ;
-            }
-            outputFile = getFileViaSaveDialog() ;
-        }
-        
-        return outputFile ;
-    }
-    
-    private File getFileViaSaveDialog() {
         int userChoice = saveFileChooser.showSaveDialog( this ) ;
         if( userChoice == JFileChooser.APPROVE_OPTION ) {
             return saveFileChooser.getSelectedFile() ;
@@ -372,7 +250,7 @@ public class K12QuestionsImagePanel extends JPanel
         return null ;
     }
     
-    private void writeSelectedImageToFile( BufferedImage image,
+    protected void writeSelectedImageToFile( BufferedImage image,
                                            File outputFile ) {
         try {
             ImageIO.write( image, "png", outputFile ) ;
@@ -381,4 +259,42 @@ public class K12QuestionsImagePanel extends JPanel
             e.printStackTrace() ;
         }
     }
+
+    @Override
+    public void subImageSelected( BufferedImage image, int selMod ) {
+        
+        File outputFile = getUserApprovedOutputFile( selMod ) ;
+        
+        if( outputFile != null ) {
+            
+            if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
+                outputFile = new File( outputFile.getParentFile(), 
+                                       outputFile.getName() + ".png" ) ;
+            }
+            
+            if( outputFile.exists() ) {
+                int choice = JOptionPane.showConfirmDialog( 
+                                            this, "File exists. Overwrite?" ) ;
+                
+                if( choice == JOptionPane.NO_OPTION || 
+                    choice == JOptionPane.CANCEL_OPTION ) {
+                    return ;
+                }
+            }
+            
+            writeSelectedImageToFile( image, outputFile ) ;
+            
+            lastSavedFile = outputFile ;
+            lastSavedDir = outputFile.getParentFile() ;
+            
+            handlePostImageSave() ;
+        }
+    }
+    
+    protected abstract void bindKeyStrokesForSaveDialog() ;
+    
+    protected abstract File getUserApprovedOutputFile( int selMod ) ;
+    
+    protected abstract void handlePostImageSave() ;
+    
 }

@@ -6,6 +6,7 @@ public class AppConfig {
 
     private File joveNotesMediaDir = null ;
     private File workspaceDir = null ;
+    private String imagePanelType = null ;
     
     public File getJoveNotesMediaDir() {
         return joveNotesMediaDir;
@@ -21,5 +22,13 @@ public class AppConfig {
 
     public void setWorkspaceDir( File workspaeDir ) {
         this.workspaceDir = workspaeDir ;
+    }
+
+    public String getImagePanelType() {
+        return imagePanelType ;
+    }
+
+    public void setImagePanelType( String imagePanelType ) {
+        this.imagePanelType = imagePanelType ;
     }
 }

@@ -1,6 +1,6 @@
 package com.sandy.jnmaker.ui;
 
-import static com.sandy.common.ui.SwingUtils.* ;
+import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
 
 import java.awt.CardLayout ;
@@ -21,10 +21,12 @@ import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.menu.AppMenu ;
 import com.sandy.jnmaker.ui.menu.ToggleInputEditorMenu.InputEditorMode ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
-import com.sandy.jnmaker.ui.panels.image.K12QuestionsImagePanel ;
+import com.sandy.jnmaker.ui.panels.image.AbstractImagePanel ;
+import com.sandy.jnmaker.ui.panels.image.k12.K12QuestionsImagePanel ;
 import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
 import com.sandy.jnmaker.ui.panels.search.SearchInputPanel ;
+import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
@@ -33,11 +35,11 @@ public class MainFrame extends AbstractMainFrame {
 
     private static final Logger log = Logger.getLogger( MainFrame.class ) ;
     
-    private JPanel           inputEditorPanel = null ;
-    private SearchInputPanel searchPanel      = null ;
-    private RawTextPanel     rawTextPanel     = null ;
-    private K12QuestionsImagePanel imagePanel = null ;
-    private JoveNotesPanel   jnPanel          = null ;
+    private JPanel             inputEditorPanel = null ;
+    private SearchInputPanel   searchPanel      = null ;
+    private RawTextPanel       rawTextPanel     = null ;
+    private AbstractImagePanel imagePanel       = null ;
+    private JoveNotesPanel     jnPanel          = null ;
     
     private NotesCreatorDialog notesCreator = null ;
 
@@ -116,7 +118,16 @@ public class MainFrame extends AbstractMainFrame {
     
     private JSplitPane createBaseSplitPane( Component bottomComponent ) {
         
-        this.imagePanel = new K12QuestionsImagePanel() ;
+        AppConfig appCfg = ObjectRepository.getAppConfig() ;
+        if( appCfg.getImagePanelType().equals( K12QuestionsImagePanel.ID ) ) {
+            this.imagePanel = new K12QuestionsImagePanel() ;
+        }
+        
+        // Set the default behavior
+        if( this.imagePanel == null ) {
+            log.info( "Attaching K12 image panel as default condition" ) ;
+            this.imagePanel = new K12QuestionsImagePanel() ;
+        }
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
         
@@ -146,12 +157,8 @@ public class MainFrame extends AbstractMainFrame {
         this.rawTextPanel = rawTextPanel;
     }
 
-    public K12QuestionsImagePanel getImagePanel() {
+    public AbstractImagePanel getImagePanel() {
         return this.imagePanel;
-    }
-
-    public void setImagePanel( K12QuestionsImagePanel imagePanel ) {
-        this.imagePanel = imagePanel;
     }
 
     public JoveNotesPanel getJNPanel() {

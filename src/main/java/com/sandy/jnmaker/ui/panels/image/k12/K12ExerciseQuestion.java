@@ -1,9 +1,9 @@
-package com.sandy.jnmaker.ui.helper.seqgen;
+package com.sandy.jnmaker.ui.panels.image.k12;
 
 import lombok.Data ;
 
 @Data
-public class ExQuestion {
+public class K12ExerciseQuestion {
     
     private int     chapterNum     = -1 ;
     private String  exerciseName   = null ;
@@ -13,11 +13,11 @@ public class ExQuestion {
     private boolean answer         = false ;
     private int     partNum        = -1 ;
     
-    public ExQuestion( String fileName ) {
+    public K12ExerciseQuestion( String fileName ) {
         parseFileName( fileName ) ;
     }
     
-    ExQuestion( ExQuestion original ) {
+    K12ExerciseQuestion( K12ExerciseQuestion original ) {
         this.chapterNum     = original.chapterNum ;
         this.exerciseName   = original.exerciseName ;
         this.questionNum    = original.questionNum ;
@@ -26,6 +26,18 @@ public class ExQuestion {
         this.answer         = original.answer ;
         this.partNum        = original.partNum ;
     }
+    
+    // File format expected as follows
+    // Ch<chapterNum>_<exerciseName>_[questionNum.subQuestionNum][Hdr|Ans](partNum).png
+    //
+    // * chapterNum should be convertible to integer
+    // * exerciseName is free format but the convention is Ex[A|B|C|D|..]
+    // * questionNum is integer and is mandatory
+    // * .subQuestionNum is the decimal part and is optional
+    // * If Hdr is present as suffix - this is considered a header part
+    // * If Ans is present as suffix - this is considered as answer
+    // * (partNum) is optional and if present represents a part fragment of 
+    //   the given sequence number
     
     private void parseFileName( String fileName ) {
         
@@ -110,8 +122,8 @@ public class ExQuestion {
         return getFileName() ;
     }
     
-    public ExQuestion nextElement() {
-        ExQuestion nextQ = new ExQuestion( this ) ;
+    public K12ExerciseQuestion nextElement() {
+        K12ExerciseQuestion nextQ = new K12ExerciseQuestion( this ) ;
         
         if( partNum != -1 ) {
             nextQ.partNum++ ;
@@ -134,8 +146,8 @@ public class ExQuestion {
         return nextQ ;
     }
     
-    public ExQuestion nextMajorElement() {
-        ExQuestion nextQ = new ExQuestion( this ) ;
+    public K12ExerciseQuestion nextMajorElement() {
+        K12ExerciseQuestion nextQ = new K12ExerciseQuestion( this ) ;
         nextQ.questionNum++ ;
         nextQ.subQuestionNum = -1 ;
         nextQ.header = false ;
@@ -143,8 +155,8 @@ public class ExQuestion {
         return nextQ ;
     }
     
-    public ExQuestion nextExercise() {
-        ExQuestion nextQ = new ExQuestion( this ) ;
+    public K12ExerciseQuestion nextExercise() {
+        K12ExerciseQuestion nextQ = new K12ExerciseQuestion( this ) ;
         String name = nextQ.exerciseName ;
         
         if( name.equals( "example" ) ) {
@@ -164,7 +176,7 @@ public class ExQuestion {
     }
     
     public static void main( String[] args ) throws Exception {
-        ExQuestion q = new ExQuestion( "Ch1_example_1.png" ) ;
+        K12ExerciseQuestion q = new K12ExerciseQuestion( "Ch1_example_1.png" ) ;
         System.out.println( q ) ;
         
         for( int i=0; i<5; i++ ) {
