@@ -34,6 +34,7 @@ public class K12QuestionsImagePanel extends AbstractImagePanel
 
     @Override
     protected void bindKeyStrokesForSaveDialog() {
+        
         KeyStroke f1 = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
         KeyStroke f2 = KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ) ;
         KeyStroke f3 = KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) ;
