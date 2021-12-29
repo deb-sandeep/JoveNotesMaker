@@ -104,7 +104,6 @@ public class K12QuestionsImagePanel extends AbstractImagePanel
             }
             outputFile = getFileViaSaveDialog() ;
         }
-        
         return outputFile ;
     }
 
