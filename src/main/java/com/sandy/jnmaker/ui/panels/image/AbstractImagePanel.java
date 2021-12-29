@@ -3,6 +3,9 @@ package com.sandy.jnmaker.ui.panels.image;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
 import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;
 import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK ;
+import static java.awt.event.KeyEvent.VK_0 ;
+import static java.awt.event.KeyEvent.VK_9 ;
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -18,11 +21,14 @@ import java.util.ArrayList ;
 import java.util.List ;
 
 import javax.imageio.ImageIO ;
+import javax.swing.ActionMap ;
 import javax.swing.BoxLayout ;
+import javax.swing.InputMap ;
 import javax.swing.JComponent ;
 import javax.swing.JFileChooser ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
+import javax.swing.KeyStroke ;
 import javax.swing.filechooser.FileFilter ;
 
 import org.apache.log4j.Logger ;
@@ -124,6 +130,49 @@ public abstract class AbstractImagePanel extends JPanel
         } ) ;
         
         bindKeyStrokesForSaveDialog() ;
+    }
+    
+    // There are ten keystroke bound for the input map of the save dialog.
+    // Each are bound by Ctrl+[0,1,2,3...9]. By default they do nothing.
+    // Each can be overridden by the subclass by attaching a new handler
+    private void bindKeyStrokesForSaveDialog() {
+        
+        InputMap inputMap = saveFileChooser.getInputMap( JFileChooser.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ) ;
+        ActionMap actionMap = saveFileChooser.getActionMap() ;
+        
+        for( int i = 0; i <= 9; i++ ) {
+            
+            int keyCode = VK_0 + i ;
+            String keyHandlerID = getKeyHandlerID( i ) ;
+            
+            KeyStroke keyStroke = KeyStroke.getKeyStroke( keyCode, CTRL_DOWN_MASK  ) ;
+            SaveFnKeyHandler handler = new NoOpFnKeyHandler() ;
+            
+            inputMap.put( keyStroke, keyHandlerID ) ;
+            actionMap.put( keyHandlerID, handler ) ;
+        }
+    }
+     
+    private String getKeyHandlerID( int keyIndex ) {
+        
+        if( keyIndex < 0 || keyIndex > 9 ) {
+            throw new IllegalArgumentException( "VK not in set (VK_0 ... VK_9)" ) ;
+        }
+        return "SDHandler[Ctrl + VK_" + keyIndex + "]" ;
+    }
+    
+    protected void registerSaveFnHandler( 
+                                        int vkCode, SaveFnKeyHandler handler ) {
+        if( vkCode < VK_0 || vkCode > VK_9 ) {
+            throw new IllegalArgumentException( "VK not in set (VK_0 ... VK_9)" ) ;
+        }
+        
+        String keyHandlerID = getKeyHandlerID( vkCode - VK_0 ) ;
+        ActionMap actionMap = saveFileChooser.getActionMap() ;
+        
+        actionMap.put( keyHandlerID, handler ) ;
+        
+        log.info( "Installed save fn key handler = " + handler.getName() ) ;
     }
     
     public void actionPerformed( ActionEvent e ) {
@@ -290,8 +339,6 @@ public abstract class AbstractImagePanel extends JPanel
             handlePostImageSave() ;
         }
     }
-    
-    protected abstract void bindKeyStrokesForSaveDialog() ;
     
     protected abstract File getUserApprovedOutputFile( int selMod ) ;
     

@@ -16,10 +16,6 @@ public class JEEQuestionsImagePanel extends AbstractImagePanel
     static final Logger log = Logger.getLogger( JEEQuestionsImagePanel.class ) ;
 
     @Override
-    protected void bindKeyStrokesForSaveDialog() {
-    }
-
-    @Override
     protected File getUserApprovedOutputFile( int selMod ) {
         return null ;
     }

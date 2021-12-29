@@ -1,22 +1,19 @@
 package com.sandy.jnmaker.ui.panels.image.k12;
 
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
-import java.awt.event.KeyEvent ;
-import java.io.File ;
+import static java.awt.event.KeyEvent.VK_1 ;
+import static java.awt.event.KeyEvent.VK_2 ;
+import static java.awt.event.KeyEvent.VK_3 ;
 
-import javax.swing.AbstractAction ;
-import javax.swing.ActionMap ;
-import javax.swing.InputMap ;
-import javax.swing.JFileChooser ;
-import javax.swing.KeyStroke ;
+import java.awt.event.ActionListener ;
+import java.io.File ;
 
 import org.apache.log4j.Logger ;
 
-import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
+import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.jnmaker.ui.panels.image.AbstractImagePanel ;
+import com.sandy.jnmaker.ui.panels.image.SaveFnKeyHandler ;
 
 @SuppressWarnings( "serial" )
 public class K12QuestionsImagePanel extends AbstractImagePanel 
@@ -28,38 +25,20 @@ public class K12QuestionsImagePanel extends AbstractImagePanel
     
     private K12ExerciseQuestion lastQuestion = null ;
     
-    public K12QuestionsImagePanel() {
-        super() ;
-    }
-
-    @Override
-    protected void bindKeyStrokesForSaveDialog() {
-        
-        KeyStroke f1 = KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0 ) ;
-        KeyStroke f2 = KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ) ;
-        KeyStroke f3 = KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) ;
-        KeyStroke f4 = KeyStroke.getKeyStroke( KeyEvent.VK_F4, 0 ) ;
-        
-        InputMap map = saveFileChooser.getInputMap( JFileChooser.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ) ;
-        map.put( f1, "nextMajorElement"    ) ;
-        map.put( f2, "toggleHeader"   ) ;
-        map.put( f3, "nextMajorElementWithHeader" ) ;
-        map.put( f4, "incrementLCTPassage" ) ;
-        
-        ActionMap actionMap = saveFileChooser.getActionMap() ;
-        
-        actionMap.put( "nextMajorElement", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
+    private SaveFnKeyHandler nextMajorElementSDHandler = 
+        new SaveFnKeyHandler( "nextMajorElement" ) {
+            public void handleEvent() {
                 if( lastQuestion != null ) {
                     K12ExerciseQuestion nextQ = null ;
                     nextQ = lastQuestion.nextMajorElement() ;
                     setSelectedFile( nextQ ) ;
                 }
             }
-        } ) ;
-        
-        actionMap.put( "toggleHeader", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
+        } ;
+    
+    private SaveFnKeyHandler toggleHeaderSDHandler = 
+        new SaveFnKeyHandler( "toggleHeader" ) {
+            public void handleEvent() {
                 File selFile = saveFileChooser.getSelectedFile() ;
                 if( selFile != null ) {
                     K12ExerciseQuestion nextQ = null ;
@@ -68,10 +47,11 @@ public class K12QuestionsImagePanel extends AbstractImagePanel
                     setSelectedFile( nextQ ) ;
                 }
             }
-        } ) ;
-
-        actionMap.put( "nextMajorElementWithHeader", new AbstractAction() {
-            public void actionPerformed( ActionEvent e ) {
+        } ; 
+    
+    private SaveFnKeyHandler nextMajorElementWithHeaderSDHandler = 
+        new SaveFnKeyHandler( "nextMajorElementWithHeader" ) {
+            public void handleEvent() {
                 if( lastQuestion != null ) {
                     K12ExerciseQuestion nextQ = null ;
                     nextQ = lastQuestion.nextMajorElement() ;
@@ -79,7 +59,18 @@ public class K12QuestionsImagePanel extends AbstractImagePanel
                     setSelectedFile( nextQ ) ;
                 }
             }
-        } ) ;
+        } ;
+    
+    public K12QuestionsImagePanel() {
+        super() ;
+        bindKeyStrokesForSaveDialog() ;
+    }
+
+    private void bindKeyStrokesForSaveDialog() {
+        
+        super.registerSaveFnHandler( VK_1, nextMajorElementSDHandler ) ;
+        super.registerSaveFnHandler( VK_2, toggleHeaderSDHandler ) ;
+        super.registerSaveFnHandler( VK_3, nextMajorElementWithHeaderSDHandler ) ;
     }
 
     private void setSelectedFile( K12ExerciseQuestion question ) {

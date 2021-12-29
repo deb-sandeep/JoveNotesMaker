@@ -38,7 +38,6 @@ public class K12ExerciseQuestion {
     // * If Ans is present as suffix - this is considered as answer
     // * (partNum) is optional and if present represents a part fragment of 
     //   the given sequence number
-    
     private void parseFileName( String fileName ) {
         
         String fName = fileName ;
