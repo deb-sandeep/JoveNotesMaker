@@ -35,13 +35,15 @@ import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
+import com.sandy.common.ui.DrawingCanvas ;
 import com.sandy.common.ui.ScalableImagePanel ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
 import com.sandy.common.util.StringUtil ;
+import com.sandy.jeecoach.util.AbstractQuestion ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 @SuppressWarnings( "serial" )
-public abstract class AbstractImagePanel extends JPanel 
+public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPanel 
     implements ActionListener, TabCloseListener, ScalableImagePanelListener {
 
     static final Logger log = Logger.getLogger( AbstractImagePanel.class ) ;
@@ -60,6 +62,8 @@ public abstract class AbstractImagePanel extends JPanel
     
     protected File lastSavedDir = null ;
     protected File lastSavedFile = null ;
+    
+    protected T lastQuestion = null ;
     
     public AbstractImagePanel() {
         
@@ -130,6 +134,11 @@ public abstract class AbstractImagePanel extends JPanel
         } ) ;
         
         bindKeyStrokesForSaveDialog() ;
+        
+        JComponent accessory = getSaveFileChooserAccessory() ;
+        if( accessory != null ) {
+            saveFileChooser.setAccessory( accessory ) ;
+        }
     }
     
     // There are ten keystroke bound for the input map of the save dialog.
@@ -336,12 +345,45 @@ public abstract class AbstractImagePanel extends JPanel
             lastSavedFile = outputFile ;
             lastSavedDir = outputFile.getParentFile() ;
             
-            handlePostImageSave() ;
+            lastQuestion = constructQuestion( lastSavedFile.getName() ) ;
         }
     }
     
-    protected abstract File getUserApprovedOutputFile( int selMod ) ;
+    protected void updateSaveDialogFileName( String fileName ) {
+        File outputFile = new File( lastSavedDir, fileName ) ;
+        saveFileChooser.setSelectedFile( outputFile ) ; 
+    }
     
-    protected abstract void handlePostImageSave() ;
+    protected File getUserApprovedOutputFile( int selMod ) {
+        
+        AbstractQuestion nextQ = null ;
+        File outputFile = null ;
+        
+        boolean interventionRequired = false ;
+        
+        if( lastQuestion == null || 
+            selMod == DrawingCanvas.MARK_END_MODIFIER_RIGHT_BTN ) {
+            
+            interventionRequired = true ;
+        }
+        
+        if( lastQuestion != null ) {
+            nextQ = lastQuestion.nextQuestion() ;
+            outputFile = new File( lastSavedDir, nextQ.getFileName() ) ;
+        }
+        
+        if( interventionRequired ) {
+            if( outputFile != null ) {
+                saveFileChooser.setSelectedFile( outputFile ) ;
+            }
+            outputFile = getFileViaSaveDialog() ;
+        }
+        return outputFile ;
+    }
+
+    protected abstract T constructQuestion( String fileName ) ;
     
+    protected JComponent getSaveFileChooserAccessory() {
+        return null ;
+    }
 }

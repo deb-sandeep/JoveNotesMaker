@@ -1,9 +1,13 @@
 package com.sandy.jnmaker.ui.panels.image.k12;
 
+import com.sandy.jeecoach.util.AbstractQuestion ;
+
 import lombok.Data ;
+import lombok.EqualsAndHashCode ;
 
 @Data
-public class K12ExerciseQuestion {
+@EqualsAndHashCode( callSuper = false )
+public class K12ExerciseQuestion extends AbstractQuestion {
     
     private int     chapterNum     = -1 ;
     private String  exerciseName   = null ;
@@ -121,7 +125,7 @@ public class K12ExerciseQuestion {
         return getFileName() ;
     }
     
-    public K12ExerciseQuestion nextElement() {
+    public AbstractQuestion nextQuestion() {
         K12ExerciseQuestion nextQ = new K12ExerciseQuestion( this ) ;
         
         if( partNum != -1 ) {
@@ -167,11 +171,6 @@ public class K12ExerciseQuestion {
             name = name.substring( 0, name.length()-1 ) + lastChar ;
         }
         return nextQ ;
-    }
-    
-    public boolean nextItemNeedsIntervention() {
-        if( partNum != -1 ) { return true ; }
-        return false ;
     }
     
     public static void main( String[] args ) throws Exception {

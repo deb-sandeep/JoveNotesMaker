@@ -17,11 +17,13 @@ import javax.swing.JSplitPane ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
+import com.sandy.jeecoach.util.AbstractQuestion ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.menu.AppMenu ;
 import com.sandy.jnmaker.ui.menu.ToggleInputEditorMenu.InputEditorMode ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.ui.panels.image.AbstractImagePanel ;
+import com.sandy.jnmaker.ui.panels.image.jee.JEEQuestionsImagePanel ;
 import com.sandy.jnmaker.ui.panels.image.k12.K12QuestionsImagePanel ;
 import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
@@ -38,10 +40,11 @@ public class MainFrame extends AbstractMainFrame {
     private JPanel             inputEditorPanel = null ;
     private SearchInputPanel   searchPanel      = null ;
     private RawTextPanel       rawTextPanel     = null ;
-    private AbstractImagePanel imagePanel       = null ;
     private JoveNotesPanel     jnPanel          = null ;
     
     private NotesCreatorDialog notesCreator = null ;
+    
+    private AbstractImagePanel<? extends AbstractQuestion> imagePanel = null ;
 
     public MainFrame() throws Exception {
         super( "JoveNotes Maker - []", getIcon( "app_icon" ) ) ;
@@ -119,8 +122,13 @@ public class MainFrame extends AbstractMainFrame {
     private JSplitPane createBaseSplitPane( Component bottomComponent ) {
         
         AppConfig appCfg = ObjectRepository.getAppConfig() ;
-        if( appCfg.getImagePanelType().equals( K12QuestionsImagePanel.ID ) ) {
+        String imgPanelType = appCfg.getImagePanelType() ; 
+                
+        if( imgPanelType.equals( K12QuestionsImagePanel.ID ) ) {
             this.imagePanel = new K12QuestionsImagePanel() ;
+        }
+        else if( imgPanelType.equals( JEEQuestionsImagePanel.ID ) ) {
+            this.imagePanel = new JEEQuestionsImagePanel() ;
         }
         
         // Set the default behavior
@@ -157,7 +165,7 @@ public class MainFrame extends AbstractMainFrame {
         this.rawTextPanel = rawTextPanel;
     }
 
-    public AbstractImagePanel getImagePanel() {
+    public AbstractImagePanel<? extends AbstractQuestion> getImagePanel() {
         return this.imagePanel;
     }
 

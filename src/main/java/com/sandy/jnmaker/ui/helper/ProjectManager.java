@@ -18,6 +18,7 @@ import javax.swing.filechooser.FileFilter ;
 import org.apache.commons.beanutils.BeanUtilsBean ;
 import org.apache.log4j.Logger ;
 
+import com.sandy.jeecoach.util.AbstractQuestion ;
 import com.sandy.jnmaker.ui.panels.image.AbstractImagePanel ;
 import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
 import com.sandy.jnmaker.ui.panels.rawtxt.RawTextPanel ;
@@ -44,8 +45,9 @@ public class ProjectManager {
     private BeanUtilsBean  beanUtils    = new BeanUtilsBean() ;
     
     private RawTextPanel       rawTextPanel = null ;
-    private AbstractImagePanel imagePanel   = null ;
     private JoveNotesPanel     jnPanel      = null ;
+    
+    private AbstractImagePanel<? extends AbstractQuestion> imagePanel   = null ;
     
     private Map<String, Object> statefulObjects = new HashMap<String, Object>() ;
     
