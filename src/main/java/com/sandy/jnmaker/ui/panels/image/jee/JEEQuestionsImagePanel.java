@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.panels.image.jee;
 
 import java.awt.event.ActionListener ;
+import java.io.File ;
 
 import javax.swing.JComponent ;
 
@@ -33,25 +34,30 @@ public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestion>
             "1. [P|M|C]  - Subject code",
             "2. <int>    - Standard",
             "3. <String> - Book code",
-            "   - PR > Pearson",
+            "   - PF > Pearson",
             "   - MR > MTG Reasoning",
-            "4. <String> - Question type",
+            "4. <int>    - Chapter number",
+            "5. <String> - Question type",
             "   - SCA, MCA, NT, LCT, ..",
-            "5. [LCT#]",
+            "6. [LCT#]",
             
             "----------- PR ------------",
-            "6. Section",
+            "7. Section",
             "   - VSAT > Very short answer",
             "   - SAT > Short answer",
             "   - ETQ > Essay type question",
             "   - CA_n > Concept application",
             "   - AT_n > Assessment type",
-            "7. CA|AT section number",
-            "7/8. Question number",
+            "9. CA|AT section number",
+            "9/10. Question number",
             
             "----------- MR ------------",
             "6. Question number"
         } ;
         return new SaveFileNameHelperAccessory( help ) ;
+    }
+    
+    public File getRecommendedSaveDir( File imgFile ) {
+        return new File( imgFile.getParentFile(), "scrapes" ) ;
     }
 }

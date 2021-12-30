@@ -11,6 +11,7 @@ import java.awt.BorderLayout ;
 import java.awt.Color ;
 import java.awt.Component ;
 import java.awt.Dimension ;
+import java.awt.Point ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import java.awt.image.BufferedImage ;
@@ -64,6 +65,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
     protected File lastSavedFile = null ;
     
     protected T lastQuestion = null ;
+    private AbstractQuestion nextQuestion = null ;
     
     public AbstractImagePanel() {
         
@@ -321,7 +323,9 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
     @Override
     public void subImageSelected( BufferedImage image, int selMod ) {
         
-        File outputFile = getUserApprovedOutputFile( selMod ) ;
+        setRecommendedSaveDir() ;
+        
+        File outputFile = getRecommendedOutputFile( selMod ) ;
         
         if( outputFile != null ) {
             
@@ -346,6 +350,28 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
             lastSavedDir = outputFile.getParentFile() ;
             
             lastQuestion = constructQuestion( lastSavedFile.getName() ) ;
+            nextQuestion = lastQuestion.nextQuestion() ;
+        }
+    }
+    
+    private void setRecommendedSaveDir() {
+        
+        ScalableImagePanel imgPanel = null ;
+        imgPanel = ( ScalableImagePanel )tabbedPane.getSelectedComponent() ;
+        
+        if( imgPanel == null ) {
+            return ;
+        }
+        else {
+            imgPanel.setToolTipText( null ) ; 
+            File imgFile = imgPanel.getCurImgFile() ;
+            if( lastSavedDir == null ) {
+                lastSavedDir = getRecommendedSaveDir( imgFile ) ;
+                if( lastSavedDir != null ) {
+                    lastSavedDir.mkdirs() ;
+                    saveFileChooser.setCurrentDirectory( lastSavedDir ) ;
+                }
+            }
         }
     }
     
@@ -354,9 +380,8 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
         saveFileChooser.setSelectedFile( outputFile ) ; 
     }
     
-    protected File getUserApprovedOutputFile( int selMod ) {
+    protected File getRecommendedOutputFile( int selMod ) {
         
-        AbstractQuestion nextQ = null ;
         File outputFile = null ;
         
         boolean interventionRequired = false ;
@@ -368,8 +393,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
         }
         
         if( lastQuestion != null ) {
-            nextQ = lastQuestion.nextQuestion() ;
-            outputFile = new File( lastSavedDir, nextQ.getFileName() ) ;
+            outputFile = new File( lastSavedDir, nextQuestion.getFileName() ) ;
         }
         
         if( interventionRequired ) {
@@ -383,7 +407,18 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
 
     protected abstract T constructQuestion( String fileName ) ;
     
+    protected abstract File getRecommendedSaveDir( File imgFile ) ;
+    
     protected JComponent getSaveFileChooserAccessory() {
         return null ;
+    }
+
+    public void subImageBoundResized( Point anchor, Point hook ) {
+        
+        if( nextQuestion != null ) {
+            ScalableImagePanel imgPanel = null ;
+            imgPanel = ( ScalableImagePanel )tabbedPane.getSelectedComponent() ;
+            imgPanel.setToolTipText( nextQuestion.getFileName() ) ;
+        }
     }
 }

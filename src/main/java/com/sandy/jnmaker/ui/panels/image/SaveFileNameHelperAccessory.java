@@ -1,5 +1,8 @@
 package com.sandy.jnmaker.ui.panels.image;
 
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED ;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED ;
+
 import java.awt.BorderLayout ;
 import java.awt.Color ;
 import java.awt.Dimension ;
@@ -9,14 +12,8 @@ import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTextArea ;
 
-import org.apache.log4j.Logger ;
-
-import static javax.swing.JScrollPane.* ;
-
 @SuppressWarnings( "serial" )
 public class SaveFileNameHelperAccessory extends JPanel {
-    
-    private static final Logger log = Logger.getLogger( SaveFileNameHelperAccessory.class ) ;
     
     private JTextArea textArea = null ;
 
@@ -47,7 +44,6 @@ public class SaveFileNameHelperAccessory extends JPanel {
         for( String content : helpContent ) {
             sb.append( content + "\n" ) ;
         }
-        log.debug( "Setting text = " + sb.toString() ) ;
         textArea.setText( sb.toString() ) ;
     }
 }

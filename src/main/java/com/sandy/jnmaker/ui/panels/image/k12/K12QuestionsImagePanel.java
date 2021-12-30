@@ -22,8 +22,6 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
     
     public final static String ID = "K12" ;
     
-    private K12ExerciseQuestion lastQuestion = null ;
-    
     private SaveFnKeyHandler nextMajorElementSDHandler = 
         new SaveFnKeyHandler( "nextMajorElement" ) {
             public void handleEvent() {
@@ -75,5 +73,9 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
         super.registerSaveFnHandler( VK_1, nextMajorElementSDHandler ) ;
         super.registerSaveFnHandler( VK_2, toggleHeaderSDHandler ) ;
         super.registerSaveFnHandler( VK_3, nextMajorElementWithHeaderSDHandler ) ;
+    }
+    
+    public File getRecommendedSaveDir( File imgFile ) {
+        return imgFile.getParentFile().getParentFile() ;
     }
 }
