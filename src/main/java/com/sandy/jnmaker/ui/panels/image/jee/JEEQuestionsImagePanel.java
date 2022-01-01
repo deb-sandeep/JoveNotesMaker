@@ -9,12 +9,12 @@ import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane.TabCloseListener ;
 import com.sandy.common.ui.ScalableImagePanel.ScalableImagePanelListener ;
-import com.sandy.jeecoach.util.JEEQuestion ;
+import com.sandy.jeecoach.util.JEEQuestionImage ;
 import com.sandy.jnmaker.ui.panels.image.AbstractImagePanel ;
 import com.sandy.jnmaker.ui.panels.image.SaveFileNameHelperAccessory ;
 
 @SuppressWarnings( "serial" )
-public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestion> 
+public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestionImage> 
     implements ActionListener, TabCloseListener, ScalableImagePanelListener {
 
     static final Logger log = Logger.getLogger( JEEQuestionsImagePanel.class ) ;
@@ -22,8 +22,8 @@ public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestion>
     public static final String ID = "JEE" ;
     
     @Override
-    protected JEEQuestion constructQuestion( String fileName ) {
-        return new JEEQuestion( fileName ) ;
+    protected JEEQuestionImage constructQuestion( File file ) {
+        return new JEEQuestionImage( file ) ;
     }
 
     @Override

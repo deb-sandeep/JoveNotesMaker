@@ -64,8 +64,8 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
     }
     
     @Override
-    protected K12ExerciseQuestion constructQuestion( String fileName ) {
-        return new K12ExerciseQuestion( lastSavedFile.getName() ) ;
+    protected K12ExerciseQuestion constructQuestion( File file ) {
+        return new K12ExerciseQuestion( file.getName() ) ;
     }
 
     private void bindKeyStrokesForSaveDialog() {

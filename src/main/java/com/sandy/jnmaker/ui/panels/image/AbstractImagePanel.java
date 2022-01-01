@@ -349,7 +349,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
             lastSavedFile = outputFile ;
             lastSavedDir = outputFile.getParentFile() ;
             
-            lastQuestion = constructQuestion( lastSavedFile.getName() ) ;
+            lastQuestion = constructQuestion( lastSavedFile ) ;
             nextQuestion = lastQuestion.nextQuestion() ;
         }
     }
@@ -405,7 +405,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
         return outputFile ;
     }
 
-    protected abstract T constructQuestion( String fileName ) ;
+    protected abstract T constructQuestion( File file ) ;
     
     protected abstract File getRecommendedSaveDir( File imgFile ) ;
     
