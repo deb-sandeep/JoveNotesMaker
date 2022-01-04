@@ -334,23 +334,35 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
                                        outputFile.getName() + ".png" ) ;
             }
             
-            if( outputFile.exists() ) {
-                int choice = JOptionPane.showConfirmDialog( 
-                                            this, "File exists. Overwrite?" ) ;
+            try {
+                // Check for a valid file name based on the type of image panel
+                constructQuestion( outputFile ) ;
                 
-                if( choice == JOptionPane.NO_OPTION || 
-                    choice == JOptionPane.CANCEL_OPTION ) {
-                    return ;
+                if( outputFile.exists() ) {
+                    int choice = JOptionPane.showConfirmDialog( 
+                                                this, "File exists. Overwrite?" ) ;
+                    
+                    if( choice == JOptionPane.NO_OPTION || 
+                        choice == JOptionPane.CANCEL_OPTION ) {
+                        return ;
+                    }
                 }
+                
+                writeSelectedImageToFile( image, outputFile ) ;
+                
+                lastSavedFile = outputFile ;
+                lastSavedDir = outputFile.getParentFile() ;
+                
+                lastQuestion = constructQuestion( lastSavedFile ) ;
+                nextQuestion = lastQuestion.nextQuestion() ;
             }
-            
-            writeSelectedImageToFile( image, outputFile ) ;
-            
-            lastSavedFile = outputFile ;
-            lastSavedDir = outputFile.getParentFile() ;
-            
-            lastQuestion = constructQuestion( lastSavedFile ) ;
-            nextQuestion = lastQuestion.nextQuestion() ;
+            catch( Exception e ) {
+                JOptionPane.showMessageDialog( this,
+                                               "Invalid file name. " + e.getMessage(),
+                                               "Error saving file",
+                                               JOptionPane.ERROR_MESSAGE ) ;
+                log.debug( "Save issue. " + e.getMessage() ) ;
+            }
         }
     }
     
@@ -376,6 +388,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
     }
     
     protected void updateSaveDialogFileName( String fileName ) {
+        
         File outputFile = new File( lastSavedDir, fileName ) ;
         saveFileChooser.setSelectedFile( outputFile ) ; 
     }
@@ -386,14 +399,20 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
         
         boolean interventionRequired = false ;
         
-        if( lastQuestion == null || 
+        if( lastQuestion == null ||
             selMod == DrawingCanvas.MARK_END_MODIFIER_RIGHT_BTN ) {
             
             interventionRequired = true ;
         }
         
         if( lastQuestion != null ) {
-            outputFile = new File( lastSavedDir, nextQuestion.getFileName() ) ;
+            if( lastQuestion.getFileName()
+                            .equals( nextQuestion.getFileName() ) ) {
+                interventionRequired = true ;
+            }
+            else {
+                outputFile = new File( lastSavedDir, nextQuestion.getFileName() ) ;
+            }
         }
         
         if( interventionRequired ) {
