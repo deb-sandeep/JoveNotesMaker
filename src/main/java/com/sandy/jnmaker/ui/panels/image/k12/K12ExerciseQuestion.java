@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode ;
 
 @Data
 @EqualsAndHashCode( callSuper = false )
-public class K12ExerciseQuestion extends AbstractQuestion {
+public class K12ExerciseQuestion extends AbstractQuestion<K12ExerciseQuestion> {
     
     private int     chapterNum     = -1 ;
     private String  exerciseName   = null ;
@@ -125,7 +125,7 @@ public class K12ExerciseQuestion extends AbstractQuestion {
         return getFileName() ;
     }
     
-    public AbstractQuestion nextQuestion() {
+    public K12ExerciseQuestion nextQuestion() {
         K12ExerciseQuestion nextQ = new K12ExerciseQuestion( this ) ;
         
         if( partNum != -1 ) {

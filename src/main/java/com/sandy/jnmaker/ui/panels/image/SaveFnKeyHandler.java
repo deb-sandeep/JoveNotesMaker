@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode ;
 @EqualsAndHashCode( callSuper = false )
 public abstract class SaveFnKeyHandler extends AbstractAction {
     
-    private static final Logger log = Logger.getLogger( SaveFnKeyHandler.class ) ;
+    static final Logger log = Logger.getLogger( SaveFnKeyHandler.class ) ;
     
     protected String name = null ;
     
@@ -23,7 +23,6 @@ public abstract class SaveFnKeyHandler extends AbstractAction {
     }
     
     public final void actionPerformed( ActionEvent e ) {
-        log.debug( "Invoking save function handler = " + name ) ;
         handleEvent() ;
     }
     

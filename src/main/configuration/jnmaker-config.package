@@ -24,3 +24,5 @@ AppConfig.workspaceDir=/home/sandeep/projects/workspace/jove_notes_maker
 #/home/sandeep/Documents/StudyNotes/JoveNotes-IIT:\
 #/home/sandeep/Documents/StudyNotes/JoveNotesSampleContent:\
 #/home/sandeep/Documents/StudyNotes/JoveNotesParth
+
+AppConfig.jeeImageNameSaveFile=/Users/sandeep/projects/source/JEECoach/src/main/config/q_img_names.txt

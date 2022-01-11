@@ -44,7 +44,7 @@ import com.sandy.jeecoach.util.AbstractQuestion ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
 @SuppressWarnings( "serial" )
-public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPanel 
+public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends JPanel 
     implements ActionListener, TabCloseListener, ScalableImagePanelListener {
 
     static final Logger log = Logger.getLogger( AbstractImagePanel.class ) ;
@@ -65,7 +65,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
     protected File lastSavedFile = null ;
     
     protected T lastQuestion = null ;
-    private AbstractQuestion nextQuestion = null ;
+    protected T nextQuestion = null ;
     
     public AbstractImagePanel() {
         
@@ -172,8 +172,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
         return "SDHandler[Ctrl + VK_" + keyIndex + "]" ;
     }
     
-    protected void registerSaveFnHandler( 
-                                        int vkCode, SaveFnKeyHandler handler ) {
+    protected void registerSaveFnHandler( int vkCode, SaveFnKeyHandler handler ) {
         if( vkCode < VK_0 || vkCode > VK_9 ) {
             throw new IllegalArgumentException( "VK not in set (VK_0 ... VK_9)" ) ;
         }
@@ -311,7 +310,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
     }
     
     protected void writeSelectedImageToFile( BufferedImage image,
-                                           File outputFile ) {
+                                             File outputFile ) {
         try {
             ImageIO.write( image, "png", outputFile ) ;
         }
@@ -354,7 +353,9 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
                 lastSavedDir = outputFile.getParentFile() ;
                 
                 lastQuestion = constructQuestion( lastSavedFile ) ;
-                nextQuestion = lastQuestion.nextQuestion() ;
+                nextQuestion = (T)lastQuestion.nextQuestion() ;
+                
+                handleLastQuestionSave( lastQuestion ) ;
             }
             catch( Exception e ) {
                 JOptionPane.showMessageDialog( this,
@@ -428,9 +429,9 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion> extends JPa
     
     protected abstract File getRecommendedSaveDir( File imgFile ) ;
     
-    protected JComponent getSaveFileChooserAccessory() {
-        return null ;
-    }
+    protected JComponent getSaveFileChooserAccessory() { return null ; }
+    
+    protected void handleLastQuestionSave( T lastQuestion ) {}
 
     public void subImageBoundResized( Point anchor, Point hook ) {
         
