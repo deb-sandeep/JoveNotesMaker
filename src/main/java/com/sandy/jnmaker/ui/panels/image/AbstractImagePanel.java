@@ -353,7 +353,9 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                 lastSavedDir = outputFile.getParentFile() ;
                 
                 lastQuestion = constructQuestion( lastSavedFile ) ;
-                nextQuestion = (T)lastQuestion.nextQuestion() ;
+                if( lastQuestion != null ) {
+                    nextQuestion = (T)lastQuestion.nextQuestion() ;
+                }
                 
                 handleLastQuestionSave( lastQuestion ) ;
             }
@@ -362,7 +364,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                                                "Invalid file name. " + e.getMessage(),
                                                "Error saving file",
                                                JOptionPane.ERROR_MESSAGE ) ;
-                log.debug( "Save issue. " + e.getMessage() ) ;
+                log.debug( "Save issue. " + e.getMessage(), e ) ;
             }
         }
     }

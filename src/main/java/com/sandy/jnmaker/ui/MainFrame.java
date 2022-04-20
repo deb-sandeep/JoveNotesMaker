@@ -17,12 +17,14 @@ import javax.swing.JSplitPane ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
+import com.sandy.common.util.StringUtil ;
 import com.sandy.jeecoach.util.AbstractQuestion ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 import com.sandy.jnmaker.ui.menu.AppMenu ;
 import com.sandy.jnmaker.ui.menu.ToggleInputEditorMenu.InputEditorMode ;
 import com.sandy.jnmaker.ui.notedialogs.NotesCreatorDialog ;
 import com.sandy.jnmaker.ui.panels.image.AbstractImagePanel ;
+import com.sandy.jnmaker.ui.panels.image.DefaultImagePanel ;
 import com.sandy.jnmaker.ui.panels.image.jee.JEEQuestionsImagePanel ;
 import com.sandy.jnmaker.ui.panels.image.k12.K12QuestionsImagePanel ;
 import com.sandy.jnmaker.ui.panels.jn.JoveNotesPanel ;
@@ -44,6 +46,7 @@ public class MainFrame extends AbstractMainFrame {
     
     private NotesCreatorDialog notesCreator = null ;
     
+    @SuppressWarnings( "rawtypes" )
     private AbstractImagePanel<? extends AbstractQuestion> imagePanel = null ;
 
     public MainFrame() throws Exception {
@@ -119,22 +122,20 @@ public class MainFrame extends AbstractMainFrame {
         return panel ;
     }
     
+    @SuppressWarnings( "unchecked" )
     private JSplitPane createBaseSplitPane( Component bottomComponent ) {
         
         AppConfig appCfg = ObjectRepository.getAppConfig() ;
         String imgPanelType = appCfg.getImagePanelType() ; 
-                
-        if( imgPanelType.equals( K12QuestionsImagePanel.ID ) ) {
+        
+        if( StringUtil.isEmptyOrNull( imgPanelType ) ) {
+            this.imagePanel = new DefaultImagePanel() ;
+        }
+        else if( imgPanelType.equals( K12QuestionsImagePanel.ID ) ) {
             this.imagePanel = new K12QuestionsImagePanel() ;
         }
         else if( imgPanelType.equals( JEEQuestionsImagePanel.ID ) ) {
             this.imagePanel = new JEEQuestionsImagePanel() ;
-        }
-        
-        // Set the default behavior
-        if( this.imagePanel == null ) {
-            log.info( "Attaching K12 image panel as default condition" ) ;
-            this.imagePanel = new K12QuestionsImagePanel() ;
         }
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ;
@@ -165,6 +166,7 @@ public class MainFrame extends AbstractMainFrame {
         this.rawTextPanel = rawTextPanel;
     }
 
+    @SuppressWarnings( "rawtypes" )
     public AbstractImagePanel<? extends AbstractQuestion> getImagePanel() {
         return this.imagePanel;
     }
