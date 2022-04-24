@@ -5,7 +5,8 @@ public class JNSrcTokenizer {
     public static enum TokenType { 
         KEYWORD, 
         NESTED_KEYWORDS,
-        STRING, 
+        STRING,
+        TN_STRING,
         INT, 
         PUNCTUATION,
         COMMENT,

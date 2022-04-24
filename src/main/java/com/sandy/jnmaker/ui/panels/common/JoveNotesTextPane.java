@@ -107,6 +107,9 @@ public class JoveNotesTextPane extends JTextPane implements WordSource {
         Style string = doc.addStyle( TokenType.STRING.toString(), base ) ;
         StyleConstants.setForeground( string, UIUtil.STRING_COLOR ) ;
         
+        Style tnString = doc.addStyle( TokenType.TN_STRING.toString(), base ) ;
+        StyleConstants.setForeground( tnString, UIUtil.TN_STRING_COLOR ) ;
+        
         Style number = doc.addStyle( TokenType.INT.toString(), base ) ;
         StyleConstants.setForeground( number, UIUtil.NUMBER_COLOR ) ;
         
@@ -147,17 +150,29 @@ public class JoveNotesTextPane extends JTextPane implements WordSource {
 
         Token          token     = null ;
         JNSrcTokenizer tokenizer = null ;
+        boolean        inTNScope = false ;
         
         tokenizer = new JNSrcTokenizer( doc.getText( 0, doc.getLength() ) ) ;
         
         while( ( token = tokenizer.getNextToken() ) != null ) {
             
+            if( token.tokenType == TokenType.KEYWORD ) {
+                inTNScope = token.token.equals( "@tn" ) ;
+            }
+            
             int len = (token.end-token.start)+1 ;
             
             if( len > 0 ) {
-                doc.setCharacterAttributes( token.start, len, 
-                        doc.getStyle( token.tokenType.toString() ), 
-                        true ) ;
+                if( inTNScope && token.tokenType == TokenType.STRING ) {
+                    doc.setCharacterAttributes( token.start, len, 
+                                doc.getStyle( TokenType.TN_STRING.toString() ), 
+                                true ) ;
+                }
+                else {
+                    doc.setCharacterAttributes( token.start, len, 
+                                    doc.getStyle( token.tokenType.toString() ), 
+                                    true ) ;
+                }
             }
             
             if( token.tokenType == TokenType.STRING ) {

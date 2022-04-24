@@ -27,6 +27,7 @@ public class UIUtil {
 
     public static final Color EDITOR_BG_COLOR = new Color( 57, 56, 46 ) ; 
     public static final Color STRING_COLOR    = new Color( 139, 141, 109 ).brighter() ;
+    public static final Color TN_STRING_COLOR = new Color( 255, 141, 109 ).brighter() ;
     public static final Color KEYWORD_COLOR   = new Color( 86, 210, 211 ) ;
     public static final Color NUMBER_COLOR    = Color.RED ;
     
