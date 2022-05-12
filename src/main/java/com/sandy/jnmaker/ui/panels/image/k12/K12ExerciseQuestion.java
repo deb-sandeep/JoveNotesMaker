@@ -126,27 +126,38 @@ public class K12ExerciseQuestion extends AbstractQuestion<K12ExerciseQuestion> {
     }
     
     public K12ExerciseQuestion nextQuestion() {
+        
         K12ExerciseQuestion nextQ = new K12ExerciseQuestion( this ) ;
         
         if( partNum != -1 ) {
-            nextQ.partNum++ ;
-        }
-        else {
-            
-            if( header ) {
-                nextQ.header = false ;
-                nextQ.subQuestionNum = 1 ;
+            if( partNum == 2 ) {
+                nextQ.partNum = -1 ;
+                populateNextQuestionAttributes( nextQ ) ;
             }
             else {
-                if( subQuestionNum != -1 ) {
-                    nextQ.subQuestionNum++ ;
-                }
-                else {
-                    nextQ.questionNum++ ;
-                }
+                nextQ.partNum++ ;
             }
         }
+        else {
+            populateNextQuestionAttributes( nextQ ) ;
+        }
         return nextQ ;
+    }
+    
+    private void populateNextQuestionAttributes( K12ExerciseQuestion nextQ ) {
+        
+        if( header ) {
+            nextQ.header = false ;
+            nextQ.subQuestionNum = 1 ;
+        }
+        else {
+            if( subQuestionNum != -1 ) {
+                nextQ.subQuestionNum++ ;
+            }
+            else {
+                nextQ.questionNum++ ;
+            }
+        }
     }
     
     public K12ExerciseQuestion nextMajorElement() {

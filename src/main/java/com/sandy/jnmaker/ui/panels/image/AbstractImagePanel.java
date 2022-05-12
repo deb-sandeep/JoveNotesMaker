@@ -65,6 +65,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
     protected File lastSavedFile = null ;
     
     protected T lastQuestion = null ;
+    protected T currentlyDisplayedQuestion = null ;
     protected T nextQuestion = null ;
     
     public AbstractImagePanel() {
@@ -357,6 +358,8 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                     nextQuestion = (T)lastQuestion.nextQuestion() ;
                 }
                 
+                currentlyDisplayedQuestion = null ;
+                
                 handleLastQuestionSave( lastQuestion ) ;
             }
             catch( Exception e ) {
@@ -366,6 +369,9 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                                                JOptionPane.ERROR_MESSAGE ) ;
                 log.debug( "Save issue. " + e.getMessage(), e ) ;
             }
+        }
+        else {
+            currentlyDisplayedQuestion = null ;
         }
     }
     
@@ -415,6 +421,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
             }
             else {
                 outputFile = new File( lastSavedDir, nextQuestion.getFileName() ) ;
+                currentlyDisplayedQuestion = nextQuestion ;
             }
         }
         
