@@ -47,6 +47,7 @@ public class ProjectManager {
     private RawTextPanel       rawTextPanel = null ;
     private JoveNotesPanel     jnPanel      = null ;
     
+    @SuppressWarnings( "rawtypes" )
     private AbstractImagePanel<? extends AbstractQuestion> imagePanel   = null ;
     
     private Map<String, Object> statefulObjects = new HashMap<String, Object>() ;

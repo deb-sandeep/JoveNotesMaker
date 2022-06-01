@@ -13,6 +13,7 @@ import javax.swing.JMenuBar ;
 import javax.swing.JOptionPane ;
 import javax.swing.JPanel ;
 import javax.swing.JSplitPane ;
+import javax.swing.SwingUtilities ;
 
 import org.apache.log4j.Logger ;
 
@@ -33,6 +34,9 @@ import com.sandy.jnmaker.ui.panels.search.SearchInputPanel ;
 import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
+
+import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.util.Events.* ;
 
 @SuppressWarnings( "serial" )
 public class MainFrame extends AbstractMainFrame {
@@ -191,8 +195,20 @@ public class MainFrame extends AbstractMainFrame {
         this.rawTextPanel.captureFocus() ;
     }
 
-    public void switchInputEditor( InputEditorMode currentMode ) {
+    public void switchInputEditor( InputEditorMode currentMode, 
+                                   final String defaultSearchString ) {
+        
         CardLayout cl = ( CardLayout )inputEditorPanel.getLayout() ;
-        cl.show( inputEditorPanel, currentMode.toString() );
+        cl.show( inputEditorPanel, currentMode.toString() ) ;
+        
+        if( currentMode == InputEditorMode.SEARCH ) {
+            SwingUtilities.invokeLater( new Runnable() {
+                public void run() {
+                    searchPanel.setQueryAndSearch( defaultSearchString ) ;
+                }
+            } ) ;
+        }
+        
+        getBus().publishEvent( EDITOR_TYPE_CHANGED, currentMode );
     }
 }

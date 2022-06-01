@@ -41,6 +41,7 @@ import org.apache.log4j.Logger ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.MainFrame ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.ui.menu.ToggleInputEditorMenu.InputEditorMode ;
 import com.sandy.jnmaker.ui.menu.actions.Actions ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
@@ -289,7 +290,7 @@ public class RawTextPanel extends JPanel implements WordSource {
                 case KeyEvent.VK_W: 
                     mainFrame.createNote( selectedText, NoteType.WORD_MEANING ) ;
                     break ;
-                case KeyEvent.VK_S: 
+                case KeyEvent.VK_P: 
                     mainFrame.createNote( selectedText, NoteType.SPELLBEE ) ;
                     break ;
                 case KeyEvent.VK_D: 
@@ -318,6 +319,10 @@ public class RawTextPanel extends JPanel implements WordSource {
                     break ;
                 case KeyEvent.VK_DOWN:
                     this.scratchPanel.addText( selectedText ) ;
+                    break ;
+                case KeyEvent.VK_S:
+                    mainFrame.switchInputEditor( InputEditorMode.SEARCH, 
+                                                 "\"" + selectedText + "\"" ) ;
                     break ;
             }
         }

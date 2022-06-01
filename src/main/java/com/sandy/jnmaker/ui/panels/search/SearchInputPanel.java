@@ -18,7 +18,6 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.lucene.ChapterInfo ;
 import com.sandy.jnmaker.lucene.NoteInfo ;
 import com.sandy.jnmaker.lucene.search.Searcher ;
-import com.sandy.jnmaker.lucene.search.Searcher.SearchException ;
 
 @SuppressWarnings( "serial" )
 public class SearchInputPanel extends SearchInputPanelUI {
@@ -29,9 +28,13 @@ public class SearchInputPanel extends SearchInputPanelUI {
     
     public SearchInputPanel() throws Exception {
         super() ;
-        searcher = new Searcher() ;
     }
-
+    
+    public void setQueryAndSearch( String searchString ) {
+        super.queryTF.setText( searchString ) ;
+        searchAndDisplayResults() ;
+    }
+    
     @Override
     public void actionPerformed( ActionEvent e ) {
         
@@ -46,6 +49,13 @@ public class SearchInputPanel extends SearchInputPanelUI {
         }
     }
     
+    private Searcher getSearcher() throws Exception {
+        if( searcher == null ) {
+            searcher = new Searcher() ;
+        }
+        return searcher ;
+    }
+    
     private void searchAndDisplayResults() {
         
         String queryStr = super.queryTF.getText() ;
@@ -56,10 +66,10 @@ public class SearchInputPanel extends SearchInputPanelUI {
         List<NoteInfo> results = null ;
         
         try {
-            results = searcher.search( queryStr, 100 ) ;
+            results = getSearcher().search( queryStr, 100 ) ;
         }
-        catch( SearchException e1 ) {
-            showMessageDialog( this, "Error in query\n" + e1.getMessage() ) ;
+        catch( Exception e1 ) {
+            showMessageDialog( this, "Error in search\n" + e1.getMessage() ) ;
             return ;
         }
         super.tableModel.setSearchResults( results ) ;

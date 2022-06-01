@@ -5,13 +5,16 @@ import java.awt.event.ActionListener ;
 
 import javax.swing.JMenuItem ;
 
+import com.sandy.common.bus.Event ;
+import com.sandy.common.bus.EventSubscriber ;
 import com.sandy.jnmaker.ui.MainFrame ;
 
 import static com.sandy.jnmaker.util.ObjectRepository.* ;
+import static com.sandy.jnmaker.util.Events.* ;
 
 @SuppressWarnings( "serial" )
 public class ToggleInputEditorMenu extends JMenuItem 
-    implements ActionListener {
+    implements ActionListener, EventSubscriber {
 
     public static enum InputEditorMode { RAW_TEXT, SEARCH } ;
     
@@ -23,6 +26,7 @@ public class ToggleInputEditorMenu extends JMenuItem
     public ToggleInputEditorMenu() {
         super.setText( getMenuLabel() ) ;
         addActionListener( this ) ;
+        getBus().addSubscriberForEventTypes( this, false, EDITOR_TYPE_CHANGED ) ;
     }
     
     private String getMenuLabel() {
@@ -34,12 +38,19 @@ public class ToggleInputEditorMenu extends JMenuItem
 
     @Override
     public void actionPerformed( ActionEvent e ) {
+        
         currentMode = ( currentMode == InputEditorMode.RAW_TEXT ) ? 
                       InputEditorMode.SEARCH : 
                       InputEditorMode.RAW_TEXT ;
         
         MainFrame mainFrame = getMainFrame() ;
-        mainFrame.switchInputEditor( currentMode ) ;
+        mainFrame.switchInputEditor( currentMode, "" ) ;
+    }
+
+    @Override
+    public void handleEvent( Event event ) {
+        
+        currentMode = ( InputEditorMode )event.getValue() ;
         super.setText( getMenuLabel() ) ;
     }
 }

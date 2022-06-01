@@ -232,7 +232,8 @@ public class IndexingDaemon extends Thread {
         // have been handled earlier.
         if( baseDir == null ) {
             throw new IllegalStateException( "Found a file which is not in " + 
-                                             "specified source directories." ) ;
+                                             "specified source directories." +
+                                             "\nFile = " + file.getAbsolutePath() ) ;
         }
         
         String srcDirPath = baseDir.getAbsolutePath() ;
