@@ -1,12 +1,12 @@
 package com.sandy.jnmaker.ui.panels.rawtxt;
 
+import static com.sandy.common.ui.SwingUtils.getScreenHeight ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getActionBtn ;
+import static com.sandy.jnmaker.util.JNSrcTokenizer.FIB ;
 import static com.sandy.jnmaker.util.ObjectRepository.getCWD ;
 import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 import static com.sandy.jnmaker.util.ObjectRepository.getWordRepository ;
 import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
-import static com.sandy.common.ui.SwingUtils.* ;
-
 
 import java.awt.BorderLayout ;
 import java.awt.Color ;
@@ -275,6 +275,9 @@ public class RawTextPanel extends JPanel implements WordSource {
             selectedText = getProcessedText( selectedText ) ;
             
             switch( keyCode ) {
+                case KeyEvent.VK_Q: 
+                    deduceAndCreateNoteType( selectedText ) ;
+                    break ;
                 case KeyEvent.VK_A: 
                     mainFrame.createNote( selectedText, NoteType.QA ) ;
                     break ;
@@ -326,6 +329,54 @@ public class RawTextPanel extends JPanel implements WordSource {
                     break ;
             }
         }
+    }
+    
+    private void deduceAndCreateNoteType( String selectedText ) {
+        
+        try {
+            selectedText = selectedText.trim() ;
+            if( StringUtil.isEmptyOrNull( selectedText ) ) {
+                selectedText = getCurrentLine() ;
+                selectedText = getProcessedText( selectedText ) ;
+            }
+            
+            if( selectedText.startsWith( FIB ) ) {
+                selectedText = selectedText.substring( FIB.length() ).trim() ;
+                getMainFrame().createNote( selectedText, NoteType.FIB ) ;
+            }
+            else if( selectedText.startsWith( "@tf" ) ) {
+                selectedText = selectedText.substring( "@tf".length() ).trim() ;
+                getMainFrame().createNote( selectedText, NoteType.TRUE_FALSE ) ;
+            }
+        }
+        catch( Exception e ) {
+            logger.error( "Error in deducing question", e ) ;
+        }
+    }
+    
+    private String getCurrentLine() throws Exception {
+        
+        int caretPos = textPane.getCaret().getDot() ;
+        Document doc = textPane.getDocument() ;
+        String   text = doc.getText( 0, doc.getLength() ) ;
+        
+        int startPos = caretPos ;
+        int endPos   = caretPos ;
+        
+        char currentChar = text.charAt( startPos ) ;
+        while( startPos >= 0 && currentChar != '\n' ) {
+            startPos-- ;
+            currentChar = text.charAt( startPos ) ;
+        }
+        
+        currentChar = text.charAt( endPos ) ;
+        while( endPos < doc.getLength() && currentChar != '\n' ) {
+            endPos++ ;
+            currentChar = text.charAt( endPos ) ;
+        }
+        
+        String line = text.substring( startPos, endPos ) ;
+        return line ;
     }
     
     private void setUpFileChooser() {

@@ -1,6 +1,9 @@
 package com.sandy.jnmaker.util;
 
 public class JNSrcTokenizer {
+    
+    public static final String QA = "@qa" ;
+    public static final String FIB = "@fib" ;
 
     public static enum TokenType { 
         KEYWORD, 
