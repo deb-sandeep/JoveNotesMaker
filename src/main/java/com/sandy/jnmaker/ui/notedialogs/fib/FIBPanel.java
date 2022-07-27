@@ -13,6 +13,8 @@ import java.util.List ;
 
 import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
+import javax.swing.text.BadLocationException ;
+import javax.swing.text.Document ;
 
 import org.apache.commons.lang.StringUtils ;
 
@@ -152,13 +154,77 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         
         String selectedText = textArea.getSelectedText() ;
         if( StringUtil.isEmptyOrNull( selectedText ) ) {
-            return ;
+            selectedText = getWordAtCursor() ;
+            if( StringUtil.isEmptyOrNull( selectedText ) ) {
+                return ;
+            }
         }
         
-        int curBlankNo    = blankTextList.size() ;
+        int curBlankNo = blankTextList.size() ;
         blankTextList.add( selectedText ) ;
         textArea.replaceSelection( "{" + curBlankNo + "}" ) ;
         refreshPreview() ;
+    }
+    
+    private String getWordAtCursor() {
+        
+        try {
+            int   curPos = textArea.getCaretPosition() ;
+            Document doc = textArea.getDocument() ;
+            String   str = doc.getText( 0, doc.getLength() ) ;
+            
+            int startPos = curPos ;
+            int endPos   = curPos ;
+            
+            char ch = str.charAt( startPos ) ;
+            while( startPos >= 0 && isWordChar( ch ) ) {
+                startPos-- ;
+                ch = str.charAt( startPos ) ;
+            }
+            if( startPos != curPos ) {
+                startPos++ ;
+            }
+            
+            ch = str.charAt( endPos ) ;
+            while( endPos < str.length() && isWordChar( ch ) ) {
+                endPos++ ;
+                ch = str.charAt( endPos ) ;
+            }
+            if( endPos >= str.length() ) {
+                endPos = str.length()-1 ;
+            }
+            
+            if( startPos != endPos ) {
+                textArea.select( startPos, endPos ) ;
+                return str.substring( startPos, endPos ) ;
+            }
+            
+            return null ;
+        }
+        catch( BadLocationException e ) {
+            return null ;
+        }
+    }
+    
+    private boolean isWordChar( char ch ) {
+        
+        char[] validWordChars = { '-' } ;
+        
+        if( ch >= 'a' && ch <= 'z' ) {
+            return true ;
+        }
+        
+        if( ch >= 'A' && ch <= 'Z' ) {
+            return true ;
+        }
+        
+        for( int i=0; i<validWordChars.length; i++ ) {
+            if( ch == validWordChars[i] ) {
+                return true ;
+            }
+        }
+        
+        return false ;
     }
     
     private void refreshPreview() {
