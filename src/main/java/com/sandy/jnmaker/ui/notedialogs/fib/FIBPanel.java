@@ -179,7 +179,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             char ch = str.charAt( startPos ) ;
             while( startPos >= 0 && isWordChar( ch ) ) {
                 startPos-- ;
-                ch = str.charAt( startPos ) ;
+                if( startPos >= 0 ) {
+                    ch = str.charAt( startPos ) ;
+                }
             }
             if( startPos != curPos ) {
                 startPos++ ;
@@ -188,7 +190,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             ch = str.charAt( endPos ) ;
             while( endPos < str.length() && isWordChar( ch ) ) {
                 endPos++ ;
-                ch = str.charAt( endPos ) ;
+                if( endPos < str.length() ) {
+                    ch = str.charAt( endPos ) ;
+                }
             }
             if( endPos >= str.length() ) {
                 endPos = str.length()-1 ;
