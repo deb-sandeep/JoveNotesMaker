@@ -222,6 +222,10 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             return true ;
         }
         
+        if( ch >= '0' && ch <= '9' ) {
+            return true ;
+        }
+        
         for( int i=0; i<validWordChars.length; i++ ) {
             if( ch == validWordChars[i] ) {
                 return true ;
