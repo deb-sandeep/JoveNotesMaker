@@ -53,7 +53,8 @@ public class ProjectManager {
     private Map<String, Object> statefulObjects = new HashMap<String, Object>() ;
     
     private File projectConfigFile = null ;
-    private File currentDir        = new File( System.getProperty( "user.home" ) ) ;
+    private File currentDir        = new File( System.getProperty( "user.home" ),
+                                               "/Documents/StudyNotes") ;
     
     public ProjectManager() {
         setUpFileChooser() ;

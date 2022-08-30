@@ -8,6 +8,7 @@ import java.awt.event.ActionListener ;
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
 import java.io.File ;
+import java.util.StringTokenizer ;
 
 import javax.swing.JFileChooser ;
 
@@ -21,6 +22,8 @@ import com.sandy.jnmaker.util.ObjectRepository ;
 @SuppressWarnings( {"serial", "deprecation"} )
 public class QAPanel extends QAPanelUI {
 
+    private static final String ANS_LABEL_TEMPLATE = "Answer [word count = {wc}]" ;
+    
     private File ansImgFile = null ;
 
     public QAPanel( String selectedText, boolean asQuestion ) {
@@ -35,6 +38,20 @@ public class QAPanel extends QAPanelUI {
         else {
             this.answerTextArea.setText( selectedText ) ;
         }
+        updateWordCount() ;
+    }
+    
+    protected void updateWordCount() {
+        String ansText = super.answerTextArea.getText() ;
+        int wordCount = 0 ;
+        
+        if( StringUtil.isNotEmptyOrNull( ansText ) ) {
+            StringTokenizer tokens = new StringTokenizer( ansText ) ;
+            wordCount = tokens.countTokens() ;
+        }
+        
+        String newLabel = ANS_LABEL_TEMPLATE.replace( "{wc}", "" + wordCount ) ;
+        super.enterALabel.setText( newLabel ) ;
     }
     
     private void setUpListeners() {
@@ -53,6 +70,7 @@ public class QAPanel extends QAPanelUI {
                     
                     copySelTextFromAnsFieldToQuestionField() ;
                 }
+                updateWordCount() ;
             }
         } ) ;
         

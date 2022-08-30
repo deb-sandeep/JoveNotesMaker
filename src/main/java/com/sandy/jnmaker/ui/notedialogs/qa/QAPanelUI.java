@@ -28,8 +28,8 @@ public abstract class QAPanelUI extends AbstractNotePanel {
         javax.swing.JScrollPane enterQTextAreaSP = new javax.swing.JScrollPane();
         questionTextArea = new javax.swing.JTextArea();
         javax.swing.JSeparator separator = new javax.swing.JSeparator();
-        javax.swing.JLabel enterALabel = new javax.swing.JLabel();
         javax.swing.JScrollPane enterAnswerTextAreaSP = new javax.swing.JScrollPane();
+        enterALabel = new javax.swing.JLabel();
         answerTextArea = new javax.swing.JTextArea();
         ansImgBtn = new javax.swing.JButton();
         ansImgLabel = new javax.swing.JLabel();
@@ -39,7 +39,7 @@ public abstract class QAPanelUI extends AbstractNotePanel {
         setPreferredSize(new java.awt.Dimension(600, 400));
 
         enterQLabel.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        enterQLabel.setText("Enter question :");
+        enterQLabel.setText("Question :");
 
         questionTextArea.setColumns(20);
         questionTextArea.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -51,7 +51,7 @@ public abstract class QAPanelUI extends AbstractNotePanel {
         enterQTextAreaSP.setViewportView(questionTextArea);
 
         enterALabel.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        enterALabel.setText("Enter answer :");
+        enterALabel.setText("Answer :");
 
         answerTextArea.setColumns(20);
         answerTextArea.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -111,13 +111,13 @@ public abstract class QAPanelUI extends AbstractNotePanel {
                 .addComponent(enterAnswerTextAreaSP, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                 .addContainerGap())
         );
-    }// </editor-fold>                        
-
-
+    }// </editor-fold> 
+    
     // Variables declaration - do not modify                     
     protected javax.swing.JButton ansImgBtn;
     protected javax.swing.JLabel ansImgLabel;
     protected javax.swing.JTextArea answerTextArea;
     protected javax.swing.JTextArea questionTextArea;
-    // End of variables declaration                   
+    protected javax.swing.JLabel enterALabel;
+    // End of variables declaration   
 }
