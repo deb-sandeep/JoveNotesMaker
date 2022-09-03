@@ -366,13 +366,17 @@ public class RawTextPanel extends JPanel implements WordSource {
         char currentChar = text.charAt( startPos ) ;
         while( startPos >= 0 && currentChar != '\n' ) {
             startPos-- ;
-            currentChar = text.charAt( startPos ) ;
+            if( startPos >= 0 ) {
+                currentChar = text.charAt( startPos ) ;
+            }
         }
         
         currentChar = text.charAt( endPos ) ;
         while( endPos < doc.getLength() && currentChar != '\n' ) {
             endPos++ ;
-            currentChar = text.charAt( endPos ) ;
+            if( endPos < doc.getLength() ) {
+                currentChar = text.charAt( endPos ) ;
+            }
         }
         
         String line = text.substring( startPos, endPos ) ;

@@ -154,11 +154,12 @@ public abstract class AbstractNotePanel extends JPanel {
         
         textArea.addKeyListener( new KeyAdapter() {
             @Override public void keyPressed( KeyEvent e ) {
-                if( e.getKeyCode()   == KeyEvent.VK_ENTER && 
+                if( ( e.getKeyCode() == KeyEvent.VK_ENTER || 
+                      e.getKeyCode() == KeyEvent.VK_1 ) && 
                     e.getModifiers() == KeyEvent.CTRL_MASK ) {
                     parent.okPressed() ;
                 }            
             }
-        });
+        } ) ;
     }
 }
