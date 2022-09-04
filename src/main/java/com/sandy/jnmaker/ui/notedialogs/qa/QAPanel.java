@@ -32,15 +32,37 @@ public class QAPanel extends QAPanelUI {
         UIUtil.associateEditMenu( this.answerTextArea ) ;
         setUpListeners() ;
         
-        if( asQuestion ) {
-            this.questionTextArea.setText( selectedText ) ;
+        if( selectedText.startsWith( "Question:" ) ) {
+            populateQuestionAnswerText( selectedText ) ;
         }
         else {
-            this.answerTextArea.setText( selectedText ) ;
+            if( asQuestion ) {
+                this.questionTextArea.setText( selectedText ) ;
+            }
+            else {
+                this.answerTextArea.setText( selectedText ) ;
+            }
         }
         updateWordCount() ;
     }
     
+    private void populateQuestionAnswerText( String selectedText ) {
+        
+        int ansIndex = selectedText.indexOf( "Answer:" ) ;
+        
+        String question = selectedText.substring( 0, ansIndex ) ;
+        String answer   = selectedText.substring( ansIndex ) ;
+        
+        question = question.substring( "Question:".length() ) ;
+        answer   = answer.substring( "Answer:".length() ) ;
+        
+        question = question.trim() ;
+        answer   = answer.trim() ;
+        
+        this.questionTextArea.setText( question ) ;
+        this.answerTextArea.setText( answer ) ;
+    }
+
     protected void updateWordCount() {
         String ansText = super.answerTextArea.getText() ;
         int wordCount = 0 ;

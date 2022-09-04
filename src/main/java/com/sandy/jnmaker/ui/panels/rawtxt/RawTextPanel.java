@@ -50,7 +50,7 @@ import com.sandy.jnmaker.util.WordRepository.WordSource ;
 @SuppressWarnings( {"serial", "deprecation"} )
 public class RawTextPanel extends JPanel implements WordSource {
 
-    private static final Logger logger = Logger.getLogger( RawTextPanel.class ) ;
+    private static final Logger log = Logger.getLogger( RawTextPanel.class ) ;
     
     private static final String BOOKMARK_MARKER = "// here" ;
 
@@ -72,7 +72,7 @@ public class RawTextPanel extends JPanel implements WordSource {
     private int  fontSize    = 12 ;
     private File currentFile = null ;
     
-    private ScratchTextPanel scratchPanel = new ScratchTextPanel() ;
+    private ScratchTextPanel scratchPanel = new ScratchTextPanel( this ) ;
     
     public RawTextPanel() {
         setUpUI() ;
@@ -127,7 +127,7 @@ public class RawTextPanel extends JPanel implements WordSource {
                 setScratchFile() ;
             }
             catch( Exception e ) {
-                logger.error( "Error while opening file.", e ) ;
+                log.error( "Error while opening file.", e ) ;
                 JOptionPane.showConfirmDialog( this, 
                         "Could not open file. " + e.getMessage() ) ;
             }
@@ -269,6 +269,7 @@ public class RawTextPanel extends JPanel implements WordSource {
             }
         }
         else if( modifiers == ( KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK ) ) {
+            
             String selectedText = textPane.getSelectedText() ;
             MainFrame mainFrame = getMainFrame() ;
             
@@ -285,9 +286,15 @@ public class RawTextPanel extends JPanel implements WordSource {
                     mainFrame.createNote( selectedText, NoteType.QA_Q ) ;
                     break ;
                 case KeyEvent.VK_F: 
+                    if( StringUtil.isEmptyOrNull( selectedText ) ) {
+                        selectedText = getSanitizedCurrentLine() ;
+                    }
                     mainFrame.createNote( selectedText, NoteType.FIB ) ;
                     break ;
                 case KeyEvent.VK_T: 
+                    if( StringUtil.isEmptyOrNull( selectedText ) ) {
+                        selectedText = getSanitizedCurrentLine() ;
+                    }
                     mainFrame.createNote( selectedText, NoteType.TRUE_FALSE ) ;
                     break ;
                 case KeyEvent.VK_W: 
@@ -350,15 +357,16 @@ public class RawTextPanel extends JPanel implements WordSource {
             }
         }
         catch( Exception e ) {
-            logger.error( "Error in deducing question", e ) ;
+            log.error( "Error in deducing question", e ) ;
         }
     }
     
     private String getCurrentLine() throws Exception {
         
-        int caretPos = textPane.getCaret().getDot() ;
-        Document doc = textPane.getDocument() ;
-        String   text = doc.getText( 0, doc.getLength() ) ;
+        int      caretPos = textPane.getCaret().getDot() ;
+        Document doc      = textPane.getDocument() ;
+        String   text     = doc.getText( 0, doc.getLength() ) ;
+        int      textLen  = text.length() ;
         
         int startPos = caretPos ;
         int endPos   = caretPos ;
@@ -372,15 +380,42 @@ public class RawTextPanel extends JPanel implements WordSource {
         }
         
         currentChar = text.charAt( endPos ) ;
-        while( endPos < doc.getLength() && currentChar != '\n' ) {
+        while( endPos < textLen && currentChar != '\n' ) {
             endPos++ ;
-            if( endPos < doc.getLength() ) {
+            if( endPos < textLen ) {
                 currentChar = text.charAt( endPos ) ;
             }
         }
         
+        startPos = startPos < 0 ? 0 : startPos ;
+        endPos = endPos > textLen ? textLen : endPos ;
+        
         String line = text.substring( startPos, endPos ) ;
         return line ;
+    }
+    
+    private String getSanitizedCurrentLine() {
+        
+        String currentLine = "" ;
+        
+        try {
+            currentLine = getCurrentLine() ;
+            if( StringUtil.isNotEmptyOrNull( currentLine ) ) {
+                currentLine = currentLine.trim() ;
+                if( currentLine.startsWith( "@" ) ) {
+                    int firstSpaceIndex = currentLine.indexOf( ' ' ) ;
+                    if( firstSpaceIndex != -1 ) {
+                        currentLine = currentLine.substring( firstSpaceIndex+1 ) ;
+                        currentLine = currentLine.trim() ;
+                    }
+                }
+            }
+        }
+        catch( Exception e ) {
+            log.debug( "Error getting current line", e ) ;
+        }
+        
+        return currentLine ;
     }
     
     private void setUpFileChooser() {
@@ -436,7 +471,7 @@ public class RawTextPanel extends JPanel implements WordSource {
                 setCurrentFile( file ) ;
             }
             catch( Exception e ) {
-                logger.error( "Error while opening file.", e ) ;
+                log.error( "Error while opening file.", e ) ;
                 JOptionPane.showConfirmDialog( this, 
                                    "Could not open file. " + e.getMessage() ) ;
             }
@@ -504,7 +539,7 @@ public class RawTextPanel extends JPanel implements WordSource {
                     this.scratchPanel.saveFile() ;
                 }
                 catch( Exception e ) {
-                    logger.error( "Could not save file contents", e ) ;
+                    log.error( "Could not save file contents", e ) ;
                     JOptionPane.showConfirmDialog( this,  
                           "Could not save file contents. " + e.getMessage() ) ;
                 }
@@ -534,7 +569,7 @@ public class RawTextPanel extends JPanel implements WordSource {
                 displayFileName() ;
             }
             catch( Exception e ) {
-                logger.error( "Could not save file contents", e ) ;
+                log.error( "Could not save file contents", e ) ;
                 JOptionPane.showConfirmDialog( this,  
                       "Could not save file contents. " + e.getMessage() ) ;
             }

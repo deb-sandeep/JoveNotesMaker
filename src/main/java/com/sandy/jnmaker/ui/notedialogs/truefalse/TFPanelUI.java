@@ -21,7 +21,7 @@ public abstract class TFPanelUI extends AbstractNotePanel {
         javax.swing.JLabel stmtLabel = new javax.swing.JLabel();
         javax.swing.JScrollPane sp1 = new javax.swing.JScrollPane();
         stmtTextArea = new javax.swing.JTextArea();
-        trueFalseCheckBox = new javax.swing.JCheckBox();
+        trueCheckBox = new javax.swing.JCheckBox();
         javax.swing.JLabel justificationLabel = new javax.swing.JLabel();
         javax.swing.JScrollPane sp2 = new javax.swing.JScrollPane();
         justTextArea = new javax.swing.JTextArea();
@@ -39,8 +39,8 @@ public abstract class TFPanelUI extends AbstractNotePanel {
         stmtTextArea.setWrapStyleWord(true);
         sp1.setViewportView(stmtTextArea);
 
-        trueFalseCheckBox.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
-        trueFalseCheckBox.setText("True ?");
+        trueCheckBox.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
+        trueCheckBox.setText("True ?");
 
         justificationLabel.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
         justificationLabel.setText("Justification");
@@ -64,7 +64,7 @@ public abstract class TFPanelUI extends AbstractNotePanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(stmtLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(trueFalseCheckBox))
+                        .addComponent(trueCheckBox))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(justificationLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -77,7 +77,7 @@ public abstract class TFPanelUI extends AbstractNotePanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stmtLabel)
-                    .addComponent(trueFalseCheckBox))
+                    .addComponent(trueCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sp1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -92,6 +92,6 @@ public abstract class TFPanelUI extends AbstractNotePanel {
     // Variables declaration - do not modify                     
     protected javax.swing.JTextArea justTextArea;
     protected javax.swing.JTextArea stmtTextArea;
-    protected javax.swing.JCheckBox trueFalseCheckBox;
+    protected javax.swing.JCheckBox trueCheckBox;
     // End of variables declaration                   
 }

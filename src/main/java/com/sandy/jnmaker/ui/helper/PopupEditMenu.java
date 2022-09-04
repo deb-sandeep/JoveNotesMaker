@@ -471,10 +471,8 @@ public class PopupEditMenu extends JMenu implements ActionListener {
             editor.moveCaretPosition( tgtPos );
         }
         catch( BadLocationException e ) {
-            logger.debug( "Bad edit position" ) ;
         }
         catch( IllegalArgumentException e ) {
-            logger.debug( "Bad edit position" ) ;
         }
     }
 }

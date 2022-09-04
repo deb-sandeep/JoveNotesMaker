@@ -13,6 +13,7 @@ import java.util.List ;
 
 import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
+import javax.swing.SwingUtilities ;
 import javax.swing.text.BadLocationException ;
 import javax.swing.text.Document ;
 
@@ -47,6 +48,8 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         }
         
         this.textArea.setText( selectedText ) ;
+        this.textArea.setCaretPosition( 0 ) ;
+        
         UIUtil.associateEditMenu( this.textArea ) ;
         
         setUpPopupMenu() ;
@@ -153,6 +156,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
     private void extractBlank() {
         
         String selectedText = textArea.getSelectedText() ;
+        
         if( StringUtil.isEmptyOrNull( selectedText ) ) {
             selectedText = getWordAtCursor() ;
             if( StringUtil.isEmptyOrNull( selectedText ) ) {
@@ -161,9 +165,40 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         }
         
         int curBlankNo = blankTextList.size() ;
+        final String replacementText = "{" + curBlankNo + "}" ;
+        
         blankTextList.add( selectedText ) ;
-        textArea.replaceSelection( "{" + curBlankNo + "}" ) ;
+        textArea.replaceSelection( replacementText ) ;
+        
         refreshPreview() ;
+        
+        SwingUtilities.invokeLater( new Runnable() {
+            public void run() {
+                
+                String text = textArea.getText() ;
+                int pos = text.indexOf( replacementText ) ;
+                
+                if( pos != -1 ) {
+                    pos += replacementText.length() ;
+                    char ch = text.charAt( pos ) ;
+                    while( Character.isWhitespace( ch ) ||
+                           ch == '.' || 
+                           ch == ',' || 
+                           ch == '\'' ) {
+                        
+                        pos++ ;
+                        if( pos >= text.length() ) {
+                            pos = text.length()-1 ;
+                            break ;
+                        }
+                        else {
+                            ch = text.charAt( pos ) ;
+                        }
+                    }
+                }
+                textArea.setCaretPosition( pos ) ;
+            }
+        } ) ;
     }
     
     private String getWordAtCursor() {

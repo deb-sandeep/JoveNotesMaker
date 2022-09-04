@@ -1,5 +1,8 @@
 package com.sandy.jnmaker.ui.notedialogs.truefalse;
 
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
+
 import javax.swing.event.ChangeEvent ;
 import javax.swing.event.ChangeListener ;
 
@@ -30,7 +33,7 @@ public class TFPanel extends TFPanelUI {
     private void initComponents( String selectedText ) {
         
         stmtTextArea.setText( selectedText ) ;
-        trueFalseCheckBox.setSelected( true ) ;
+        trueCheckBox.setSelected( true ) ;
         justTextArea.setEnabled( false ) ;
         
         UIUtil.associateEditMenu( stmtTextArea ) ;
@@ -42,10 +45,10 @@ public class TFPanel extends TFPanelUI {
         bindOkPressEventCapture( stmtTextArea ) ;
         bindOkPressEventCapture( justTextArea ) ;
         
-        trueFalseCheckBox.addChangeListener( new ChangeListener() {
+        trueCheckBox.addChangeListener( new ChangeListener() {
             @Override
             public void stateChanged( ChangeEvent e ) {
-                if( trueFalseCheckBox.isSelected() ) {
+                if( trueCheckBox.isSelected() ) {
                     if( StringUtil.isNotEmptyOrNull( justTextArea.getText() ) ) {
                         savedJustification = justTextArea.getText() ;
                     }
@@ -57,7 +60,15 @@ public class TFPanel extends TFPanelUI {
                     justTextArea.setEnabled( true ) ;
                 }
             }
-        } );
+        } ) ;
+
+        stmtTextArea.addKeyListener( new KeyAdapter() {
+            @SuppressWarnings( "deprecation" )
+            public void keyPressed( KeyEvent e ) {
+                handleKeyShortcutPressed( e.getModifiers(), 
+                                          e.getKeyCode() ) ;
+            }
+        } ) ;
     }
     
     protected void captureFocus() {
@@ -71,9 +82,9 @@ public class TFPanel extends TFPanelUI {
         buffer.append( "@true_false \"" )
               .append( formatText( stmtTextArea.getText() ) )
               .append( "\"\n" )
-              .append( trueFalseCheckBox.isSelected() ) ;
+              .append( trueCheckBox.isSelected() ) ;
         
-        if( !trueFalseCheckBox.isSelected() ) {
+        if( !trueCheckBox.isSelected() ) {
             buffer.append( "\n" )
                   .append( "\"" )
                   .append( formatText( justTextArea.getText() ) )
@@ -81,5 +92,17 @@ public class TFPanel extends TFPanelUI {
         }
         
         return buffer.toString() ;
+    }
+
+    @SuppressWarnings( "deprecation" )
+    private void handleKeyShortcutPressed( int mod, int code ) {
+        
+        if( mod == KeyEvent.CTRL_MASK ) {
+            switch( code ) {
+                case KeyEvent.VK_T:
+                    trueCheckBox.setSelected( !trueCheckBox.isSelected() ) ;
+                    break ;
+            }
+        }
     }
 }

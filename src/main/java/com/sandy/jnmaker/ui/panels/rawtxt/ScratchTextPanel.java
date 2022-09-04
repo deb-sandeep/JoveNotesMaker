@@ -48,7 +48,11 @@ public class ScratchTextPanel extends JPanel implements WordSource {
     private int  fontSize    = 12 ;
     private File currentFile = null ;
     
-    public ScratchTextPanel() {
+    private RawTextPanel rawTextPanel = null ;
+    
+    public ScratchTextPanel( RawTextPanel rawTextPanel ) {
+        
+        this.rawTextPanel = rawTextPanel ;
         setUpUI() ;
         ObjectRepository.getWordRepository().addWordSource( this ) ;
     }
@@ -162,6 +166,7 @@ public class ScratchTextPanel extends JPanel implements WordSource {
                     mainFrame.createNote( selectedText, NoteType.QA ) ;
                     break ;
                 case KeyEvent.VK_Z: 
+                    selectedText = collatePossibleAnswerText( selectedText ) ;
                     mainFrame.createNote( selectedText, NoteType.QA_Q ) ;
                     break ;
                 case KeyEvent.VK_F: 
@@ -202,6 +207,22 @@ public class ScratchTextPanel extends JPanel implements WordSource {
                     break ;
             }
         }
+    }
+    
+    private String collatePossibleAnswerText( String selectedText ) {
+        
+        String possibleAnsText = null ;
+        String collatedText = selectedText ;
+        
+        possibleAnsText = this.rawTextPanel.getTextPane().getSelectedText() ;
+        if( StringUtil.isNotEmptyOrNull( possibleAnsText ) ) {
+            
+            if( StringUtil.isNotEmptyOrNull( selectedText ) ) {
+                collatedText  = "Question:" + selectedText + "\n\n" ;
+                collatedText += "Answer:" + getProcessedText( possibleAnsText.trim() ) ;
+            }
+        }
+        return collatedText ;
     }
     
     private String getProcessedText( String text ) {
