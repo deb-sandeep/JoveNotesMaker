@@ -211,31 +211,33 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             int startPos = curPos ;
             int endPos   = curPos ;
             
-            char ch = str.charAt( startPos ) ;
-            while( startPos >= 0 && isWordChar( ch ) ) {
-                startPos-- ;
-                if( startPos >= 0 ) {
-                    ch = str.charAt( startPos ) ;
+            if( startPos < str.length() ) {
+                char ch = str.charAt( startPos ) ;
+                while( startPos >= 0 && isWordChar( ch ) ) {
+                    startPos-- ;
+                    if( startPos >= 0 ) {
+                        ch = str.charAt( startPos ) ;
+                    }
                 }
-            }
-            if( startPos != curPos ) {
-                startPos++ ;
-            }
-            
-            ch = str.charAt( endPos ) ;
-            while( endPos < str.length() && isWordChar( ch ) ) {
-                endPos++ ;
-                if( endPos < str.length() ) {
-                    ch = str.charAt( endPos ) ;
+                if( startPos != curPos ) {
+                    startPos++ ;
                 }
-            }
-            if( endPos >= str.length() ) {
-                endPos = str.length()-1 ;
-            }
-            
-            if( startPos != endPos ) {
-                textArea.select( startPos, endPos ) ;
-                return str.substring( startPos, endPos ) ;
+                
+                ch = str.charAt( endPos ) ;
+                while( endPos < str.length() && isWordChar( ch ) ) {
+                    endPos++ ;
+                    if( endPos < str.length() ) {
+                        ch = str.charAt( endPos ) ;
+                    }
+                }
+                if( endPos >= str.length() ) {
+                    endPos = str.length()-1 ;
+                }
+                
+                if( startPos != endPos ) {
+                    textArea.select( startPos, endPos ) ;
+                    return str.substring( startPos, endPos ) ;
+                }
             }
             
             return null ;

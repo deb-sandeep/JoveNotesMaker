@@ -47,6 +47,8 @@ import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 import com.sandy.jnmaker.util.WordRepository.WordSource ;
 
+import static javax.swing.JOptionPane.* ;
+
 @SuppressWarnings( {"serial", "deprecation"} )
 public class RawTextPanel extends JPanel implements WordSource {
 
@@ -73,6 +75,8 @@ public class RawTextPanel extends JPanel implements WordSource {
     private File currentFile = null ;
     
     private ScratchTextPanel scratchPanel = new ScratchTextPanel( this ) ;
+    
+    private String lastSearchString = null ;
     
     public RawTextPanel() {
         setUpUI() ;
@@ -265,6 +269,15 @@ public class RawTextPanel extends JPanel implements WordSource {
                     break ;
                 case KeyEvent.VK_W:
                     closeFile() ;
+                    break ;
+                case KeyEvent.VK_F:
+                    find() ;
+                    break ;
+                case KeyEvent.VK_N:
+                    findNext() ;
+                    break ;
+                case KeyEvent.VK_G:
+                    findNextSelected() ;
                     break ;
             }
         }
@@ -645,5 +658,70 @@ public class RawTextPanel extends JPanel implements WordSource {
     @Override
     public String getTextForWordRepository() {
         return textPane.getText() ;
+    }
+    
+    private void find() {
+        
+        String selText = textPane.getSelectedText() ;
+        final String searchString = showInputDialog( this, 
+                                                     "Input search phrase", 
+                                                     selText ) ;
+        
+        if( StringUtil.isNotEmptyOrNull( searchString ) ) {
+           scrollToText( searchString, textPane.getCaretPosition() ) ;
+           lastSearchString = searchString ;
+        }
+    }
+    
+    private void findNext() {
+        
+        if( StringUtil.isNotEmptyOrNull( lastSearchString ) ) {
+            scrollToText( lastSearchString, textPane.getCaretPosition() ) ;
+        }
+    }
+    
+    private void findNextSelected() {
+        
+        String selText = textPane.getSelectedText() ;
+        if( StringUtil.isNotEmptyOrNull( selText ) ) {
+            scrollToText( selText, textPane.getCaretPosition() ) ;
+        }
+    }
+    
+    private void scrollToText( final String text, final int fromPos ) {
+        
+        SwingUtilities.invokeLater( new Runnable() {
+            @Override
+            public void run() {
+                Document document = textPane.getDocument() ;
+                try {
+                    String docText = document.getText( 0, document.getLength() )
+                                             .toLowerCase() ;
+                    int pos = docText.indexOf( text, fromPos ) ;
+                    
+                    if( pos == -1 ) {
+                        pos = docText.indexOf( text, 0 ) ;
+                    }
+                    
+                    if( pos != -1 ) {
+                        scrollToPosition( pos ) ;
+                        textPane.setCaretPosition( pos + text.length() ) ;
+                        textPane.select( pos, pos + text.length() ) ;
+                    }
+                } 
+                catch ( Exception e ) {
+                    e.printStackTrace() ;
+                }
+            }
+        } ) ;
+    }
+    
+    private void scrollToPosition( int pos ) throws Exception {
+        
+        if( pos > -1 ){
+            Rectangle viewRect = textPane.modelToView( pos ) ;
+            viewRect.y += textPane.getVisibleRect().height - 20 ;
+            textPane.scrollRectToVisible( viewRect ) ;
+        }
     }
 }
