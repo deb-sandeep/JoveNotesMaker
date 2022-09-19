@@ -78,8 +78,6 @@ public class SourceProcessingJournal {
             Thread.yield() ;
         }
         
-        log.info( filesForProcessing.size() + " files selected for indexing." ) ;
-        
         for( String delFilePath : journalFiles ) {
             filesForProcessing.add( new File( delFilePath ) ) ;
         }

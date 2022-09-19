@@ -663,6 +663,10 @@ public class RawTextPanel extends JPanel implements WordSource {
     private void find() {
         
         String selText = textPane.getSelectedText() ;
+        if( StringUtil.isEmptyOrNull( selText ) ) {
+            selText = this.lastSearchString ;
+        }
+        
         final String searchString = showInputDialog( this, 
                                                      "Input search phrase", 
                                                      selText ) ;
@@ -697,10 +701,12 @@ public class RawTextPanel extends JPanel implements WordSource {
                 try {
                     String docText = document.getText( 0, document.getLength() )
                                              .toLowerCase() ;
-                    int pos = docText.indexOf( text, fromPos ) ;
+                    String searchText = text.toLowerCase() ;
+                    
+                    int pos = docText.indexOf( searchText, fromPos ) ;
                     
                     if( pos == -1 ) {
-                        pos = docText.indexOf( text, 0 ) ;
+                        pos = docText.indexOf( searchText, 0 ) ;
                     }
                     
                     if( pos != -1 ) {
