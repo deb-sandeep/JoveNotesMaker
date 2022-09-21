@@ -298,6 +298,10 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                 case KeyEvent.VK_E:
                     extractBlank() ;
                     break ;
+                case KeyEvent.VK_2:
+                    extractBlank() ;
+                    parent.okPressed() ;
+                    break ;
             }
         }
     }
