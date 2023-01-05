@@ -13,11 +13,13 @@ import java.util.List ;
 
 import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
+import javax.swing.KeyStroke ;
 import javax.swing.SwingUtilities ;
 import javax.swing.text.BadLocationException ;
 import javax.swing.text.Document ;
 
 import org.apache.commons.lang.StringUtils ;
+import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
@@ -27,6 +29,8 @@ import com.sandy.jnmaker.ui.helper.UIUtil ;
 public class FIBPanel extends FIBPanelUI implements ActionListener {
 
     private static final long serialVersionUID = -6630383705812553661L ;
+    
+    private static final Logger log = Logger.getLogger( FIBPanel.class ) ;
     
     private JPopupMenu popupMenu      = null ;
     private JMenuItem  freezeTextMI   = null ;
@@ -49,6 +53,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         
         this.textArea.setText( selectedText ) ;
         this.textArea.setCaretPosition( 0 ) ;
+        
+        KeyStroke ks = KeyStroke.getKeyStroke( "control pressed W" ) ;
+        this.textArea.getInputMap().put( ks, "none" ) ;
         
         UIUtil.associateEditMenu( this.textArea ) ;
         
@@ -158,7 +165,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         String selectedText = textArea.getSelectedText() ;
         
         if( StringUtil.isEmptyOrNull( selectedText ) ) {
-            selectedText = getWordAtCursor() ;
+            selectedText = getWordAtCursor( true ) ;
             if( StringUtil.isEmptyOrNull( selectedText ) ) {
                 return ;
             }
@@ -201,7 +208,49 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         } ) ;
     }
     
-    private String getWordAtCursor() {
+    private void jumpToNextWord() {
+        
+        try {
+            int      curPos = textArea.getCaretPosition() ;
+            Document doc = textArea.getDocument() ;
+            String   str = doc.getText( 0, doc.getLength() ) ;
+            int      newCursorPos = curPos ;
+            
+            boolean inCurrentWord = true ;
+            
+            log.debug( "Old pos = " + curPos ) ;
+            log.debug( "Text = " + str ) ;
+            
+            for( int i=curPos; i<str.length(); i++ ) {
+                char ch = str.charAt( i ) ;
+                log.debug( (char)ch ) ;
+                if( Character.isWhitespace( ch ) ) {
+                    if( inCurrentWord ) {
+                        inCurrentWord = false ;
+                    }
+                    continue ;
+                }
+                else if( isWordChar( ch ) ) {
+                    if( !inCurrentWord ) {
+                        newCursorPos = i ;
+                        break ;
+                    }
+                    continue ;
+                }
+            }
+            
+            log.debug( "New pos = " + newCursorPos ) ;
+            
+            if( newCursorPos != curPos ) {
+                textArea.setCaretPosition( newCursorPos ) ;
+            }
+        }
+        catch( BadLocationException e ) {
+            e.printStackTrace() ;
+        }
+    }
+    
+    private String getWordAtCursor( boolean select ) {
         
         try {
             int   curPos = textArea.getCaretPosition() ;
@@ -235,7 +284,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                 }
                 
                 if( startPos != endPos ) {
-                    textArea.select( startPos, endPos ) ;
+                    if( select ) {
+                        textArea.select( startPos, endPos ) ;
+                    }
                     return str.substring( startPos, endPos ) ;
                 }
             }
@@ -284,7 +335,6 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             previewText = previewText.replace( "{"+i+"}", 
                                                "<b>" + blankTxt + "</b>" ) ;
         }
-        
         previewLabel.setText( previewText ) ;
     }
     
@@ -297,6 +347,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                     break ;
                 case KeyEvent.VK_E:
                     extractBlank() ;
+                    break ;
+                case KeyEvent.VK_W:
+                    jumpToNextWord() ;
                     break ;
                 case KeyEvent.VK_2:
                     extractBlank() ;
