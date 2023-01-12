@@ -1,5 +1,7 @@
 package com.sandy.jnmaker.ui.notedialogs.fib;
 
+import static com.sandy.jnmaker.util.textparser.TextParser.parseText ;
+
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import java.awt.event.FocusEvent ;
@@ -15,22 +17,19 @@ import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
 import javax.swing.KeyStroke ;
 import javax.swing.SwingUtilities ;
-import javax.swing.text.BadLocationException ;
-import javax.swing.text.Document ;
 
 import org.apache.commons.lang.StringUtils ;
-import org.apache.log4j.Logger ;
 
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.util.textparser.TextComponent ;
+import com.sandy.jnmaker.util.textparser.TextComponent.Type ;
 
 @SuppressWarnings( {"deprecation"} )
 public class FIBPanel extends FIBPanelUI implements ActionListener {
 
     private static final long serialVersionUID = -6630383705812553661L ;
-    
-    private static final Logger log = Logger.getLogger( FIBPanel.class ) ;
     
     private JPopupMenu popupMenu      = null ;
     private JMenuItem  freezeTextMI   = null ;
@@ -51,16 +50,23 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             selectedText = StringUtils.capitalize( selectedText ) ;
         }
         
+        disableInbuiltKeystrokes() ;
+        
         this.textArea.setText( selectedText ) ;
         this.textArea.setCaretPosition( 0 ) ;
-        
-        KeyStroke ks = KeyStroke.getKeyStroke( "control pressed W" ) ;
-        this.textArea.getInputMap().put( ks, "none" ) ;
         
         UIUtil.associateEditMenu( this.textArea ) ;
         
         setUpPopupMenu() ;
         setUpListeners() ;
+    }
+    
+    private void disableInbuiltKeystrokes() {
+        
+        KeyStroke ksCtrlW = KeyStroke.getKeyStroke( "control pressed W" ) ;
+        KeyStroke ksCtrlM = KeyStroke.getKeyStroke( "control pressed M" ) ;
+        this.textArea.getInputMap().put( ksCtrlW, "none" ) ;
+        this.textArea.getInputMap().put( ksCtrlM, "none" ) ;
     }
     
     private void setUpPopupMenu() {
@@ -165,7 +171,7 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         String selectedText = textArea.getSelectedText() ;
         
         if( StringUtil.isEmptyOrNull( selectedText ) ) {
-            selectedText = getWordAtCursor( true ) ;
+            selectedText = getAndSelectWordAtCursor() ;
             if( StringUtil.isEmptyOrNull( selectedText ) ) {
                 return ;
             }
@@ -186,21 +192,14 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                 int pos = text.indexOf( replacementText ) ;
                 
                 if( pos != -1 ) {
+                    
                     pos += replacementText.length() ;
-                    char ch = text.charAt( pos ) ;
-                    while( Character.isWhitespace( ch ) ||
-                           ch == '.' || 
-                           ch == ',' || 
-                           ch == '\'' ) {
-                        
-                        pos++ ;
-                        if( pos >= text.length() ) {
-                            pos = text.length()-1 ;
-                            break ;
-                        }
-                        else {
-                            ch = text.charAt( pos ) ;
-                        }
+                    
+                    TextComponent c = parseText( text, pos ).getCurrentComponent() ;
+                    
+                    while( c != null && (c.getType() != Type.WORD) ) {
+                        pos = c.getEnd() ;
+                        c = c.getNext() ;
                     }
                 }
                 textArea.setCaretPosition( pos ) ;
@@ -210,109 +209,41 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
     
     private void jumpToNextWord() {
         
-        try {
-            int      curPos = textArea.getCaretPosition() ;
-            Document doc = textArea.getDocument() ;
-            String   str = doc.getText( 0, doc.getLength() ) ;
-            int      newCursorPos = curPos ;
+        TextComponent c = parseText( textArea ).getCurrentComponent() ;
+        
+        if( c != null ) {
             
-            boolean inCurrentWord = true ;
+            textArea.setCaretPosition( c.getEnd() ) ;
             
-            log.debug( "Old pos = " + curPos ) ;
-            log.debug( "Text = " + str ) ;
-            
-            for( int i=curPos; i<str.length(); i++ ) {
-                char ch = str.charAt( i ) ;
-                log.debug( (char)ch ) ;
-                if( Character.isWhitespace( ch ) ) {
-                    if( inCurrentWord ) {
-                        inCurrentWord = false ;
-                    }
-                    continue ;
-                }
-                else if( isWordChar( ch ) ) {
-                    if( !inCurrentWord ) {
-                        newCursorPos = i ;
-                        break ;
-                    }
-                    continue ;
-                }
-            }
-            
-            log.debug( "New pos = " + newCursorPos ) ;
-            
-            if( newCursorPos != curPos ) {
-                textArea.setCaretPosition( newCursorPos ) ;
+            c = c.getNext() ;
+            if( c != null && ( c.getType() != Type.WORD ) ) {
+                jumpToNextWord() ;
             }
         }
-        catch( BadLocationException e ) {
-            e.printStackTrace() ;
+    }
+
+    private void markCurrentWord() {
+        
+        TextComponent c = parseText( textArea ).getCurrentComponent() ;
+        
+        if( c != null ) {
+            
+            if( textArea.getSelectedText() == null ) {
+                textArea.setCaretPosition( c.getStart() ) ;
+            }
+            textArea.moveCaretPosition( c.getEnd() ) ;
         }
     }
     
-    private String getWordAtCursor( boolean select ) {
+    private String getAndSelectWordAtCursor() {
         
-        try {
-            int   curPos = textArea.getCaretPosition() ;
-            Document doc = textArea.getDocument() ;
-            String   str = doc.getText( 0, doc.getLength() ) ;
-            
-            int startPos = curPos ;
-            int endPos   = curPos ;
-            
-            if( startPos < str.length() ) {
-                char ch = str.charAt( startPos ) ;
-                while( startPos >= 0 && isWordChar( ch ) ) {
-                    startPos-- ;
-                    if( startPos >= 0 ) {
-                        ch = str.charAt( startPos ) ;
-                    }
-                }
-                if( startPos != curPos ) {
-                    startPos++ ;
-                }
-                
-                ch = str.charAt( endPos ) ;
-                while( endPos < str.length() && isWordChar( ch ) ) {
-                    endPos++ ;
-                    if( endPos < str.length() ) {
-                        ch = str.charAt( endPos ) ;
-                    }
-                }
-                if( endPos >= str.length() ) {
-                    endPos = str.length()-1 ;
-                }
-                
-                if( startPos != endPos ) {
-                    if( select ) {
-                        textArea.select( startPos, endPos ) ;
-                    }
-                    return str.substring( startPos, endPos ) ;
-                }
-            }
-            
-            return null ;
+        TextComponent c = parseText( textArea ).getCurrentComponent() ;
+        
+        if( c != null && c.getType() == Type.WORD ) {
+            textArea.select( c.getStart(), c.getEnd() ) ;
+            return c.getValue().toString() ;
         }
-        catch( BadLocationException e ) {
-            return null ;
-        }
-    }
-    
-    private boolean isWordChar( char ch ) {
-        
-        char[] validWordChars = { '-' } ;
-        
-        if( ch >= 'a' && ch <= 'z' ) { return true ; }
-        if( ch >= 'A' && ch <= 'Z' ) { return true ; }
-        if( ch >= '0' && ch <= '9' ) { return true ; }
-        
-        for( int i=0; i<validWordChars.length; i++ ) {
-            if( ch == validWordChars[i] ) {
-                return true ;
-            }
-        }
-        
-        return false ;
+        return null ;
     }
     
     private void refreshPreview() {
@@ -342,6 +273,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                     break ;
                 case KeyEvent.VK_W:
                     jumpToNextWord() ;
+                    break ;
+                case KeyEvent.VK_M:
+                    markCurrentWord() ;
                     break ;
                 case KeyEvent.VK_2:
                     extractBlank() ;
