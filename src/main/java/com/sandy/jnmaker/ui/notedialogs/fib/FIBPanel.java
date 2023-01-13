@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent ;
 import java.util.ArrayList ;
 import java.util.List ;
 
+import javax.swing.InputMap ;
 import javax.swing.JMenuItem ;
 import javax.swing.JPopupMenu ;
 import javax.swing.KeyStroke ;
@@ -65,8 +66,12 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         
         KeyStroke ksCtrlW = KeyStroke.getKeyStroke( "control pressed W" ) ;
         KeyStroke ksCtrlM = KeyStroke.getKeyStroke( "control pressed M" ) ;
-        this.textArea.getInputMap().put( ksCtrlW, "none" ) ;
-        this.textArea.getInputMap().put( ksCtrlM, "none" ) ;
+        KeyStroke ksCtrlQ = KeyStroke.getKeyStroke( "control pressed Q" ) ;
+        
+        InputMap iMap = this.textArea.getInputMap() ;
+        iMap.put( ksCtrlW, "none" ) ;
+        iMap.put( ksCtrlM, "none" ) ;
+        iMap.put( ksCtrlQ, "none" ) ;
     }
     
     private void setUpPopupMenu() {
@@ -157,7 +162,60 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             extractBlank() ;
         }
     }
+
+    private String getAndSelectWordAtCursor() {
+        
+        TextComponent c = parseText( textArea ).getCurrentComponent() ;
+        
+        if( c != null && c.getType() == Type.WORD ) {
+            textArea.select( c.getStart(), c.getEnd() ) ;
+            return c.getValue().toString() ;
+        }
+        return null ;
+    }
     
+    private void refreshPreview() {
+        
+        String previewText = "<html><body>" + textArea.getText() + "</body></html>" ;
+        
+        previewText = previewText.replaceAll( "\n\n", "<p>" ) ;
+        previewText = previewText.replaceAll( "\n", "<br>" ) ;
+        
+        for( int i=0; i<blankTextList.size(); i++ ) {
+            String blankTxt = blankTextList.get( i ) ;
+            previewText = previewText.replace( "{"+i+"}", 
+                                               "<b>" + blankTxt + "</b>" ) ;
+        }
+        previewLabel.setText( previewText ) ;
+    }
+    
+    private void handleKeyShortcutPressed( int mod, int code ) {
+        
+        if( mod == KeyEvent.CTRL_MASK ) {
+            switch( code ) {
+                case KeyEvent.VK_F:
+                    freezeText() ;
+                    break ;
+                case KeyEvent.VK_E:
+                    extractBlank() ;
+                    break ;
+                case KeyEvent.VK_W:
+                    jumpToNextWord() ;
+                    break ;
+                case KeyEvent.VK_Q:
+                    jumpToPrevWord() ;
+                    break ;
+                case KeyEvent.VK_M:
+                    markCurrentWord() ;
+                    break ;
+                case KeyEvent.VK_2:
+                    extractBlank() ;
+                    parent.okPressed() ;
+                    break ;
+            }
+        }
+    }
+
     private void freezeText() {
         
         textArea.setEditable( false ) ;
@@ -222,6 +280,23 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         }
     }
 
+    private void jumpToPrevWord() {
+        
+        TextComponent c = parseText( textArea ).getCurrentComponent() ;
+        TextComponent p = c.getPrev() ;
+        
+        if( p != null ) {
+            textArea.setCaretPosition( p.getStart() ) ;
+            if( p.getType() == Type.SPACE || 
+                p.getType() == Type.PUNCTUATION ) {
+                jumpToPrevWord() ;
+            }
+        }
+        else {
+            textArea.setCaretPosition( c.getStart() ) ;
+        }
+    }
+    
     private void markCurrentWord() {
         
         TextComponent c = parseText( textArea ).getCurrentComponent() ;
@@ -233,55 +308,5 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             }
             textArea.moveCaretPosition( c.getEnd() ) ;
         }
-    }
-    
-    private String getAndSelectWordAtCursor() {
-        
-        TextComponent c = parseText( textArea ).getCurrentComponent() ;
-        
-        if( c != null && c.getType() == Type.WORD ) {
-            textArea.select( c.getStart(), c.getEnd() ) ;
-            return c.getValue().toString() ;
-        }
-        return null ;
-    }
-    
-    private void refreshPreview() {
-        
-        String previewText = "<html><body>" + textArea.getText() + "</body></html>" ;
-        
-        previewText = previewText.replaceAll( "\n\n", "<p>" ) ;
-        previewText = previewText.replaceAll( "\n", "<br>" ) ;
-        
-        for( int i=0; i<blankTextList.size(); i++ ) {
-            String blankTxt = blankTextList.get( i ) ;
-            previewText = previewText.replace( "{"+i+"}", 
-                                               "<b>" + blankTxt + "</b>" ) ;
-        }
-        previewLabel.setText( previewText ) ;
-    }
-    
-    private void handleKeyShortcutPressed( int mod, int code ) {
-        
-        if( mod == KeyEvent.CTRL_MASK ) {
-            switch( code ) {
-                case KeyEvent.VK_F:
-                    freezeText() ;
-                    break ;
-                case KeyEvent.VK_E:
-                    extractBlank() ;
-                    break ;
-                case KeyEvent.VK_W:
-                    jumpToNextWord() ;
-                    break ;
-                case KeyEvent.VK_M:
-                    markCurrentWord() ;
-                    break ;
-                case KeyEvent.VK_2:
-                    extractBlank() ;
-                    parent.okPressed() ;
-                    break ;
-            }
-        }
-    }
+    }    
 }
