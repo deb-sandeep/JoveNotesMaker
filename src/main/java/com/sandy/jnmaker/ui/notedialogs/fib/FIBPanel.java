@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.notedialogs.fib;
 
 import static com.sandy.jnmaker.util.textparser.TextParser.parseText ;
+import static com.sandy.jnmaker.util.SkipWords.* ;
 
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
@@ -24,6 +25,7 @@ import org.apache.commons.lang.StringUtils ;
 import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
+import com.sandy.jnmaker.util.SkipWords ;
 import com.sandy.jnmaker.util.textparser.TextComponent ;
 import com.sandy.jnmaker.util.textparser.TextComponent.Type ;
 
@@ -67,11 +69,13 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         KeyStroke ksCtrlW = KeyStroke.getKeyStroke( "control pressed W" ) ;
         KeyStroke ksCtrlM = KeyStroke.getKeyStroke( "control pressed M" ) ;
         KeyStroke ksCtrlQ = KeyStroke.getKeyStroke( "control pressed Q" ) ;
+        KeyStroke ksCtrlA = KeyStroke.getKeyStroke( "control pressed A" ) ;
         
         InputMap iMap = this.textArea.getInputMap() ;
         iMap.put( ksCtrlW, "none" ) ;
         iMap.put( ksCtrlM, "none" ) ;
         iMap.put( ksCtrlQ, "none" ) ;
+        iMap.put( ksCtrlA, "none" ) ;
     }
     
     private void setUpPopupMenu() {
@@ -208,6 +212,9 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                 case KeyEvent.VK_M:
                     markCurrentWord() ;
                     break ;
+                case KeyEvent.VK_A:
+                    saveSkipWord() ;
+                    break ;
                 case KeyEvent.VK_2:
                     extractBlank() ;
                     parent.okPressed() ;
@@ -255,9 +262,18 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
                     
                     TextComponent c = parseText( text, pos ).getCurrentComponent() ;
                     
-                    while( c != null && (c.getType() != Type.WORD) ) {
-                        pos = c.getEnd() ;
-                        c = c.getNext() ;
+                    while( c != null ) {
+                        if( c.getType() != Type.WORD ) {
+                            pos = c.getEnd() ;
+                            c = c.getNext() ;
+                        }
+                        else if( isSkipWord( c.getValue().toString() ) ) {
+                            pos = c.getEnd() ;
+                            c = c.getNext() ;
+                        }
+                        else {
+                            c = null ;
+                        }
                     }
                 }
                 textArea.setCaretPosition( pos ) ;
@@ -274,8 +290,13 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             textArea.setCaretPosition( c.getEnd() ) ;
             
             c = c.getNext() ;
-            if( c != null && ( c.getType() != Type.WORD ) ) {
-                jumpToNextWord() ;
+            if( c != null ) {
+                if( c.getType() != Type.WORD ) {
+                    jumpToNextWord() ;
+                }
+                else if( SkipWords.isSkipWord( c.getValue().toString() ) ) {
+                    jumpToNextWord() ;
+                }
             }
         }
     }
@@ -309,4 +330,13 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
             textArea.moveCaretPosition( c.getEnd() ) ;
         }
     }    
+    
+    private void saveSkipWord() {
+        
+        TextComponent c = parseText( textArea ).getCurrentComponent() ;
+        if( c.getType() == Type.WORD ) {
+            SkipWords.addSkipWord( c.getValue().toString() ) ;
+        }
+        jumpToNextWord() ;
+    }
 }
