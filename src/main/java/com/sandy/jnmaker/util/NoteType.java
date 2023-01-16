@@ -13,5 +13,6 @@ public enum NoteType {
     EVENT,
     EXERCISE,
     MATCHING,
-    MULTI_CHOICE
+    MULTI_CHOICE,
+    SECTION
 }

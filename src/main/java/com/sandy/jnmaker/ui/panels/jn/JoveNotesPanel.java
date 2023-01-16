@@ -369,7 +369,7 @@ public class JoveNotesPanel extends JPanel {
         
         try {
             if( fmtNote != null ) {
-                fmtNote.replace( " teh ", " the " ) ;
+                fmtNote = fmtNote.replace( " teh ", " the " ) ;
             }
             
             Document doc = textPane.getDocument() ;

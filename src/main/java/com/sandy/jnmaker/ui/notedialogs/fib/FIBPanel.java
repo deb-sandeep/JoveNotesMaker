@@ -304,17 +304,21 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
     private void jumpToPrevWord() {
         
         TextComponent c = parseText( textArea ).getCurrentComponent() ;
-        TextComponent p = c.getPrev() ;
         
-        if( p != null ) {
-            textArea.setCaretPosition( p.getStart() ) ;
-            if( p.getType() == Type.SPACE || 
-                p.getType() == Type.PUNCTUATION ) {
-                jumpToPrevWord() ;
+        if( c != null ) {
+            
+            TextComponent p = c.getPrev() ;
+            
+            if( p != null ) {
+                textArea.setCaretPosition( p.getStart() ) ;
+                if( p.getType() == Type.SPACE || 
+                        p.getType() == Type.PUNCTUATION ) {
+                    jumpToPrevWord() ;
+                }
             }
-        }
-        else {
-            textArea.setCaretPosition( c.getStart() ) ;
+            else {
+                textArea.setCaretPosition( c.getStart() ) ;
+            }
         }
     }
     

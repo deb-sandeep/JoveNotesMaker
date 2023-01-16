@@ -15,6 +15,7 @@ import javax.swing.JPanel ;
 import javax.swing.JSplitPane ;
 import javax.swing.SwingUtilities ;
 
+import org.apache.commons.lang.StringUtils ;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.AbstractMainFrame ;
@@ -184,7 +185,14 @@ public class MainFrame extends AbstractMainFrame {
     }
     
     public void createNote( String selectedText, NoteType noteType ) {
-        notesCreator.createNote( selectedText, noteType, jnPanel ) ;
+        if( noteType != NoteType.SECTION ) {
+            notesCreator.createNote( selectedText, noteType, jnPanel ) ;
+        }
+        else {
+            String text = StringUtils.rightPad( "//", 80, '-' ) ;
+            text += "\n@section \"" + selectedText + "\"\n\n" ; 
+            this.jnPanel.addNote( text );
+        }
     }
     
     public void shiftFocusToNotes() {

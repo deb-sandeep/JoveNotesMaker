@@ -368,6 +368,10 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = selectedText.substring( "@tf".length() ).trim() ;
                 getMainFrame().createNote( selectedText, NoteType.TRUE_FALSE ) ;
             }
+            else if( selectedText.startsWith( "@section" ) ) {
+                selectedText = selectedText.substring( "@section".length() ).trim() ;
+                getMainFrame().createNote( selectedText, NoteType.SECTION ) ;
+            }
         }
         catch( Exception e ) {
             log.error( "Error in deducing question", e ) ;
