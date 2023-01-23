@@ -189,6 +189,14 @@ public class MainFrame extends AbstractMainFrame {
             notesCreator.createNote( selectedText, noteType, jnPanel ) ;
         }
         else {
+            if( selectedText.startsWith( "\"" ) ) {
+                selectedText = selectedText.substring( 1 ) ;
+            }
+            
+            if( selectedText.endsWith( "\"" ) ) {
+                selectedText = selectedText.substring( 0, selectedText.length()-1 ) ;
+            }
+            
             String text = StringUtils.rightPad( "//", 80, '-' ) ;
             text += "\n@section \"" + selectedText + "\"\n\n" ; 
             this.jnPanel.addNote( text );
