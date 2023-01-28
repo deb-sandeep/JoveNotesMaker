@@ -360,17 +360,22 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = getProcessedText( selectedText ) ;
             }
             
+            MainFrame main = getMainFrame() ;
+            
             if( selectedText.startsWith( FIB ) ) {
                 selectedText = selectedText.substring( FIB.length() ).trim() ;
-                getMainFrame().createNote( selectedText, NoteType.FIB ) ;
+                main.createNote( selectedText, NoteType.FIB ) ;
             }
             else if( selectedText.startsWith( "@tf" ) ) {
                 selectedText = selectedText.substring( "@tf".length() ).trim() ;
-                getMainFrame().createNote( selectedText, NoteType.TRUE_FALSE ) ;
+                main.createNote( selectedText, NoteType.TRUE_FALSE ) ;
             }
             else if( selectedText.startsWith( "@section" ) ) {
                 selectedText = selectedText.substring( "@section".length() ).trim() ;
-                getMainFrame().createNote( selectedText, NoteType.SECTION ) ;
+                main.createNote( selectedText, NoteType.SECTION ) ;
+            }
+            else {
+                main.createNote( selectedText, NoteType.QA ) ;
             }
         }
         catch( Exception e ) {
