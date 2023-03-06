@@ -52,7 +52,7 @@ public class TextParser {
 
     private static boolean isWordChar( char ch ) {
         
-        char[] validChars = { '-' } ;
+        char[] validChars = { '-', '_' } ;
         
         if( ch >= 'a' && ch <= 'z' ) { return true ; }
         if( ch >= 'A' && ch <= 'Z' ) { return true ; }

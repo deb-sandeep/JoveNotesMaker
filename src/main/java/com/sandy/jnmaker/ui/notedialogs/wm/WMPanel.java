@@ -1,5 +1,7 @@
 package com.sandy.jnmaker.ui.notedialogs.wm;
 
+import static com.sandy.jnmaker.util.NoteTextUtil.* ;
+
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 

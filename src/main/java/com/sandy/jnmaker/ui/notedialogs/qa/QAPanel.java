@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.notedialogs.qa;
 
 import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
+import static com.sandy.jnmaker.util.NoteTextUtil.* ;
 
 import java.awt.Dimension ;
 import java.awt.event.ActionEvent ;

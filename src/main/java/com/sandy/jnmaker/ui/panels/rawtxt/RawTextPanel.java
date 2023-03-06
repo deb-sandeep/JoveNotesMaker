@@ -448,17 +448,22 @@ public class RawTextPanel extends JPanel implements WordSource {
             
             @Override
             public String getDescription() {
-                return "Text files onlly" ;
+                return "JN OCR Files Oonly" ;
             }
             
             @Override
             public boolean accept( File file ) {
                 try {
-                    String contentType =  Files.probeContentType( file.toPath() ) ;
-                    if( file.isDirectory() || 
-                        ( contentType != null && 
-                          contentType.startsWith( "text/" ) ) ) {
+                    if( file.getName().endsWith( ".jn-ocr" ) ) {
                         return true ;
+                    }
+                    else {
+                        String contentType =  Files.probeContentType( file.toPath() ) ;
+                        if( file.isDirectory() || 
+                                ( contentType != null && 
+                                contentType.startsWith( "text/" ) ) ) {
+                            return true ;
+                        }
                     }
                 }
                 catch( IOException e ) {

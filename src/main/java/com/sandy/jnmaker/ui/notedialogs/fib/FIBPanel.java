@@ -2,6 +2,7 @@ package com.sandy.jnmaker.ui.notedialogs.fib;
 
 import static com.sandy.jnmaker.util.textparser.TextParser.parseText ;
 import static com.sandy.jnmaker.util.SkipWords.* ;
+import static com.sandy.jnmaker.util.NoteTextUtil.* ;
 
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
@@ -244,6 +245,10 @@ public class FIBPanel extends FIBPanelUI implements ActionListener {
         
         int curBlankNo = blankTextList.size() ;
         final String replacementText = "{" + curBlankNo + "}" ;
+        
+        if( selectedText.startsWith( "_" ) && selectedText.endsWith( "_" ) ) {
+            selectedText = selectedText.substring( 1, selectedText.length()-1 ) ;
+        }
         
         blankTextList.add( selectedText ) ;
         textArea.replaceSelection( replacementText ) ;

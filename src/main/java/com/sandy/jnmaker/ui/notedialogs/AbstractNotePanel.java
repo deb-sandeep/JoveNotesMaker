@@ -1,5 +1,7 @@
 package com.sandy.jnmaker.ui.notedialogs;
 
+import static com.sandy.jnmaker.util.NoteTextUtil.formatText ;
+
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
 import java.io.File ;
@@ -14,11 +16,9 @@ import javax.swing.JTextField ;
 import javax.swing.text.JTextComponent ;
 
 import org.apache.commons.io.FileUtils ;
-import org.apache.commons.lang.WordUtils ;
 import org.json.simple.JSONObject ;
 import org.json.simple.JSONValue ;
 
-import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 import com.sandy.jnmaker.util.WordnicAdapter ;
@@ -32,39 +32,6 @@ public abstract class AbstractNotePanel extends JPanel {
 
     public void setParentDialog( NotesCreatorDialog parent ) {
         this.parent = parent ;
-    }
-    
-    protected String escapeQuotes( String input ) {
-        return input.replaceAll( "\\\"", "\\\\\"" ) ;
-    }
-
-    protected String formatText( String input, boolean escapeQuote ) {
-        
-        StringBuilder buffer = new StringBuilder() ;
-        String[] lines = input.split( "\n" ) ;
-        
-        for( int i=0; i<lines.length; i++ ) {
-            String line = lines[i] ;
-            if( !StringUtil.isEmptyOrNull( line ) ) {
-                if( escapeQuote ) {
-                    line = escapeQuotes( line ) ;
-                }
-                line = WordUtils.wrap( line, 80, "\n", false ) ;
-                buffer.append( line ) ;
-                
-                if( i < (lines.length - 1) ) {
-                    buffer.append( "  \n" ) ;
-                }
-            }
-            else {
-                buffer.append( "\n" ) ;
-            }
-        }
-        return buffer.toString() ;
-    }
-    
-    protected String formatText( String input ) {
-        return formatText( input, true ) ;
     }
     
     protected void showErrorMsg( String msg ) {

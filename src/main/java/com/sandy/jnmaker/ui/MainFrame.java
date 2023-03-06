@@ -2,12 +2,15 @@ package com.sandy.jnmaker.ui;
 
 import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
+import static com.sandy.jnmaker.util.NoteTextUtil.* ;
 
 import java.awt.CardLayout ;
 import java.awt.Color ;
 import java.awt.Component ;
 import java.awt.event.WindowEvent ;
 import java.awt.event.WindowFocusListener ;
+import java.util.regex.Matcher ;
+import java.util.regex.Pattern ;
 
 import javax.swing.JMenuBar ;
 import javax.swing.JOptionPane ;
@@ -185,10 +188,18 @@ public class MainFrame extends AbstractMainFrame {
     }
     
     public void createNote( String selectedText, NoteType noteType ) {
-        if( noteType != NoteType.SECTION ) {
+        
+        if( !processNoteWithoutHumanIntervention( selectedText, noteType ) ) {
             notesCreator.createNote( selectedText, noteType, jnPanel ) ;
         }
-        else {
+    }
+    
+    private boolean processNoteWithoutHumanIntervention( String selectedText,
+                                                         NoteType noteType ) {
+        
+        boolean autoProcessed = false ;
+        
+        if( noteType == NoteType.SECTION ) {
             if( selectedText.startsWith( "\"" ) ) {
                 selectedText = selectedText.substring( 1 ) ;
             }
@@ -200,7 +211,18 @@ public class MainFrame extends AbstractMainFrame {
             String text = StringUtils.rightPad( "//", 80, '-' ) ;
             text += "\n@section \"" + selectedText + "\"\n\n" ; 
             this.jnPanel.addNote( text );
+            autoProcessed = true ;
+            
         }
+        else if( noteType == NoteType.FIB ) {
+            String autoCreatedNote = autoCreateFIBNote( selectedText ) ;
+            if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {
+                this.jnPanel.addNote( autoCreatedNote ) ;
+                autoProcessed = true ;
+            }
+        }
+        
+        return autoProcessed ;
     }
     
     public void shiftFocusToNotes() {
@@ -226,5 +248,46 @@ public class MainFrame extends AbstractMainFrame {
         }
         
         getBus().publishEvent( EDITOR_TYPE_CHANGED, currentMode );
+    }
+    
+    private String autoCreateFIBNote( String input ) {
+        
+        String fibPattern = "_([^_]+)_" ;
+        Pattern pattern = Pattern.compile( fibPattern, Pattern.DOTALL ) ;
+        Matcher matcher = pattern.matcher( input ) ;
+        
+        int blankIndex = 0 ;
+        int stringMark = 0 ;
+
+        String retVal = null ;
+        StringBuilder questionStr = new StringBuilder() ;
+        StringBuilder answerStr   = new StringBuilder() ;
+
+        while( matcher.find() ) {
+            
+            int matchStart = matcher.start() ;
+            String matchString = matcher.group( 0 ) ;
+            String blankContent = matcher.group( 1 ) ;
+            
+            questionStr.append( input.subSequence( stringMark, matchStart ) ) ;
+            questionStr.append( "{" + blankIndex + "}" ) ;
+            
+            answerStr.append( "\"" + escapeQuotes( blankContent ) + "\"\n" ) ;
+            
+            stringMark = matchStart + matchString.length() ;
+            blankIndex++ ;
+        }
+        
+        if( stringMark > 0 && stringMark < input.length() ) {
+            questionStr.append( input.subSequence( stringMark, input.length() ) ) ;
+        }
+        
+        if( blankIndex > 0 ) {
+            retVal = "@fib \"" + formatText( questionStr.toString(), true ) + "\"\n" ;
+            retVal += answerStr.toString() ;
+            retVal += "\n" ;
+        }
+
+        return retVal ;
     }
 }

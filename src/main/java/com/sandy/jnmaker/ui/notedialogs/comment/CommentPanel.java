@@ -8,6 +8,8 @@ import org.apache.log4j.Logger ;
 
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
+import static com.sandy.jnmaker.util.NoteTextUtil.* ;
+
 public class CommentPanel extends CommentPanelUI {
 
     private static final long serialVersionUID = 1L ;

@@ -1,5 +1,7 @@
 package com.sandy.jnmaker.ui.notedialogs.truefalse;
 
+import static com.sandy.jnmaker.util.NoteTextUtil.* ;
+
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
 

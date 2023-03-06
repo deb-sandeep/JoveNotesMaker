@@ -1,0 +1,54 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/syntax.html
+name: JoveNotes
+file_extensions:
+  - jn-ocr
+  - ocr
+first_line_match: '^@chapter\b'
+scope: source.jn-ocr
+
+contexts:
+  main:
+    # Section dividers are lines which start with // ---- till end of line
+    - match: '// -*'
+      push: section_divider
+
+    - match: '(@section|@fib|@tf|@qa)'
+      scope: keyword.jn
+
+    - match: '(@chapter)'
+      scope: keyword.jn-ocr
+
+    - match: '(^\*)'
+      scope: list.item.unordered
+
+    - match: '(^[0-9]+\.\s)'
+      scope: list.item.ordered
+
+    - match: '^\([a-z]\)\s'
+      scope: list.item.alphabetical
+
+    - match: '"'
+      push: string
+
+    - match: '^##\s'
+      push: subsection_divider
+
+  section_divider:
+    - meta_scope: divider.section
+    - match: $
+      pop: true
+
+  subsection_divider:
+    - meta_scope: divider.subsection
+    - match: $
+      pop: true
+
+  string:
+    - meta_scope: string.quoted
+    - match: '"'
+      pop: true
+
+
+

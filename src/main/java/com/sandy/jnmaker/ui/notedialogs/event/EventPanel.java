@@ -16,6 +16,8 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jnmaker.ui.helper.PopupEditMenu ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
+import static com.sandy.jnmaker.util.NoteTextUtil.* ;
+
 @SuppressWarnings( {"serial", "deprecation"} )
 public class EventPanel extends EventPanelUI 
     implements ActionListener {
