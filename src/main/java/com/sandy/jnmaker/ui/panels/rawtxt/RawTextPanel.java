@@ -374,6 +374,10 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = selectedText.substring( "@section".length() ).trim() ;
                 main.createNote( selectedText, NoteType.SECTION ) ;
             }
+            else if( selectedText.startsWith( "@def" ) ) {
+                selectedText = selectedText.substring( "@def".length() ).trim() ;
+                main.createNote( selectedText, NoteType.DEFINITION ) ;
+            }
             else {
                 main.createNote( selectedText, NoteType.QA ) ;
             }

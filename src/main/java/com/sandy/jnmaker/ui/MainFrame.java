@@ -2,15 +2,16 @@ package com.sandy.jnmaker.ui;
 
 import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
-import static com.sandy.jnmaker.util.NoteTextUtil.* ;
+import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateDefinitionNote ;
+import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateFIBNote ;
+import static com.sandy.jnmaker.util.Events.EDITOR_TYPE_CHANGED ;
+import static com.sandy.jnmaker.util.ObjectRepository.getBus ;
 
 import java.awt.CardLayout ;
 import java.awt.Color ;
 import java.awt.Component ;
 import java.awt.event.WindowEvent ;
 import java.awt.event.WindowFocusListener ;
-import java.util.regex.Matcher ;
-import java.util.regex.Pattern ;
 
 import javax.swing.JMenuBar ;
 import javax.swing.JOptionPane ;
@@ -38,9 +39,6 @@ import com.sandy.jnmaker.ui.panels.search.SearchInputPanel ;
 import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
-
-import static com.sandy.jnmaker.util.ObjectRepository.* ;
-import static com.sandy.jnmaker.util.Events.* ;
 
 @SuppressWarnings( "serial" )
 public class MainFrame extends AbstractMainFrame {
@@ -197,7 +195,7 @@ public class MainFrame extends AbstractMainFrame {
     private boolean processNoteWithoutHumanIntervention( String selectedText,
                                                          NoteType noteType ) {
         
-        boolean autoProcessed = false ;
+        String autoCreatedNote = null ;
         
         if( noteType == NoteType.SECTION ) {
             if( selectedText.startsWith( "\"" ) ) {
@@ -210,19 +208,21 @@ public class MainFrame extends AbstractMainFrame {
             
             String text = StringUtils.rightPad( "//", 80, '-' ) ;
             text += "\n@section \"" + selectedText + "\"\n\n" ; 
-            this.jnPanel.addNote( text );
-            autoProcessed = true ;
-            
+            autoCreatedNote = text ;
         }
         else if( noteType == NoteType.FIB ) {
-            String autoCreatedNote = autoCreateFIBNote( selectedText ) ;
-            if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {
-                this.jnPanel.addNote( autoCreatedNote ) ;
-                autoProcessed = true ;
-            }
+            autoCreatedNote = autoCreateFIBNote( selectedText ) ;
+        }
+        else if( noteType == NoteType.DEFINITION ) {
+            autoCreatedNote = autoCreateDefinitionNote( selectedText ) ;
         }
         
-        return autoProcessed ;
+        if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {
+            this.jnPanel.addNote( autoCreatedNote ) ;
+            return true ;
+        }
+        
+        return false ;
     }
     
     public void shiftFocusToNotes() {
@@ -248,46 +248,5 @@ public class MainFrame extends AbstractMainFrame {
         }
         
         getBus().publishEvent( EDITOR_TYPE_CHANGED, currentMode );
-    }
-    
-    private String autoCreateFIBNote( String input ) {
-        
-        String fibPattern = "_([^_]+)_" ;
-        Pattern pattern = Pattern.compile( fibPattern, Pattern.DOTALL ) ;
-        Matcher matcher = pattern.matcher( input ) ;
-        
-        int blankIndex = 0 ;
-        int stringMark = 0 ;
-
-        String retVal = null ;
-        StringBuilder questionStr = new StringBuilder() ;
-        StringBuilder answerStr   = new StringBuilder() ;
-
-        while( matcher.find() ) {
-            
-            int matchStart = matcher.start() ;
-            String matchString = matcher.group( 0 ) ;
-            String blankContent = matcher.group( 1 ) ;
-            
-            questionStr.append( input.subSequence( stringMark, matchStart ) ) ;
-            questionStr.append( "{" + blankIndex + "}" ) ;
-            
-            answerStr.append( "\"" + escapeQuotes( blankContent ) + "\"\n" ) ;
-            
-            stringMark = matchStart + matchString.length() ;
-            blankIndex++ ;
-        }
-        
-        if( stringMark > 0 && stringMark < input.length() ) {
-            questionStr.append( input.subSequence( stringMark, input.length() ) ) ;
-        }
-        
-        if( blankIndex > 0 ) {
-            retVal = "@fib \"" + formatText( questionStr.toString(), true ) + "\"\n" ;
-            retVal += answerStr.toString() ;
-            retVal += "\n" ;
-        }
-
-        return retVal ;
     }
 }
