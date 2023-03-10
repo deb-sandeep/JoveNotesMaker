@@ -328,6 +328,12 @@ public class RawTextPanel extends JPanel implements WordSource {
                 case KeyEvent.VK_SLASH: 
                     mainFrame.createNote( selectedText, NoteType.COMMENT ) ;
                     break ;
+                case KeyEvent.VK_M: 
+                    mainFrame.createNote( selectedText, NoteType.MATCHING ) ;
+                    break ;
+                case KeyEvent.VK_C: 
+                    mainFrame.createNote( selectedText, NoteType.MULTI_CHOICE ) ;
+                    break ;
                 case KeyEvent.VK_B: 
                     reviseBookmark() ;
                     break ;
@@ -378,7 +384,8 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = selectedText.substring( "@def".length() ).trim() ;
                 main.createNote( selectedText, NoteType.DEFINITION ) ;
             }
-            else {
+            else if( selectedText.startsWith( "@qa" ) ) {
+                selectedText = selectedText.substring( "@qa".length() ).trim() ;
                 main.createNote( selectedText, NoteType.QA ) ;
             }
         }

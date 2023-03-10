@@ -178,9 +178,7 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                     }
                     else if( modifiers == (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK) ) {
                         
-                        if     ( keyCode == KeyEvent.VK_M ) { encapsulateIMath( sel ) ; }
-                        else if( keyCode == KeyEvent.VK_C ) { encapsulateIChem( sel ) ; }
-                        else if( keyCode == KeyEvent.VK_R ) { setFontColor( "red", sel ) ; }
+                             if( keyCode == KeyEvent.VK_R ) { setFontColor( "red", sel ) ; }
                         else if( keyCode == KeyEvent.VK_G ) { setFontColor( "green", sel ) ; }
                         else if( keyCode == KeyEvent.VK_B ) { setFontColor( "blue", sel ) ; }
                     }
@@ -194,6 +192,11 @@ public class PopupEditMenu extends JMenu implements ActionListener {
                         else if( keyCode == KeyEvent.VK_LEFT  ) { 
                             selectTextTillSurroundingPeriod( false ) ; 
                         }
+                    }
+                    else if( modifiers == (KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK) ) {
+                        
+                        if     ( keyCode == KeyEvent.VK_M ) { encapsulateIMath( sel ) ; }
+                        else if( keyCode == KeyEvent.VK_C ) { encapsulateIChem( sel ) ; }
                     }
                 }
                 catch( Exception e1 ) {

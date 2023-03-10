@@ -84,4 +84,22 @@ public class NotesAutoCreator {
         
         return retVal ;
     }
+    
+    public static String autoCreateQANote( String input ) {
+
+        String[] parts = input.split( "\\R", 2 ) ;
+        String questionText = parts[0] ;
+        String answerText = parts[1] ;
+        
+        StringBuilder buffer = new StringBuilder() ;
+        buffer.append( "@qa \"" )
+              .append( formatText( questionText ) )
+              .append( "\"\n" ) ;
+        buffer.append( "\"" )
+              .append( formatText( answerText ) ) 
+              .append( "\"\n" )
+              .append( "\n" ) ; 
+        
+        return buffer.toString() ;
+    }
 }

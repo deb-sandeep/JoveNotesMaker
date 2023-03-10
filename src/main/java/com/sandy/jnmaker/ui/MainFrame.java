@@ -4,6 +4,7 @@ import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
 import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateDefinitionNote ;
 import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateFIBNote ;
+import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateQANote ;
 import static com.sandy.jnmaker.util.Events.EDITOR_TYPE_CHANGED ;
 import static com.sandy.jnmaker.util.ObjectRepository.getBus ;
 
@@ -215,6 +216,9 @@ public class MainFrame extends AbstractMainFrame {
         }
         else if( noteType == NoteType.DEFINITION ) {
             autoCreatedNote = autoCreateDefinitionNote( selectedText ) ;
+        }
+        else if( noteType == NoteType.QA ) {
+            autoCreatedNote = autoCreateQANote( selectedText ) ;
         }
         
         if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {

@@ -59,6 +59,10 @@ public class MultiChoicePanel extends RawNotesPanelUI {
                     continue ;
                 }
                 
+                if( line.startsWith( "*" ) ) {
+                    line = line.substring( 1 ).trim() ;
+                }
+                
                 boolean isCorrect = line.endsWith( "$" ) ;
                 if( isCorrect ) {
                     line = line.substring( 0, line.length()-1 ) ;
