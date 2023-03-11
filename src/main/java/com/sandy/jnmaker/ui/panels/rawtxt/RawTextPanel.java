@@ -355,6 +355,9 @@ public class RawTextPanel extends JPanel implements WordSource {
                     break ;
             }
         }
+        else if( keyCode == KeyEvent.VK_F5 ) {
+            setCurrentFile( this.currentFile ) ;
+        }
     }
     
     private void deduceAndCreateNoteType( String selectedText ) {

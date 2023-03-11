@@ -14,7 +14,7 @@ import static java.awt.event.KeyEvent.VK_C ;
 import static java.awt.event.KeyEvent.VK_F1 ;
 import static java.awt.event.KeyEvent.VK_F2 ;
 import static java.awt.event.KeyEvent.VK_F3 ;
-import static java.awt.event.KeyEvent.VK_F5 ;
+import static java.awt.event.KeyEvent.VK_F6 ;
 import static java.awt.event.KeyEvent.VK_M ;
 import static java.awt.event.KeyEvent.VK_MINUS ;
 import static java.awt.event.KeyEvent.VK_N ;
@@ -92,7 +92,7 @@ public class Actions {
         { "newProject",    "New project",     "file_new",    VK_N,      VK_F1, 0 },
         { "openProject",   "Open project",    "file_open",   VK_O,      VK_F2, 0 },
         { "saveProject",   "Save project",    "file_save",   VK_S,      VK_F3, 0 },
-        { "closeProject",  "Close project",   "file_close",  VK_C,      VK_F5, 0 },
+        { "closeProject",  "Close project",   "file_close",  VK_C,      VK_F6, 0 },
         
         { "mappingTool",   "Matrix Mapping",  "mapping",     VK_M,      VK_M, CTRL_DOWN_MASK | ALT_DOWN_MASK },
         { "jcMapTool",     "Concept Map",     "mapping",     VK_P,      VK_P, CTRL_DOWN_MASK | ALT_DOWN_MASK },
