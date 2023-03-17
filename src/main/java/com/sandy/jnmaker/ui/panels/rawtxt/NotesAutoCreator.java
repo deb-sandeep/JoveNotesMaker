@@ -6,7 +6,11 @@ import static com.sandy.jnmaker.util.NoteTextUtil.formatText ;
 import java.util.regex.Matcher ;
 import java.util.regex.Pattern ;
 
+import org.apache.log4j.Logger ;
+
 public class NotesAutoCreator {
+    
+    private static final Logger log = Logger.getLogger( NotesAutoCreator.class ) ;
 
     public static String autoCreateFIBNote( String input ) {
         
@@ -88,18 +92,28 @@ public class NotesAutoCreator {
     public static String autoCreateQANote( String input ) {
 
         String[] parts = input.split( "\\R", 2 ) ;
-        String questionText = parts[0] ;
-        String answerText = parts[1] ;
         
-        StringBuilder buffer = new StringBuilder() ;
-        buffer.append( "@qa \"" )
-              .append( formatText( questionText ) )
-              .append( "\"\n" ) ;
-        buffer.append( "\"" )
-              .append( formatText( answerText ) ) 
-              .append( "\"\n" )
-              .append( "\n" ) ; 
+        if( parts.length == 2 ) {
+            
+            String questionText = parts[0] ;
+            String answerText = parts[1] ;
+            
+            StringBuilder buffer = new StringBuilder() ;
+            buffer.append( "@qa \"" )
+            .append( formatText( questionText ) )
+            .append( "\"\n" ) ;
+            buffer.append( "\"" )
+            .append( formatText( answerText ) ) 
+            .append( "\"\n" )
+            .append( "\n" ) ; 
+            
+            return buffer.toString() ;
+        }
+        else {
+            log.info( "Auto generation for QA failed. " + 
+                      "Q and A could not be deduced." ) ; 
+        }
         
-        return buffer.toString() ;
+        return null ;
     }
 }
