@@ -5,24 +5,37 @@
 # _spellbee media directory. This way, the jove notes maker will cache the 
 # word meanings and sound clips.
 #
-#AppConfig.joveNotesMediaDir=/home/sandeep/projects/workspace/jove_notes_media/_spellbee
+AppConfig.joveNotesMediaDir=/home/sandeep/projects/workspace/jove_notes_media/_spellbee
 
 # The workspace directory for jove notes maker within which application
 # specific files etc would be created.
 AppConfig.workspaceDir=/home/sandeep/projects/workspace/jove_notes_maker
 
-# The list of jovenotes source directories which need to be parsed and 
+# The type of image panel to attach to the IDE. By default it is K12ImagePanel
+# which is used for scraping K12 exercises. Other possibilities are:
+#
+# - JEE - Scrapes questions in the JEE qref format
+#
+# If this is not specified, a default image panel is attached.
+#AppConfig.imagePanelType=JEE
+AppConfig.imagePanelType=K12
+
+# The list of jovenotes source directories which need to be parsed and
 # indexed by the background indexer.
-#IndexingDaemon.sourceDirectories=\
-#/home/sandeep/Documents/StudyNotes/JoveNotes-I:\
-#/home/sandeep/Documents/StudyNotes/JoveNotes-II:\
-#/home/sandeep/Documents/StudyNotes/JoveNotes-III:\
+IndexingDaemon.sourceDirectories=\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-VI:\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-Std-7:\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-VII:\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-Std-8:\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-Std-9:\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-VIII:\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-IX:\
+/Users/sandeep/Documents/StudyNotes/JoveNotes-X
+
+#/home/sandeep/Documents/StudyNotes/JoveNotes-IV:\
 #/home/sandeep/Documents/StudyNotes/JoveNotes-VII:\
 #/home/sandeep/Documents/StudyNotes/JoveNotes-VIII:\
 #/home/sandeep/Documents/StudyNotes/JoveNotes-IX:\
-#/home/sandeep/Documents/StudyNotes/JoveNotes-X:\
-#/home/sandeep/Documents/StudyNotes/JoveNotes-IIT:\
-#/home/sandeep/Documents/StudyNotes/JoveNotesSampleContent:\
-#/home/sandeep/Documents/StudyNotes/JoveNotesParth
+#/home/sandeep/Documents/StudyNotes/JoveNotes-X
 
 AppConfig.jeeImageNameSaveFile=/Users/sandeep/projects/source/JEECoach/src/main/config/q_img_names.txt

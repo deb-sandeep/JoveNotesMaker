@@ -56,7 +56,7 @@ public class RawTextPanel extends JPanel implements WordSource {
     
     private static final String BOOKMARK_MARKER = "// here" ;
 
-    private JTextPane textPane = new JTextPane() { 
+    private final JTextPane textPane = new JTextPane() {
         // This is a work around for the bizzare wrapping behavior of JTextPane.
         // This fix seems to be working, but in future if we see problems 
         // follow the advise here - https://community.oracle.com/message/10692405
@@ -64,18 +64,14 @@ public class RawTextPanel extends JPanel implements WordSource {
             return true ;
         }        
     } ;
-    private JLabel       fileNameLabel = new JLabel() ;
-    private JFileChooser fileChooser   = new JFileChooser() ;
-    
-    private RawTextPanelPopupMenu popup = new RawTextPanelPopupMenu( this ) ;
-    
+    private final JLabel fileNameLabel = new JLabel() ;
+    private final JFileChooser fileChooser   = new JFileChooser() ;
+    private final RawTextPanelPopupMenu popup = new RawTextPanelPopupMenu( this ) ;
+    private final ScratchTextPanel scratchPanel = new ScratchTextPanel( this ) ;
+
     private String originalText = "" ;
-    
-    private int  fontSize    = 12 ;
+    private int  fontSize = 12 ;
     private File currentFile = null ;
-    
-    private ScratchTextPanel scratchPanel = new ScratchTextPanel( this ) ;
-    
     private String lastSearchString = null ;
     
     public RawTextPanel() {
