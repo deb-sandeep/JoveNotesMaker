@@ -173,6 +173,7 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
         String titleText = "" ;
         switch( noteType ) {
             case QA:
+            case QA_A:
             case QA_Q:
                 titleText = "Make question answer (@qa) note." ;
                 break ;
@@ -217,6 +218,7 @@ public class NotesCreatorDialog extends JDialog implements ActionListener {
         AbstractNotePanel panel = null ;
         switch( noteType ) {
             case QA:
+            case QA_A:
                 panel = new QAPanel( selectedText, false ) ;
                 break ;
             case QA_Q:

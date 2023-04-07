@@ -289,7 +289,7 @@ public class RawTextPanel extends JPanel implements WordSource {
                     deduceAndCreateNoteType( selectedText ) ;
                     break ;
                 case KeyEvent.VK_A: 
-                    mainFrame.createNote( selectedText, NoteType.QA ) ;
+                    mainFrame.createNote( selectedText, NoteType.QA_A ) ;
                     break ;
                 case KeyEvent.VK_Z: 
                     mainFrame.createNote( selectedText, NoteType.QA_Q ) ;
