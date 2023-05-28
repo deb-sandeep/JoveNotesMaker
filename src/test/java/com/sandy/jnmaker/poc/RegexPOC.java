@@ -76,7 +76,7 @@ public class RegexPOC {
     }
     
     String getStringForMatching() throws Exception {
-        URL url = ReflectionUtil.getResource( RegexPOC.class, "sample.jn" ) ;
+        URL url = ReflectionUtil.getResource( RegexPOC.class, "sample.jn-ocr" ) ;
         return IOUtils.toString( url ) ;
     }
     

@@ -2,9 +2,7 @@ package com.sandy.jnmaker.ui;
 
 import static com.sandy.common.ui.SwingUtils.getScreenWidth ;
 import static com.sandy.jnmaker.ui.helper.UIUtil.getIcon ;
-import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateDefinitionNote ;
-import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateFIBNote ;
-import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.autoCreateQANote ;
+import static com.sandy.jnmaker.ui.panels.rawtxt.NotesAutoCreator.*;
 import static com.sandy.jnmaker.util.Events.EDITOR_TYPE_CHANGED ;
 import static com.sandy.jnmaker.util.ObjectRepository.getBus ;
 
@@ -41,7 +39,6 @@ import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.NoteType ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
-@SuppressWarnings( "serial" )
 public class MainFrame extends AbstractMainFrame {
 
     private static final Logger log = Logger.getLogger( MainFrame.class ) ;
@@ -51,7 +48,7 @@ public class MainFrame extends AbstractMainFrame {
     private RawTextPanel       rawTextPanel     = null ;
     private JoveNotesPanel     jnPanel          = null ;
     
-    private NotesCreatorDialog notesCreator = null ;
+    private final NotesCreatorDialog notesCreator ;
     
     @SuppressWarnings( "rawtypes" )
     private AbstractImagePanel<? extends AbstractQuestion> imagePanel = null ;
@@ -96,7 +93,8 @@ public class MainFrame extends AbstractMainFrame {
             }
         } );
     }
-    
+
+    @Override
     protected JMenuBar getFrameMenu() {
         return new AppMenu() ;
     }
@@ -169,10 +167,6 @@ public class MainFrame extends AbstractMainFrame {
         return this.rawTextPanel;
     }
 
-    public void setRawTextPanel( RawTextPanel rawTextPanel ) {
-        this.rawTextPanel = rawTextPanel;
-    }
-
     @SuppressWarnings( "rawtypes" )
     public AbstractImagePanel<? extends AbstractQuestion> getImagePanel() {
         return this.imagePanel;
@@ -182,10 +176,6 @@ public class MainFrame extends AbstractMainFrame {
         return this.jnPanel;
     }
 
-    public void setJNPanel( JoveNotesPanel jnPanel ) {
-        this.jnPanel = jnPanel;
-    }
-    
     public void createNote( String selectedText, NoteType noteType ) {
         
         if( !processNoteWithoutHumanIntervention( selectedText, noteType ) ) {
@@ -220,7 +210,16 @@ public class MainFrame extends AbstractMainFrame {
         else if( noteType == NoteType.QA ) {
             autoCreatedNote = autoCreateQANote( selectedText ) ;
         }
-        
+        else if( noteType == NoteType.MATCHING ) {
+            autoCreatedNote = autoCreateMatchingNote( selectedText ) ;
+        }
+        else if( noteType == NoteType.MULTI_CHOICE ) {
+            autoCreatedNote = autoCreateMultiChoiceNote( selectedText ) ;
+        }
+        else if( noteType == NoteType.TRUE_FALSE ) {
+            autoCreatedNote = autoCreateTrueFalseNote( selectedText ) ;
+        }
+
         if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {
             this.jnPanel.addNote( autoCreatedNote ) ;
             return true ;
@@ -244,11 +243,7 @@ public class MainFrame extends AbstractMainFrame {
         cl.show( inputEditorPanel, currentMode.toString() ) ;
         
         if( currentMode == InputEditorMode.SEARCH ) {
-            SwingUtilities.invokeLater( new Runnable() {
-                public void run() {
-                    searchPanel.setQueryAndSearch( defaultSearchString ) ;
-                }
-            } ) ;
+            SwingUtilities.invokeLater( () -> searchPanel.setQueryAndSearch( defaultSearchString ) ) ;
         }
         
         getBus().publishEvent( EDITOR_TYPE_CHANGED, currentMode );

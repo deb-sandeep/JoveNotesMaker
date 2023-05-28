@@ -8,7 +8,6 @@ import javax.swing.JMenuBar ;
 import com.sandy.jnmaker.ui.menu.actions.Actions ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 
-@SuppressWarnings( "serial" )
 public class AppMenu extends JMenuBar {
 
     private Actions actions = null ;

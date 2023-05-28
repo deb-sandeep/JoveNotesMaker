@@ -1,0 +1,168 @@
+/ ---------------------------------------------------------------------
+@section "5.1 - Pollination"
+
+@fib Stamens of a flower are the _male_ reproductive organs.
+
+@fib The _anthers_ of the stamens produce a powdery material called _pollen_ which consists of particles called _pollen grains_.
+
+@fib Each pollen grain contains two _sperm nuclei_ that participate in reproduction.
+
+@fib For initiating this process of formation of fruit and seeds, the first step is — the pollen grains must reach the _stigma_.
+
+@fib The pollen of the same flower may fall on its stigma by itself (_autogamy_)
+
+@fib The pollen of another flower of the same plant may fall on the stigma (_geitonogamy_)
+
+@fib geitono : _neighbouring_
+
+@fib The pollen of a flower of another plant of the same species may fall on the stigma (_allogamy_).
+
+// METANOTE START
+
+@fib allo : _other_
+
+@fib _Pollination_ is the process of transfer of pollen grains from the anther to the stigma.
+
+@fib There are two kinds of pollination : _self_-pollination and _cross_-pollination.
+
+## What is pollination ?
+
+@qa What is pollination?
+Pollination is the process of transfer of pollen grains from the anther to the stigma.
+--
+
+You have read that the stamens of a flower are the male organs. The anthers of the stamens produce a powdery material called pollen which consists of particles called pollen grains. Each pollen grain contains two sperm nuclei that participate in reproduction. For initiating this process of formation of fruit and seeds, the first step is — the pollen grains must reach the stigma. It may happen in three principal ways (Fig. 5.1).
+
+@qa What is autogamy, geitogamy and allogamy?
+During fertilization, the pollen grains reach the stigma through three principal ways:
+
+1. Autogamy: (auto:self, gamy:marriage) The pollen of the same flower may fall on its stigma by itself.
+
+2. Geitonogamy: (geitono: neighbouring) The pollen of another flower of the same plant may fall on the stigma.
+
+3. Allogamy: (allo: other) The pollen of a flower of another plant of the same species may fall on the stigma.
+--
+
+// -----------------------------------------------------------------------
+@section "5.1.1 - Self-pollination"
+
+@fib Self-pollination is the transfer of pollen from the anther to the stigma of the same flower (_autogamy_), or to the stigma of another flower of the same plant (_geitonogamy_).
+
+@fib Certain minute bisexual flowers do not open at all even at maturity. Their reproductive structures, i.e. anthers and stigma, remain hidden and lie close to each other, thereby facilitating self-pollination as no external pollinating agents are required. Such flowers are called _cleistogamous_ flowers; e.g. _pea_, _pansy_, etc.
+
+@fib In self-pollination _parental characters_ are preserved indefinitely.
+
+@qa What is self-pollination?
+Self-pollination is the transfer of pollen from the anther to the stigma of the same flower (autogamy), or to the stigma of another flower of the same plant (geitonogamy).
+--
+
+// METANOTE END
+
+@qa What are cleistogamous flowers? Give some examples.
+Certain minute bisexual flowers do not open at all even at maturity. Their reproductive structures, i.e. anthers and stigma, remain hidden and lie close to each other, thereby facilitating self-pollination as no external pollinating agents are required. Such flowers are called cleistogamous flowers; e.g. pea, pansy, etc.
+--
+
+@qa When can self-pollination occur?
+Self-pollination can occur in bisexual flowers, i.e. in flowers having both male and female organs, or it can also occur in such unisexual flowers where both male and female flowers are borne on the same plant.
+
+To ensure self-pollination, it is necessary that the anther and stigma of a flower must mature at the same time.
+--
+
+@qa List some advantages of self-pollination.
+
+1. It is much surer in such bisexual flowers where stamens and carpels mature at the same time.
+
+2. Parental characters are preserved indefinitely.
+
+3. There is no wastage of pollen grains. Even a small quantity of pollen will suffice.
+
+4. The flowers need not be large and showy.
+
+5. Scent and nectar need not be produced by the flowers.
+
+All the above advantages mean great economy on the part of the plant. A lot of nutrient material which would otherwise be used in the production of pollen, nectar, scent and large petals, etc., is saved.
+--
+
+@qa List some disadvantages of self-pollination.
+
+1. Continued self-pollination, generation after generation, may lead to weakening of the variety or the species. The seeds produced through it are poor in quality and give rise to less vigorous offspring.
+
+2. The weaker or defective characters of the variety or breed cannot be eliminated.
+
+3. It does not yield new varieties. The genetic traits of the same plant with no change and without any intermixing are passed on to the next generation. Thus there is little chance for improvement in the next generation.
+--
+
+// -----------------------------------------------------------------------
+@section "5.1.2 - Cross-pollination"
+
+@fib Large flowers with open petals and exposed reproductive structures are called _chasmogamous_ flowers.
+
+@fib _Chasmogamous_ flowers require external pollinating agents and therefore they undergo mainly cross-pollination.
+
+@fib Examples of chasmogamous flowers include _Oxalis_, _Hibiscus_, etc,
+
+@fib Nature favours _cross_-pollination.
+
+@fib _Uni_sexuality (uni/bi) is a condition which favours cross—pollination.
+
+@fib Different timings of maturation of androecium and gynoecium is called _Dichogamy_.
+
+@fib In some plants, anthers of the flower mature earlier than the stigma (_protandry_), e.g. _lady_ _finger_, _sweet pea_, _Salvia_, sunflower.
+
+@fib In some plants, the stigma of the flower matures earlier than the anthers (_protogyny_), e.g. _custard apple_, _peepal_.
+
+@fib The condition in which even if the stigma receives pollen from the anthers of the same flower, the pollen fails to undergo further growth - is called _Self-sterility_.
+
+@fib In some flowers, the pollen of a flower cannot reach the stigma of the same flower. For example, a hood covering the stigma acts as a mechanical barrier in flowers of _Pansy_, _Tris_, etc. This is called _Herkogamy_.
+
+@fib In some flowers the stigma and anthers grow at different heights which does not favour self-pollination. e.g. _primrose_, _Oxalis_. This is called _Heterostyly_.
+
+@fib Cross-pollination is the transfer of pollen grains from the anthers of one flower to the stigma of another flower of a different plant of the same species. This is called _allo_gamy.
+
+@qa What is cross-pollination?
+Cross-pollination is the transfer of pollen from the anthers of flowers of one plant to the stigma of a flower of another plant of the same species.
+--
+
+@qa Can cross-pollination happen between different flowers of the same tree?
+No. Cross pollination happens between flowers of two different plants of the same species. Pollination between flowers of the same tree is called self-pollination.
+--
+
+@qa What are chasmogamous flowers? Give some examples.
+Large flowers with open petals and exposed reproductive structures are called chasmogamous flowers. Examples include _Oxalis_, _Hibiscus_, etc.
+--
+
+@qa List some advantages of cross-pollination.
+
+1. The offsprings are healthier.
+2. The seeds produced are abundant and viable.
+3. New varieties may be produced by cross-pollinating two different varieties of the same species or even two distinct species.
+--
+
+@qa List some disadvantages of cross-pollination
+
+1. The pollination is not always certain because some pollinating agent is always needed which may or may not be available at the proper time.
+
+2. The pollen has to be produced in large quantity to ensure maximum chances of pollination which means a lot of wastage of pollen.
+
+3. The process is uneconomical for the plant because the flowers have to be large, coloured, scented and have to produce nectar—for attracting pollinating agents.
+--
+
+## Nature favours cross-pollination.
+
+The vast majority of flowering plants are cross-pollinated. Some of the various devices or the conditions which favour cross-pollination are as follows :
+
+1. Unisexuality. The flowers may be either male or female and they may be borne on separate plants. In this way cross-pollination is the only possibility; e.g. palms and papaya. (Papaya usually has separate male and female trees, but less frequently there may also be a hermaphrodite tree bearing both kinds of flowers). In cucumber, gourd, etc., the male and female flowers may be borne on the same plant.
+
+2. Dichogamy (Different timings of maturation of androecium and gynoecium). In many bisexual flowers, the anthers and stigma of the same flower mature at different times.
+
+— In some plants, anthers of the flower mature earlier than the stigma (protandry), e.g. lady finger, sweet pea, Salvia, sunflower.
+
+— In some plants, the stigma of the flower matures earlier than the anthers (protogyny, protos : first, gyne : female), e.g. custard apple, peepal.
+
+In either case, cross-pollination is the only possibility.
+
+3. Self-sterility. This is a condition in which even if the stigma receives pollen from the anthers of the same flower, the pollen fails to undergo further growth. In such cases, only the pollen from another plant of the same species, can effectively complete the process of setting of the seeds; e.g.- ray florets of sunflower, orchids, etc.
+
+4. Herkogamy (herkos : barrier; mechanical or structural barriers). In some flowers, the pollen of a flower cannot reach the stigma of the same flower. For example, a hood covering the stigma acts as a mechanical barrier in flowers of Pansy, Tris, etc.
+
+5. Heterostyly. In such flowers the stigma and anthers grow at different heights which does not favour self-pollination. e.g. primrose, Oxalis (Fig. 5.2).

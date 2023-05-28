@@ -23,7 +23,7 @@ import com.sandy.jnmaker.util.AppConfig ;
 import com.sandy.jnmaker.util.ObjectRepository ;
 import com.sandy.jnmaker.util.WordnicAdapter ;
 
-@SuppressWarnings( {"serial", "deprecation"} )
+@SuppressWarnings( {"deprecation"} )
 public abstract class AbstractNotePanel extends JPanel {
 
     protected NotesCreatorDialog parent = null ;

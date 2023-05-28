@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent ;
 import java.io.File ;
 import java.io.IOException ;
 import java.nio.file.Files ;
+import java.util.List;
 
 import javax.swing.BoxLayout ;
 import javax.swing.JComponent ;
@@ -49,7 +50,7 @@ import com.sandy.jnmaker.util.WordRepository.WordSource ;
 
 import static javax.swing.JOptionPane.* ;
 
-@SuppressWarnings( {"serial", "deprecation"} )
+@SuppressWarnings( {"deprecation"} )
 public class RawTextPanel extends JPanel implements WordSource {
 
     private static final Logger log = Logger.getLogger( RawTextPanel.class ) ;
@@ -100,7 +101,7 @@ public class RawTextPanel extends JPanel implements WordSource {
     public File getCurrentFile() {
         return currentFile;
     }
-    
+
     public void captureFocus() {
         textPane.requestFocus() ;
     }
@@ -144,7 +145,7 @@ public class RawTextPanel extends JPanel implements WordSource {
     
     private void displayFileName() {
         
-        String labelText = "" ;
+        String labelText ;
         if( this.currentFile == null ) {
             labelText = "** Scratch file **" ;
         }
@@ -351,8 +352,23 @@ public class RawTextPanel extends JPanel implements WordSource {
                     break ;
             }
         }
+        else if( modifiers == ( KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK ) ) {
+            if( keyCode == KeyEvent.VK_Q ) {
+                parseAndDeduceNotes() ;
+            }
+        }
         else if( keyCode == KeyEvent.VK_F5 ) {
             setCurrentFile( this.currentFile ) ;
+        }
+    }
+
+    private void parseAndDeduceNotes() {
+        String rawText = textPane.getText() ;
+        RawTextParser rawTextParser = new RawTextParser( rawText ) ;
+        List<String> metaNotes = rawTextParser.getParsedMetaNotes() ;
+
+        for( String metaNote : metaNotes ) {
+            deduceAndCreateNoteType( metaNote ) ;
         }
     }
     
@@ -387,6 +403,14 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = selectedText.substring( "@qa".length() ).trim() ;
                 main.createNote( selectedText, NoteType.QA ) ;
             }
+            else if( selectedText.startsWith( "@match" ) ) {
+                selectedText = selectedText.substring( "@match".length() ).trim() ;
+                main.createNote( selectedText, NoteType.MATCHING ) ;
+            }
+            else if( selectedText.startsWith( "@choice" ) ) {
+                selectedText = selectedText.substring( "@choice".length() ).trim() ;
+                main.createNote( selectedText, NoteType.MULTI_CHOICE ) ;
+            }
         }
         catch( Exception e ) {
             log.error( "Error in deducing question", e ) ;
@@ -419,11 +443,10 @@ public class RawTextPanel extends JPanel implements WordSource {
             }
         }
         
-        startPos = startPos < 0 ? 0 : startPos ;
-        endPos = endPos > textLen ? textLen : endPos ;
-        
-        String line = text.substring( startPos, endPos ) ;
-        return line ;
+        startPos = Math.max( startPos, 0 );
+        endPos = Math.min( endPos, textLen );
+
+        return text.substring( startPos, endPos );
     }
     
     private String getSanitizedCurrentLine() {
@@ -517,10 +540,7 @@ public class RawTextPanel extends JPanel implements WordSource {
     
     public boolean isEditorDirty() {
         
-        boolean isDirty = false ;
-        if( !this.textPane.getText().equals( this.originalText ) ) {
-            isDirty = true ;
-        }
+        boolean isDirty = !this.textPane.getText().equals( this.originalText );
         return isDirty | this.scratchPanel.isEditorDirty() ;
     }
     
@@ -636,25 +656,22 @@ public class RawTextPanel extends JPanel implements WordSource {
     
     public void scrollToBookmarkPosition() {
         
-        SwingUtilities.invokeLater( new Runnable() {
-            @Override
-            public void run() {
-                Document document = textPane.getDocument() ;
-                
-                try {
-                    int pos = document.getText( 0, document.getLength() )
-                                      .toLowerCase()
-                                      .indexOf( BOOKMARK_MARKER ) ;
-                    if( pos > -1 ){
-                        Rectangle viewRect = textPane.modelToView( pos ) ;
-                        viewRect.y += textPane.getVisibleRect().height - 20 ;
-                        textPane.scrollRectToVisible( viewRect ) ;
-                        textPane.setCaretPosition( pos ) ;
-                    }
-                } 
-                catch ( Exception e ) {
-                    e.printStackTrace() ;
+        SwingUtilities.invokeLater( () -> {
+            Document document = textPane.getDocument() ;
+
+            try {
+                int pos = document.getText( 0, document.getLength() )
+                                  .toLowerCase()
+                                  .indexOf( BOOKMARK_MARKER ) ;
+                if( pos > -1 ){
+                    Rectangle viewRect = textPane.modelToView( pos ) ;
+                    viewRect.y += textPane.getVisibleRect().height - 20 ;
+                    textPane.scrollRectToVisible( viewRect ) ;
+                    textPane.setCaretPosition( pos ) ;
                 }
+            }
+            catch ( Exception e ) {
+                e.printStackTrace() ;
             }
         } );
     }
@@ -718,30 +735,27 @@ public class RawTextPanel extends JPanel implements WordSource {
     
     private void scrollToText( final String text, final int fromPos ) {
         
-        SwingUtilities.invokeLater( new Runnable() {
-            @Override
-            public void run() {
-                Document document = textPane.getDocument() ;
-                try {
-                    String docText = document.getText( 0, document.getLength() )
-                                             .toLowerCase() ;
-                    String searchText = text.toLowerCase() ;
-                    
-                    int pos = docText.indexOf( searchText, fromPos ) ;
-                    
-                    if( pos == -1 ) {
-                        pos = docText.indexOf( searchText, 0 ) ;
-                    }
-                    
-                    if( pos != -1 ) {
-                        scrollToPosition( pos ) ;
-                        textPane.setCaretPosition( pos + text.length() ) ;
-                        textPane.select( pos, pos + text.length() ) ;
-                    }
-                } 
-                catch ( Exception e ) {
-                    e.printStackTrace() ;
+        SwingUtilities.invokeLater( () -> {
+            Document document = textPane.getDocument() ;
+            try {
+                String docText = document.getText( 0, document.getLength() )
+                                         .toLowerCase() ;
+                String searchText = text.toLowerCase() ;
+
+                int pos = docText.indexOf( searchText, fromPos ) ;
+
+                if( pos == -1 ) {
+                    pos = docText.indexOf( searchText ) ;
                 }
+
+                if( pos != -1 ) {
+                    scrollToPosition( pos ) ;
+                    textPane.setCaretPosition( pos + text.length() ) ;
+                    textPane.select( pos, pos + text.length() ) ;
+                }
+            }
+            catch ( Exception e ) {
+                e.printStackTrace() ;
             }
         } ) ;
     }

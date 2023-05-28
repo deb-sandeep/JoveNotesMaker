@@ -32,16 +32,13 @@ public class JoveNotesMaker {
     public void launch( String[] args ) throws Exception {
         
         preInitialize( args ) ;
-        SwingUtilities.invokeLater( new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    setUpAndShowMainFrame() ;
-                    postInitialize() ;
-                }
-                catch( Exception e ) {
-                    e.printStackTrace();
-                }
+        SwingUtilities.invokeLater( () -> {
+            try {
+                setUpAndShowMainFrame() ;
+                postInitialize() ;
+            }
+            catch( Exception e ) {
+                e.printStackTrace();
             }
         } );
         
