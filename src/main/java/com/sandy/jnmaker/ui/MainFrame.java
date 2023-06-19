@@ -187,8 +187,11 @@ public class MainFrame extends AbstractMainFrame {
                                                          NoteType noteType ) {
         
         String autoCreatedNote = null ;
-        
-        if( noteType == NoteType.SECTION ) {
+
+        if( noteType == NoteType.AS_IS ) {
+            autoCreatedNote = selectedText ;
+        }
+        else if( noteType == NoteType.SECTION ) {
             if( selectedText.startsWith( "\"" ) ) {
                 selectedText = selectedText.substring( 1 ) ;
             }

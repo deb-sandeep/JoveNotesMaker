@@ -53,7 +53,8 @@ public class RawTextParser {
                     }
                     else if( line.startsWith( "@qa "    ) ||
                              line.startsWith( "@match"  ) ||
-                             line.startsWith( "@choice" )) {
+                             line.startsWith( "@choice" ) ||
+                             line.startsWith( "@as-is" ) ) {
 
                         inMultiLineContext = true ;
                         sb = new StringBuilder() ;

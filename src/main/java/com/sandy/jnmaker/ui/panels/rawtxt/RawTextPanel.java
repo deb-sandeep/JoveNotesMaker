@@ -382,8 +382,12 @@ public class RawTextPanel extends JPanel implements WordSource {
             }
             
             MainFrame main = getMainFrame() ;
-            
-            if( selectedText.startsWith( FIB ) ) {
+
+            if( selectedText.startsWith( "@as-is" ) ) {
+                selectedText = selectedText.substring( "@as-is".length() ).trim() ;
+                main.createNote( selectedText, NoteType.AS_IS ) ;
+            }
+            else if( selectedText.startsWith( FIB ) ) {
                 selectedText = selectedText.substring( FIB.length() ).trim() ;
                 main.createNote( selectedText, NoteType.FIB ) ;
             }
