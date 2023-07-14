@@ -6,7 +6,6 @@ import javax.swing.KeyStroke ;
 
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
-@SuppressWarnings( "serial" )
 public abstract class AbstractBaseAction extends AbstractAction {
     
     private Icon smallIcon = null ;

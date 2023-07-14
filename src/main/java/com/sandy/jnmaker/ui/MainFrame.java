@@ -189,7 +189,7 @@ public class MainFrame extends AbstractMainFrame {
         String autoCreatedNote = null ;
 
         if( noteType == NoteType.AS_IS ) {
-            autoCreatedNote = selectedText ;
+            autoCreatedNote = "\n\n" + selectedText ;
         }
         else if( noteType == NoteType.SECTION ) {
             if( selectedText.startsWith( "\"" ) ) {

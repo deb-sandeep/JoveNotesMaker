@@ -4,25 +4,7 @@ import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 import static com.sandy.jnmaker.util.ObjectRepository.getProjectManager ;
 import static java.awt.event.InputEvent.ALT_DOWN_MASK ;
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK ;
-import static java.awt.event.KeyEvent.VK_1 ;
-import static java.awt.event.KeyEvent.VK_2 ;
-import static java.awt.event.KeyEvent.VK_3 ;
-import static java.awt.event.KeyEvent.VK_5 ;
-import static java.awt.event.KeyEvent.VK_6 ;
-import static java.awt.event.KeyEvent.VK_7 ;
-import static java.awt.event.KeyEvent.VK_C ;
-import static java.awt.event.KeyEvent.VK_F1 ;
-import static java.awt.event.KeyEvent.VK_F2 ;
-import static java.awt.event.KeyEvent.VK_F3 ;
-import static java.awt.event.KeyEvent.VK_F6 ;
-import static java.awt.event.KeyEvent.VK_M ;
-import static java.awt.event.KeyEvent.VK_MINUS ;
-import static java.awt.event.KeyEvent.VK_N ;
-import static java.awt.event.KeyEvent.VK_O ;
-import static java.awt.event.KeyEvent.VK_P ;
-import static java.awt.event.KeyEvent.VK_PLUS ;
-import static java.awt.event.KeyEvent.VK_S ;
-import static java.awt.event.KeyEvent.VK_X ;
+import static java.awt.event.KeyEvent.*;
 
 import java.awt.Component ;
 import java.awt.event.ActionEvent ;
@@ -92,7 +74,7 @@ public class Actions {
         { "newProject",    "New project",     "file_new",    VK_N,      VK_F1, 0 },
         { "openProject",   "Open project",    "file_open",   VK_O,      VK_F2, 0 },
         { "saveProject",   "Save project",    "file_save",   VK_S,      VK_F3, 0 },
-        { "closeProject",  "Close project",   "file_close",  VK_C,      VK_F6, 0 },
+        { "closeProject",  "Close project",   "file_close",  VK_C,      VK_F4, 0 },
         
         { "mappingTool",   "Matrix Mapping",  "mapping",     VK_M,      VK_M, CTRL_DOWN_MASK | ALT_DOWN_MASK },
         { "jcMapTool",     "Concept Map",     "mapping",     VK_P,      VK_P, CTRL_DOWN_MASK | ALT_DOWN_MASK },
@@ -323,7 +305,7 @@ public class Actions {
     
     @SuppressWarnings( "unused" )
     private void openProject() {
-        getProjectManager().openProject() ;
+        getProjectManager().openProject( null ) ;
     }
     
     @SuppressWarnings( "unused" )

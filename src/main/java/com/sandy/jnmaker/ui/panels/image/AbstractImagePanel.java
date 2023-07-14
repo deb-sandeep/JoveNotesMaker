@@ -328,16 +328,27 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
         File outputFile = getRecommendedOutputFile( selMod ) ;
         
         if( outputFile != null ) {
-            
-            if( !outputFile.getName().toLowerCase().endsWith( ".png" ) ) {
-                outputFile = new File( outputFile.getParentFile(), 
-                                       outputFile.getName() + ".png" ) ;
+
+            String fileName = outputFile.getName() ;
+            boolean absoluteFileName = false ;
+
+            if( fileName.startsWith( "`" ) ) {
+                fileName = fileName.substring( 1 ) ;
+                absoluteFileName = true ;
             }
-            
+
+            if( !fileName.toLowerCase().endsWith( ".png" ) ) {
+                outputFile = new File( outputFile.getParentFile(),
+                                       fileName + ".png" ) ;
+            }
+
             try {
                 // Check for a valid file name based on the type of image panel
-                constructQuestion( outputFile ) ;
-                
+                // If we are dealing with an absolute filename, treat it as is.
+                if( !absoluteFileName ) {
+                    constructQuestion( outputFile ) ;
+                }
+
                 if( outputFile.exists() ) {
                     int choice = JOptionPane.showConfirmDialog( 
                                                 this, "File exists. Overwrite?" ) ;
@@ -349,18 +360,18 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                 }
                 
                 writeSelectedImageToFile( image, outputFile ) ;
-                
+
                 lastSavedFile = outputFile ;
                 lastSavedDir = outputFile.getParentFile() ;
-                
-                lastQuestion = constructQuestion( lastSavedFile ) ;
-                if( lastQuestion != null ) {
-                    nextQuestion = (T)lastQuestion.nextQuestion() ;
+
+                if( !absoluteFileName ) {
+                    lastQuestion = constructQuestion( lastSavedFile ) ;
+                    if( lastQuestion != null ) {
+                        nextQuestion = (T)lastQuestion.nextQuestion() ;
+                    }
+                    currentlyDisplayedQuestion = null ;
+                    handleLastQuestionSave( lastQuestion ) ;
                 }
-                
-                currentlyDisplayedQuestion = null ;
-                
-                handleLastQuestionSave( lastQuestion ) ;
             }
             catch( Exception e ) {
                 JOptionPane.showMessageDialog( this,

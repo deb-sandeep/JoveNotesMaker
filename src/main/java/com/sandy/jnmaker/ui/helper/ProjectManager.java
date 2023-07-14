@@ -108,18 +108,19 @@ public class ProjectManager {
         }
     }
     
-    public boolean openProject() {
-        
-        boolean projectOpened = false ;
+    public void openProject( File projectFile ) {
         
         obtainObjectReferences() ;
         if( dirtyCurrentProjectHandled() ) {
-            File file = getSelectedFile( "Open project" ) ;
+            File file = projectFile ;
+            if( file == null ) {
+                file = getSelectedFile( "Open project" ) ;
+            }
+
             if( file != null ) {
                 if( file.exists() ) {
                     try {
                         setProjectConfigFile( file ) ;
-                        projectOpened = true ;
                     }
                     catch( Exception e ) {
                         logger.error( "Error opening project file", e ) ;
@@ -138,7 +139,6 @@ public class ProjectManager {
                 }
             }
         }
-        return projectOpened ;
     }
     
     public void saveProject() {
