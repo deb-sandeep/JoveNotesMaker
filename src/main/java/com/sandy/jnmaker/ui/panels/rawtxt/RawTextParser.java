@@ -54,7 +54,8 @@ public class RawTextParser {
                     else if( line.startsWith( "@qa "    ) ||
                              line.startsWith( "@match"  ) ||
                              line.startsWith( "@choice" ) ||
-                             line.startsWith( "@as-is" ) ) {
+                             line.startsWith( "@as-is"  ) ||
+                             line.startsWith( "@false"  ) ) {
 
                         inMultiLineContext = true ;
                         sb = new StringBuilder() ;
@@ -70,6 +71,7 @@ public class RawTextParser {
                     }
                     else if( line.startsWith( "@fib "     ) ||
                              line.startsWith( "@tf "      ) ||
+                             line.startsWith( "@true"     ) ||
                              line.startsWith( "@section " ) ||
                              line.startsWith( "@def "     ) ) {
 
