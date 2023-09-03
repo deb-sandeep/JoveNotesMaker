@@ -18,5 +18,6 @@ public enum NoteType {
     EXERCISE,
     MATCHING,
     MULTI_CHOICE,
+    CHEM_COMPOUND,
     SECTION
 }

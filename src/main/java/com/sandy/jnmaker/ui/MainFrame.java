@@ -222,6 +222,9 @@ public class MainFrame extends AbstractMainFrame {
         else if( noteType == NoteType.TRUE_FALSE ) {
             autoCreatedNote = autoCreateTrueFalseNote( selectedText ) ;
         }
+        else if( noteType == NoteType.CHEM_COMPOUND ) {
+            autoCreatedNote = autoCreateChemCompoundNote( selectedText ) ;
+        }
 
         if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {
             this.jnPanel.addNote( autoCreatedNote ) ;

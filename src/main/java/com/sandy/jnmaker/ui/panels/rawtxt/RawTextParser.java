@@ -30,7 +30,7 @@ public class RawTextParser {
         StringBuilder sb = new StringBuilder() ;
 
         for( String line : lines ) {
-            line = line.trim() ;
+            line = StringUtils.stripEnd( line, null ) ;
             if( !preprocStartMarkerEncountered ) {
                 if( line.startsWith( PREPROCESS_START_MARKER ) ) {
                     preprocStartMarkerEncountered = true ;
@@ -51,11 +51,12 @@ public class RawTextParser {
                             sb.append( line ).append( "\n" ) ;
                         }
                     }
-                    else if( line.startsWith( "@qa "    ) ||
-                             line.startsWith( "@match"  ) ||
-                             line.startsWith( "@choice" ) ||
-                             line.startsWith( "@as-is"  ) ||
-                             line.startsWith( "@false"  ) ) {
+                    else if( line.startsWith( "@qa "           ) ||
+                             line.startsWith( "@match"         ) ||
+                             line.startsWith( "@choice"        ) ||
+                             line.startsWith( "@as-is"         ) ||
+                             line.startsWith( "@chem_compound" ) ||
+                             line.startsWith( "@false"         ) ) {
 
                         inMultiLineContext = true ;
                         sb = new StringBuilder() ;

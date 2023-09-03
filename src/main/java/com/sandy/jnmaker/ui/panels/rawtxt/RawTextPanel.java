@@ -423,6 +423,10 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = selectedText.substring( "@choice".length() ).trim() ;
                 main.createNote( selectedText, NoteType.MULTI_CHOICE ) ;
             }
+            else if( selectedText.startsWith( "@chem_compound" ) ) {
+                selectedText = selectedText.substring( "@chem_compound".length() ).trim() ;
+                main.createNote( selectedText, NoteType.CHEM_COMPOUND ) ;
+            }
         }
         catch( Exception e ) {
             log.error( "Error in deducing question", e ) ;
