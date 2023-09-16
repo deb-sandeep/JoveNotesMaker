@@ -23,13 +23,24 @@ public class QAAutoCreator {
             String questionText = parts[0] ;
             String answerText = parts[1] ;
 
-            return "@qa \"" +
-                    formatText( questionText ) +
-                    "\"\n" +
-                    "\"" +
-                    formatText( answerText ) +
-                    "\"\n" +
-                    "\n";
+            String[] answerParts = answerText.split( "\\R", 2 ) ;
+            String ansLHSImg = null ;
+
+            if( answerParts.length > 1 ) {
+                if( answerParts[0].startsWith( "<{{@img " ) &&
+                    answerParts[0].endsWith( "}}" ) ) {
+                    ansLHSImg = answerParts[0].substring( 1 ) ;
+                    answerText = answerParts[1] ;
+                }
+            }
+
+            String retVal = "@qa \"" + formatText( questionText ) + "\"\n" ;
+            if( ansLHSImg != null ) {
+                retVal += "\"" + ansLHSImg + "\"\n" ;
+            }
+            retVal += "\"" + formatText( answerText ) + "\"\n\n" ;
+
+            return  retVal ;
         }
         else {
             log.info( "Auto generation for QA failed. " +

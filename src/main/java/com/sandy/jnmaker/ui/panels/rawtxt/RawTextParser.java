@@ -56,7 +56,8 @@ public class RawTextParser {
                              line.startsWith( "@choice"        ) ||
                              line.startsWith( "@as-is"         ) ||
                              line.startsWith( "@chem_compound" ) ||
-                             line.startsWith( "@false"         ) ) {
+                             line.startsWith( "@false"         ) ||
+                             line.startsWith( "@choice_group"  ) ) {
 
                         inMultiLineContext = true ;
                         sb = new StringBuilder() ;

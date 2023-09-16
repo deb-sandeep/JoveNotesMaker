@@ -19,5 +19,6 @@ public enum NoteType {
     MATCHING,
     MULTI_CHOICE,
     CHEM_COMPOUND,
+    CHOICE_GROUP,
     SECTION
 }
