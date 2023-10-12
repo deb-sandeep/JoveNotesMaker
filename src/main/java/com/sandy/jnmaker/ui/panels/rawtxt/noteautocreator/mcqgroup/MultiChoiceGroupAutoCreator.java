@@ -13,7 +13,8 @@ public class MultiChoiceGroupAutoCreator {
 
     private static final Logger log = Logger.getLogger( MultiChoiceGroupAutoCreator.class ) ;
 
-    private static final int MAX_OPTIONS = 6 ;
+    private static final int MAX_OPTIONS = 4 ;
+    private static final int MAX_WRONG_OPTION_ITERATIONS = 100 ;
 
     private final String input ;
 
@@ -77,7 +78,9 @@ public class MultiChoiceGroupAutoCreator {
     private void extractCaptions( String line ) {
         String[] parts = line.split("\\|") ;
         captionLHS2RHS = parts[0].trim() ;
-        captionRHS2LHS = parts[1].trim() ;
+        if( parts.length > 1 ) {
+            captionRHS2LHS = parts[1].trim() ;
+        }
     }
 
     private void createDataStructures() {
@@ -95,11 +98,12 @@ public class MultiChoiceGroupAutoCreator {
                 addRandomWrongValuesOptions( mcq, values ) ;
                 mcqs.add( mcq ) ;
 
-                mcq = new MCQ( createRHS2LHSCaption( value ) ) ;
-                mcq.addOption( new MCQOption( keyword, true ) ) ;
-                addRandomWrongKeywordOptions( mcq, keywords ) ;
-                mcqs.add( mcq ) ;
-
+                if( StringUtil.isEmptyOrNull( captionRHS2LHS ) ) {
+                    mcq = new MCQ( createRHS2LHSCaption( value ) ) ;
+                    mcq.addOption( new MCQOption( keyword, true ) ) ;
+                    addRandomWrongKeywordOptions( mcq, keywords ) ;
+                    mcqs.add( mcq ) ;
+                }
             }
         }
     }
@@ -114,7 +118,9 @@ public class MultiChoiceGroupAutoCreator {
 
     private void addRandomWrongValuesOptions( MCQ mcq, List<String> meanings ) {
 
-        while( mcq.getNumOptions() < MAX_OPTIONS ) {
+        int iterNo = 0 ;
+        while( mcq.getNumOptions() < MAX_OPTIONS &&
+               iterNo < MAX_WRONG_OPTION_ITERATIONS ) {
 
             int randomIdx = ThreadLocalRandom.current().nextInt( 0, allOptions.size() ) ;
             String randomAnswer = allOptions.get( randomIdx ) ;
@@ -124,12 +130,15 @@ public class MultiChoiceGroupAutoCreator {
                     mcq.addOption( new MCQOption( randomAnswer ) ) ;
                 }
             }
+            iterNo++ ;
         }
     }
 
     private void addRandomWrongKeywordOptions( MCQ mcq, List<String> keywords ) {
 
-        while( mcq.getNumOptions() < MAX_OPTIONS ) {
+        int iterNo = 0 ;
+        while( mcq.getNumOptions() < MAX_OPTIONS &&
+               iterNo < MAX_WRONG_OPTION_ITERATIONS ) {
 
             int randomIdx = ThreadLocalRandom.current().nextInt( 0, keywords.size() ) ;
             String randomAnswer = keywords.get( randomIdx ) ;
@@ -137,6 +146,7 @@ public class MultiChoiceGroupAutoCreator {
             if( !mcq.containsOption( randomAnswer ) ) {
                 mcq.addOption( new MCQOption( randomAnswer ) ) ;
             }
+            iterNo++ ;
         }
     }
 

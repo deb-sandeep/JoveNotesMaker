@@ -71,11 +71,12 @@ public class RawTextParser {
                           .append( line.substring( "@tf false ".length() ) )
                           .append( "\n" ) ;
                     }
-                    else if( line.startsWith( "@fib "     ) ||
-                             line.startsWith( "@tf "      ) ||
-                             line.startsWith( "@true"     ) ||
-                             line.startsWith( "@section " ) ||
-                             line.startsWith( "@def "     ) ) {
+                    else if( line.startsWith( "@fib "          ) ||
+                             line.startsWith( "@tf "           ) ||
+                             line.startsWith( "@true"          ) ||
+                             line.startsWith( "@section "      ) ||
+                             line.startsWith( "@chem_equation" ) ||
+                             line.startsWith( "@def "          ) ) {
 
                         metaNotes.add( line ) ;
                     }

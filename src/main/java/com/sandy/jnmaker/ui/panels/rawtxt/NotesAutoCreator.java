@@ -29,6 +29,10 @@ public class NotesAutoCreator {
         return new MultiChoiceAutoCreator( input ).createNote() ;
     }
 
+    public static String autoCreateChemEquationNote( String input ) {
+        return new ChemEquationAutoCreator( input ).createNote() ;
+    }
+
     public static String autoCreateChemCompoundNote( String input ) {
         return new ChemCompoundAutoCreator( input ).createNote() ;
     }

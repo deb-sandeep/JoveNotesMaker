@@ -228,6 +228,9 @@ public class MainFrame extends AbstractMainFrame {
         else if( noteType == NoteType.CHEM_COMPOUND ) {
             autoCreatedNote = autoCreateChemCompoundNote( selectedText ) ;
         }
+        else if( noteType == NoteType.CHEM_EQUATION ) {
+            autoCreatedNote = autoCreateChemEquationNote( selectedText ) ;
+        }
 
         if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {
             this.jnPanel.addNote( autoCreatedNote ) ;
