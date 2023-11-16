@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.panels.rawtxt.noteautocreator;
 
 import com.sandy.common.util.StringUtil;
+import com.sandy.jnmaker.util.NoteTextUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -29,7 +30,7 @@ public class ChemEquationAutoCreator {
             produces = "" ;
         }
         else {
-            produces = " \"" + produces + "\" " ;
+            produces = " \"" + NoteTextUtil.escapeSlash( produces ) + "\" " ;
         }
 
         return "@chem_equation {\n" +

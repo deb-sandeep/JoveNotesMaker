@@ -32,6 +32,7 @@ import javax.swing.JPanel ;
 import javax.swing.KeyStroke ;
 import javax.swing.filechooser.FileFilter ;
 
+import com.sandy.jnmaker.ui.panels.image.k12.K12ExerciseQuestion;
 import org.apache.log4j.Logger ;
 
 import com.sandy.common.ui.CloseableTabbedPane ;
@@ -208,7 +209,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
     private void openFiles() {
         
         File[] files = getSelectedFiles() ;
-        if( files != null && files.length > 0 ) {
+        if(files != null) {
             for( File file : files ) {
                 ScalableImagePanel imgPanel = new ScalableImagePanel() ;
                 imgPanel.setImage( file );
@@ -251,9 +252,10 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
 
     public String getOpenedFiles() {
         
-        StringBuffer paths = new StringBuffer() ;
+        StringBuilder paths = new StringBuilder() ;
         for( File file : this.openedFiles ) {
-            paths.append( file.getAbsolutePath() + File.pathSeparator ) ;
+            paths.append(file.getAbsolutePath())
+                 .append(File.pathSeparator);
         }
         return paths.toString() ;
     }
@@ -283,9 +285,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
     public void saveFiles() {
         
         this.originalFiles.clear() ;
-        for( File f : this.openedFiles ) {
-            this.originalFiles.add( f ) ;
-         }
+        this.originalFiles.addAll(this.openedFiles);
     }
     
     public boolean isEditorDirty() {
@@ -340,6 +340,9 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
             if( !fileName.toLowerCase().endsWith( ".png" ) ) {
                 outputFile = new File( outputFile.getParentFile(),
                                        fileName + ".png" ) ;
+            }
+            else {
+                outputFile = new File( outputFile.getParentFile(), fileName ) ;
             }
 
             try {
@@ -421,7 +424,6 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
         
         if( lastQuestion == null ||
             selMod == DrawingCanvas.MARK_END_MODIFIER_RIGHT_BTN ) {
-            
             interventionRequired = true ;
         }
         
@@ -431,6 +433,15 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                 interventionRequired = true ;
             }
             else {
+                if( selMod == DrawingCanvas.MARK_END_MODIFIER_CENTER_BTN ) {
+                    // FUTURE: In the future, move this to Abstract question
+                    if( nextQuestion instanceof K12ExerciseQuestion ) {
+                        K12ExerciseQuestion k12Q = ( K12ExerciseQuestion )nextQuestion ;
+                        if( k12Q.getPartNum() == -1 ) {
+                            k12Q.setPartNum( 1 ) ;
+                        }
+                    }
+                }
                 outputFile = new File( lastSavedDir, nextQuestion.getFileName() ) ;
                 currentlyDisplayedQuestion = nextQuestion ;
             }

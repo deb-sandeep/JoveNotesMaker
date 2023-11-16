@@ -4,6 +4,7 @@ import static java.awt.event.KeyEvent.VK_1 ;
 import static java.awt.event.KeyEvent.VK_2 ;
 import static java.awt.event.KeyEvent.VK_3 ;
 import static java.awt.event.KeyEvent.VK_4 ;
+import static java.awt.event.KeyEvent.VK_5 ;
 
 import java.awt.event.ActionListener ;
 import java.io.File ;
@@ -23,7 +24,7 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
     
     public final static String ID = "K12" ;
     
-    private SaveFnKeyHandler nextMajorElementSDHandler = 
+    private final SaveFnKeyHandler nextMajorElementSDHandler =
         new SaveFnKeyHandler( "nextMajorElement" ) {
             public void handleEvent() {
                 if( currentlyDisplayedQuestion != null ) {
@@ -35,7 +36,7 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
             }
         } ;
     
-    private SaveFnKeyHandler nextElementSDHandler = 
+    private final SaveFnKeyHandler nextElementSDHandler =
             new SaveFnKeyHandler( "nextMajorElement" ) {
                 public void handleEvent() {
                     if( currentlyDisplayedQuestion != null ) {
@@ -47,7 +48,7 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
                 }
             } ;
         
-    private SaveFnKeyHandler toggleHeaderSDHandler = 
+    private final SaveFnKeyHandler toggleHeaderSDHandler =
         new SaveFnKeyHandler( "toggleHeader" ) {
             public void handleEvent() {
                 File selFile = saveFileChooser.getSelectedFile() ;
@@ -60,7 +61,7 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
             }
         } ; 
     
-    private SaveFnKeyHandler nextMajorElementWithHeaderSDHandler = 
+    private final SaveFnKeyHandler nextMajorElementWithHeaderSDHandler =
         new SaveFnKeyHandler( "nextMajorElementWithHeader" ) {
             public void handleEvent() {
                 if( currentlyDisplayedQuestion != null ) {
@@ -73,6 +74,16 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
             }
         } ;
     
+    private final SaveFnKeyHandler addFirstPartNumberSDHandler =
+        new SaveFnKeyHandler( "addFirstPartNumber" ) {
+            public void handleEvent() {
+                if( currentlyDisplayedQuestion != null ) {
+                    currentlyDisplayedQuestion.setPartNum( 1 );
+                    updateSaveDialogFileName( currentlyDisplayedQuestion.getFileName() ) ;
+                }
+            }
+        } ;
+
     public K12QuestionsImagePanel() {
         super() ;
         bindKeyStrokesForSaveDialog() ;
@@ -89,9 +100,11 @@ public class K12QuestionsImagePanel extends AbstractImagePanel<K12ExerciseQuesti
         super.registerSaveFnHandler( VK_2, nextElementSDHandler ) ;
         super.registerSaveFnHandler( VK_3, toggleHeaderSDHandler ) ;
         super.registerSaveFnHandler( VK_4, nextMajorElementWithHeaderSDHandler ) ;
+        super.registerSaveFnHandler( VK_5, addFirstPartNumberSDHandler) ;
     }
     
     public File getRecommendedSaveDir( File imgFile ) {
         return imgFile.getParentFile().getParentFile() ;
     }
+
 }

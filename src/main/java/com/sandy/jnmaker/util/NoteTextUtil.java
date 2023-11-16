@@ -6,6 +6,10 @@ import com.sandy.common.util.StringUtil ;
 
 public class NoteTextUtil {
 
+    public static String escapeSlash( String input ) {
+        return input.replaceAll( "\\\\", "\\\\\\\\" ) ;
+    }
+
     public static String escapeQuotes( String input ) {
         return input.replaceAll( "\\\"", "\\\\\"" ) ;
     }

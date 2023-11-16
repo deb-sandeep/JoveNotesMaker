@@ -8,10 +8,7 @@ import static com.sandy.jnmaker.util.ObjectRepository.getMainFrame ;
 import static com.sandy.jnmaker.util.ObjectRepository.getWordRepository ;
 import static com.sandy.jnmaker.util.ObjectRepository.setCWD ;
 
-import java.awt.BorderLayout ;
-import java.awt.Color ;
-import java.awt.Font ;
-import java.awt.Rectangle ;
+import java.awt.*;
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.MouseAdapter ;
@@ -194,11 +191,12 @@ public class RawTextPanel extends JPanel implements WordSource {
     private JComponent getDocumentEditorPanel() {
         
         JSplitPane splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT ) ; 
-        splitPane.setDividerLocation( (int)(0.6 * getScreenHeight()) ) ;
         splitPane.setDividerSize( 5 ) ;
         splitPane.setOneTouchExpandable( true ) ;
         splitPane.add( getRawTextEditorPanel() ) ;
         splitPane.add( scratchPanel ) ;
+        splitPane.setDividerLocation( getScreenHeight() );
+
         return splitPane ;
     }
     

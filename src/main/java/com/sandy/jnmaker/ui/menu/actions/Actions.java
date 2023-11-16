@@ -328,12 +328,10 @@ public class Actions {
         if( cMapper == null ) {
             cMapper = new CMapper() ;
         }
-        
-        if( cMapper != null ) {
-            JCMap tool = cMapper.getCMapper() ;
-            tool.setVisible( true ) ;
-            tool.getEditor().requestFocus() ;
-        }
+
+        JCMap tool = cMapper.getCMapper();
+        tool.setVisible( true ) ;
+        tool.getEditor().requestFocus() ;
     }
     
     private void executeTool( final AbstractTool tool ) {
