@@ -40,4 +40,8 @@ public class NotesAutoCreator {
     public static String autoCreateTrueFalseNote( String input ) {
         return new TrueFalseAutoCreator( input ).createNote() ;
     }
+
+    public static String autoCreateRTCNode( String input ) {
+        return new RTCAutoCreator( input ).createNote() ;
+    }
 }

@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.panels.rawtxt.noteautocreator;
 
 import com.sandy.common.util.StringUtil;
+import com.sandy.jnmaker.util.NoteTextUtil;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -70,7 +71,7 @@ public class MultiChoiceAutoCreator {
 
         sb.append( "@multi_choice " )
           .append( "\"" )
-          .append( caption )
+          .append( NoteTextUtil.formatText(caption,true) )
           .append( "\" {\n" )
           .append( "    @options {\n" ) ;
 

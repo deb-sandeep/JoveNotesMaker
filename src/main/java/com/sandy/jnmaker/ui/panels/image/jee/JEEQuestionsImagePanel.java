@@ -32,7 +32,7 @@ public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestionImage>
     
     public static final String ID = "JEE" ;
     
-    private SaveFnKeyHandler cycleQuestionType = 
+    private final SaveFnKeyHandler cycleQuestionType =
         new SaveFnKeyHandler( "cycleQuestionType" ) {
             public void handleEvent() {
                 File selFile = saveFileChooser.getSelectedFile() ;
@@ -50,7 +50,7 @@ public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestionImage>
             }
         } ;
         
-    private SaveFnKeyHandler cycleSection = 
+    private final SaveFnKeyHandler cycleSection =
         new SaveFnKeyHandler( "cycleSection" ) {
             public void handleEvent() {
                 File selFile = saveFileChooser.getSelectedFile() ;
@@ -62,7 +62,7 @@ public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestionImage>
             }
         } ; 
                 
-    private SaveFnKeyHandler incrementQuestionNumber = 
+    private final SaveFnKeyHandler incrementQuestionNumber =
         new SaveFnKeyHandler( "incrementQuestionNumber" ) {
             public void handleEvent() {
                 File selFile = saveFileChooser.getSelectedFile() ;
@@ -74,7 +74,7 @@ public class JEEQuestionsImagePanel extends AbstractImagePanel<JEEQuestionImage>
             }
         } ; 
         
-    private SaveFnKeyHandler setPart = 
+    private final SaveFnKeyHandler setPart =
         new SaveFnKeyHandler( "setPart" ) {
             public void handleEvent() {
                 File selFile = saveFileChooser.getSelectedFile() ;

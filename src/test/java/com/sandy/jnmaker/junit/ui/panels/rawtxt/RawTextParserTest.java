@@ -28,7 +28,7 @@ public class RawTextParserTest {
         assertThat( fileContent, is( notNullValue() ) ) ;
 
         RawTextParser parser = new RawTextParser( fileContent ) ;
-        List<String> metaNotes = parser.getParsedMetaNotes() ;
+        List<String> metaNotes = parser.getParsedMetaNotes( true ) ;
         assertThat( metaNotes.isEmpty(), is( false ) ) ;
 
 

@@ -363,7 +363,7 @@ public class RawTextPanel extends JPanel implements WordSource {
     private void parseAndDeduceNotes() {
         String rawText = textPane.getText() ;
         RawTextParser rawTextParser = new RawTextParser( rawText ) ;
-        List<String> metaNotes = rawTextParser.getParsedMetaNotes() ;
+        List<String> metaNotes = rawTextParser.getParsedMetaNotes( true ) ;
 
         for( String metaNote : metaNotes ) {
             deduceAndCreateNoteType( metaNote ) ;
@@ -432,6 +432,10 @@ public class RawTextPanel extends JPanel implements WordSource {
             else if( selectedText.startsWith( "@chem_compound" ) ) {
                 selectedText = selectedText.substring( "@chem_compound".length() ).trim() ;
                 main.createNote( selectedText, NoteType.CHEM_COMPOUND ) ;
+            }
+            else if( selectedText.startsWith( "@rtc" ) ) {
+                selectedText = selectedText.substring( "@rtc".length() ).trim() ;
+                main.createNote( selectedText, NoteType.RTC ) ;
             }
         }
         catch( Exception e ) {

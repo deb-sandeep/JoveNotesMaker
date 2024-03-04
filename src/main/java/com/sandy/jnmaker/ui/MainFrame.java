@@ -18,6 +18,7 @@ import javax.swing.JPanel ;
 import javax.swing.JSplitPane ;
 import javax.swing.SwingUtilities ;
 
+import com.wordnik.client.model.Note;
 import org.apache.commons.lang.StringUtils ;
 import org.apache.log4j.Logger ;
 
@@ -230,6 +231,9 @@ public class MainFrame extends AbstractMainFrame {
         }
         else if( noteType == NoteType.CHEM_EQUATION ) {
             autoCreatedNote = autoCreateChemEquationNote( selectedText ) ;
+        }
+        else if( noteType == NoteType.RTC ) {
+            autoCreatedNote = autoCreateRTCNode( selectedText ) ;
         }
 
         if( StringUtil.isNotEmptyOrNull( autoCreatedNote ) ) {

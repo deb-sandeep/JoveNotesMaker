@@ -12,7 +12,6 @@ import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTextArea ;
 
-@SuppressWarnings( "serial" )
 public class SaveFileNameHelperAccessory extends JPanel {
     
     private JTextArea textArea = null ;
@@ -42,7 +41,7 @@ public class SaveFileNameHelperAccessory extends JPanel {
     private void addHelpContent( String[] helpContent ) {
         StringBuilder sb = new StringBuilder() ;
         for( String content : helpContent ) {
-            sb.append( content + "\n" ) ;
+            sb.append( content ).append( "\n" );
         }
         textArea.setText( sb.toString() ) ;
     }

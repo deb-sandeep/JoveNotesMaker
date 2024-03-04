@@ -19,13 +19,14 @@ public class RawTextParser {
         this.text = text ;
     }
 
-    public List<String> getParsedMetaNotes() {
+    public List<String> getParsedMetaNotes( boolean parseWithinMetamarkers ) {
 
         final List<String> metaNotes = new ArrayList<>() ;
         final String[] lines = text.split( "\\R" ) ;
 
-        boolean preprocStartMarkerEncountered = false ;
+        boolean preprocStartMarkerEncountered = !parseWithinMetamarkers ;
         boolean inMultiLineContext = false ;
+        boolean inRTCContext = false ;
 
         StringBuilder sb = new StringBuilder() ;
 
@@ -41,7 +42,21 @@ public class RawTextParser {
                     break ;
                 }
                 else {
-                    if( inMultiLineContext ) {
+                    if( line.equals( "@rtc" ) ) {
+                        inRTCContext = true ;
+                        sb = new StringBuilder( "@rtc \n" ) ;
+                    }
+                    else if( inRTCContext ) {
+                        if( line.equals( "@endrtc" ) ) {
+                            inRTCContext = false ;
+                            metaNotes.add( sb.toString() ) ;
+                            sb = null ;
+                        }
+                        else {
+                            sb.append( line ).append( "\n" ) ;
+                        }
+                    }
+                    else if( inMultiLineContext ) {
                         if( line.equals( "--" ) ) {
                             metaNotes.add( sb.toString() ) ;
                             inMultiLineContext = false ;
@@ -57,7 +72,8 @@ public class RawTextParser {
                              line.startsWith( "@as-is"         ) ||
                              line.startsWith( "@chem_compound" ) ||
                              line.startsWith( "@false"         ) ||
-                             line.startsWith( "@choice_group"  ) ) {
+                             line.startsWith( "@choice_group"  ) ||
+                             line.startsWith( "@context" ) ) {
 
                         inMultiLineContext = true ;
                         sb = new StringBuilder() ;

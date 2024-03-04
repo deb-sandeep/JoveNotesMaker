@@ -184,6 +184,21 @@ public class K12ExerciseQuestion extends AbstractQuestion<K12ExerciseQuestion> {
         return nextQ ;
     }
     
+    public void incrementChapterNumber() {
+        this.chapterNum += 1 ;
+        this.exerciseName = "A" ;
+        this.questionNum = 1 ;
+        this.subQuestionNum = 1 ;
+    }
+    
+    public void incrementExerciseNumber() {
+        char[] exNameChars = this.exerciseName.toCharArray() ;
+        exNameChars[exNameChars.length-1] += 1 ;
+        this.exerciseName = new String( exNameChars ) ;
+        this.questionNum = 1 ;
+        this.subQuestionNum = 1 ;
+    }
+
     public static void main( String[] args ) throws Exception {
         K12ExerciseQuestion q = new K12ExerciseQuestion( "Ch1_example_1.png" ) ;
         System.out.println( q ) ;
@@ -193,6 +208,5 @@ public class K12ExerciseQuestion extends AbstractQuestion<K12ExerciseQuestion> {
             System.out.println( q ) ;
         }
     }
+    
 }
-
-
