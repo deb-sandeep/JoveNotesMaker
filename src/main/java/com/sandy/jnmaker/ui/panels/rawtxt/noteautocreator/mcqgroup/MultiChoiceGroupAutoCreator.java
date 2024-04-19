@@ -98,7 +98,7 @@ public class MultiChoiceGroupAutoCreator {
                 addRandomWrongValuesOptions( mcq, values ) ;
                 mcqs.add( mcq ) ;
 
-                if( StringUtil.isEmptyOrNull( captionRHS2LHS ) ) {
+                if( StringUtil.isNotEmptyOrNull( captionRHS2LHS ) ) {
                     mcq = new MCQ( createRHS2LHSCaption( value ) ) ;
                     mcq.addOption( new MCQOption( keyword, true ) ) ;
                     addRandomWrongKeywordOptions( mcq, keywords ) ;
@@ -109,11 +109,11 @@ public class MultiChoiceGroupAutoCreator {
     }
 
     private String createLHS2RHSCaption( String lhs ) {
-        return captionLHS2RHS.replaceAll( "\\{lhs}", "**"+lhs.trim()+"**" )  ;
+        return captionLHS2RHS.replaceAll( "\\{lhs}", lhs.trim() )  ;
     }
 
     private String createRHS2LHSCaption( String rhs ) {
-        return captionRHS2LHS.replaceAll( "\\{rhs}", "**" + rhs + "**" )  ;
+        return captionRHS2LHS.replaceAll( "\\{rhs}", rhs )  ;
     }
 
     private void addRandomWrongValuesOptions( MCQ mcq, List<String> meanings ) {

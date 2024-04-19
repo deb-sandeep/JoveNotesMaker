@@ -14,6 +14,8 @@ import java.awt.Dimension ;
 import java.awt.Point ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage ;
 import java.io.File ;
 import java.io.IOException ;
@@ -44,8 +46,7 @@ import com.sandy.common.util.StringUtil ;
 import com.sandy.jeecoach.util.AbstractQuestion ;
 import com.sandy.jnmaker.ui.helper.UIUtil ;
 
-@SuppressWarnings( "serial" )
-public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends JPanel 
+public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends JPanel
     implements ActionListener, TabCloseListener, ScalableImagePanelListener {
 
     static final Logger log = Logger.getLogger( AbstractImagePanel.class ) ;
@@ -55,9 +56,9 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
     private static final String AC_ZOOM_OUT   = "ZOOM_OUT" ;
     private static final String AC_CLOSE_ALL  = "CLOSE_ALL" ;
     
-    private CloseableTabbedPane tabbedPane    = null ;
-    private List<File>          openedFiles   = new ArrayList<>() ;
-    private List<File>          originalFiles = new ArrayList<>() ;
+    private       CloseableTabbedPane tabbedPane    = null ;
+    private final List<File> openedFiles   = new ArrayList<>() ;
+    private final List<File> originalFiles = new ArrayList<>() ;
     
     protected JFileChooser openFileChooser = new JFileChooser() ;
     protected JFileChooser saveFileChooser = new JFileChooser() ;
@@ -80,8 +81,8 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
         setLayout( new BorderLayout() ) ;
         add( getToolbar(), BorderLayout.WEST ) ;
         add( getTabbedPane(), BorderLayout.CENTER ) ;
-        
         UIUtil.setPanelBackground( UIUtil.EDITOR_BG_COLOR, this ) ;
+        
     }
     
     private JComponent getToolbar() {
@@ -108,6 +109,17 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
         tabbedPane.addTabCloseListener( this ) ;
         tabbedPane.setMinimumSize( new Dimension( 0, 0 ) ) ;
         tabbedPane.setForeground( Color.BLUE ) ;
+        tabbedPane.addKeyListener( new KeyAdapter() {
+            @Override
+            public void keyPressed( KeyEvent e ) {
+                System.out.println( "Key pressed." ) ;
+                if( e.getKeyChar() == 'w' && e.isMetaDown() ) {
+                    ScalableImagePanel imgPanel = (ScalableImagePanel)tabbedPane.getSelectedComponent() ;
+                    removeScalableImgPanel( imgPanel );
+                    tabbedPane.remove( imgPanel ) ;
+                }
+            }
+        } );
         return tabbedPane ;
     }
     
@@ -214,6 +226,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                 ScalableImagePanel imgPanel = new ScalableImagePanel() ;
                 imgPanel.setImage( file );
                 imgPanel.addListener( this ) ;
+                
                 this.tabbedPane.add( file.getName(), imgPanel ) ;
                 this.openedFiles.add( file ) ;
             }
@@ -294,11 +307,17 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
 
     @Override
     public void tabClosing( ActionEvent e ) {
-        
         ScalableImagePanel imgPanel = ( ScalableImagePanel )e.getSource() ;
-        imgPanel.removeListener( this ) ;
-        File file = imgPanel.getCurImgFile() ;
-        this.openedFiles.remove( file ) ;
+        removeScalableImgPanel( imgPanel ) ;
+    }
+    
+    private void removeScalableImgPanel( ScalableImagePanel imgPanel ) {
+        System.out.println( "Removing image panel. " + imgPanel ) ;
+        if( imgPanel != null ) {
+            imgPanel.removeListener( AbstractImagePanel.this ) ;
+            File file = imgPanel.getCurImgFile() ;
+            AbstractImagePanel.this.openedFiles.remove( file ) ;
+        }
     }
 
     protected File getFileViaSaveDialog() {
@@ -370,7 +389,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
                 if( !absoluteFileName ) {
                     lastQuestion = constructQuestion( lastSavedFile ) ;
                     if( lastQuestion != null ) {
-                        nextQuestion = (T)lastQuestion.nextQuestion() ;
+                        nextQuestion = lastQuestion.nextQuestion() ;
                     }
                     currentlyDisplayedQuestion = null ;
                     handleLastQuestionSave( lastQuestion ) ;
@@ -391,20 +410,18 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
     
     private void setRecommendedSaveDir() {
         
-        ScalableImagePanel imgPanel = null ;
+        ScalableImagePanel imgPanel ;
         imgPanel = ( ScalableImagePanel )tabbedPane.getSelectedComponent() ;
         
-        if( imgPanel == null ) {
-            return ;
-        }
-        else {
-            imgPanel.setToolTipText( null ) ; 
+        if( imgPanel != null ) {
+            imgPanel.setToolTipText( null ) ;
             File imgFile = imgPanel.getCurImgFile() ;
             if( lastSavedDir == null ) {
                 lastSavedDir = getRecommendedSaveDir( imgFile ) ;
                 if( lastSavedDir != null ) {
-                    lastSavedDir.mkdirs() ;
-                    saveFileChooser.setCurrentDirectory( lastSavedDir ) ;
+                    if( lastSavedDir.mkdirs() ) {
+                        saveFileChooser.setCurrentDirectory( lastSavedDir ) ;
+                    }
                 }
             }
         }
@@ -467,7 +484,7 @@ public abstract class AbstractImagePanel<T extends AbstractQuestion<T>> extends 
     public void subImageBoundResized( Point anchor, Point hook ) {
         
         if( nextQuestion != null ) {
-            ScalableImagePanel imgPanel = null ;
+            ScalableImagePanel imgPanel ;
             imgPanel = ( ScalableImagePanel )tabbedPane.getSelectedComponent() ;
             imgPanel.setToolTipText( nextQuestion.getFileName() ) ;
         }
