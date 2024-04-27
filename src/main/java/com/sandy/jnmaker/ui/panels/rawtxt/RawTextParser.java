@@ -73,6 +73,7 @@ public class RawTextParser {
                              line.startsWith( "@chem_compound" ) ||
                              line.startsWith( "@false"         ) ||
                              line.startsWith( "@choice_group"  ) ||
+                             line.startsWith( "@def"           ) ||
                              line.startsWith( "@context" ) ) {
 
                         inMultiLineContext = true ;
@@ -91,8 +92,7 @@ public class RawTextParser {
                              line.startsWith( "@tf "           ) ||
                              line.startsWith( "@true"          ) ||
                              line.startsWith( "@section "      ) ||
-                             line.startsWith( "@chem_equation" ) ||
-                             line.startsWith( "@def "          ) ) {
+                             line.startsWith( "@chem_equation" ) ) {
 
                         metaNotes.add( line ) ;
                     }

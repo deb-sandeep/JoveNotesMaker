@@ -15,34 +15,20 @@ public class DefinitionAutoCreator {
     }
 
     public String createNote() {
-
-        String aoiPattern = "_([^_]+)_" ;
-        Pattern pattern = Pattern.compile( aoiPattern, Pattern.DOTALL ) ;
-        Matcher matcher = pattern.matcher( input ) ;
-
-        int stringMark = 0 ;
-
+        
+        String[] parts = input.split( "\\R", 2 ) ;
+        
         String retVal = null ;
         String termStr = null ;
         String definitionStr = null ;
-
-        if( matcher.find() ) {
-
-            int matchStart = matcher.start() ;
-            String matchString = matcher.group( 0 ) ;
-
-            termStr = matcher.group( 1 ) ;
-            stringMark = matchStart + matchString.length() ;
+        
+        if( parts.length == 2 ) {
+            termStr       = parts[0].trim();
+            definitionStr = parts[1].trim();
         }
-
-        if( stringMark > 0 && stringMark < input.length() ) {
-            definitionStr = input.subSequence( stringMark, input.length() )
-                    .toString()
-                    .trim() ;
-        }
-
-        if( termStr != null && definitionStr != null ) {
-            retVal = "@definition \"" + escapeQuotes( termStr ) + "\"\n" ;
+        
+        if( termStr != null ) {
+            retVal = "@definition \"" + termStr + "\"\n" ;
             retVal += "\"" + formatText( definitionStr, true ) + "\"\n" ;
             retVal += "\n" ;
         }
