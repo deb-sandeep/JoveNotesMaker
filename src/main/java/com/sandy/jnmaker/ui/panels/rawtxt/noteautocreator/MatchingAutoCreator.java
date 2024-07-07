@@ -10,6 +10,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sandy.common.util.StringUtil.isNotEmptyOrNull;
 import static com.sandy.jnmaker.util.NoteTextUtil.formatText;
 
 public class MatchingAutoCreator {
@@ -20,6 +21,8 @@ public class MatchingAutoCreator {
 
     private final List<String[]> candidates = new ArrayList<>() ;
     private String caption = "Match the following" ;
+    private String forwardCaption = caption ;
+    private String reverseCaption = caption ;
     private int maxLeftLen = 0 ;
 
     public MatchingAutoCreator( String input ) {
@@ -41,7 +44,7 @@ public class MatchingAutoCreator {
 
                 if( isFirstLine ) {
                     if( !line.contains( "=" ) ) {
-                        caption = line ;
+                        gatherCaptions( line ) ;
                         isFirstLine = false ;
                         continue ;
                     }
@@ -64,6 +67,27 @@ public class MatchingAutoCreator {
             log.error( "Unanticipated error.", e ) ;
         }
     }
+    
+    private void gatherCaptions( String line ) {
+        String[] captions = line.split( "\\|" ) ;
+        if( captions.length > 0 ) {
+            if( isNotEmptyOrNull( captions[0] ) ) {
+                this.caption = captions[0].trim() ;
+            }
+            
+            if( captions.length > 1 ) {
+                if( isNotEmptyOrNull( captions[1] ) ) {
+                    this.forwardCaption = captions[1].trim() ;
+                }
+            }
+            
+            if( captions.length > 2 ) {
+                if( isNotEmptyOrNull( captions[2] ) ) {
+                    this.reverseCaption = captions[2].trim() ;
+                }
+            }
+        }
+    }
 
     public String createNote() {
 
@@ -84,8 +108,8 @@ public class MatchingAutoCreator {
 
         sb.append( "\n" )
                 .append( "    @mcq_config {\n" )
-                .append( "        @forwardCaption \"Match the following\"\n" )
-                .append( "        @reverseCaption \"Match the following\"\n" )
+                .append( "        @forwardCaption \"" + this.forwardCaption + "\"\n" )
+                .append( "        @reverseCaption \"" + this.reverseCaption + "\"\n" )
                 .append( "        @numOptionsToShow 4\n" )
                 .append( "        @numOptionsPerRow 2\n" )
                 .append( "    }\n" )
