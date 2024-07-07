@@ -421,6 +421,10 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = selectedText.substring( "@choice_group".length() ).trim() ;
                 main.createNote( selectedText, NoteType.CHOICE_GROUP ) ;
             }
+            else if( selectedText.startsWith( "@choice_bulk" ) ) {
+                selectedText = selectedText.substring( "@choice_bulk".length() ).trim() ;
+                main.createNote( selectedText, NoteType.CHOICE_BULK ) ;
+            }
             else if( selectedText.startsWith( "@choice" ) ) {
                 selectedText = selectedText.substring( "@choice".length() ).trim() ;
                 main.createNote( selectedText, NoteType.MULTI_CHOICE ) ;

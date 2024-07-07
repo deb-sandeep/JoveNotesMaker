@@ -6,11 +6,17 @@ import java.util.List;
 
 public class MCQ {
 
+    private int numOptionsPerRow = 1 ;
     private String question = null ;
     private List<MCQOption> options = new ArrayList<>() ;
     
     public MCQ( String question ) {
+        this( question, 3 ) ;
+    }
+    
+    public MCQ( String question, int numOptionsPerRow ) {
         this.question = question ;
+        this.numOptionsPerRow = numOptionsPerRow ;
     }
     
     public void addOption( MCQOption option ) {
@@ -47,7 +53,7 @@ public class MCQ {
         sb.deleteCharAt( sb.length()-1 ) ;
         sb.deleteCharAt( sb.length()-1 ) ;
         sb.append( "\n    }" ) ;
-        sb.append( "\n    @numOptionsPerRow 3" ) ;
+        sb.append( "\n    @numOptionsPerRow " + this.numOptionsPerRow ) ;
         sb.append( "\n}" ) ;
         return sb.toString() ;
     }

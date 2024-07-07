@@ -1,6 +1,7 @@
 package com.sandy.jnmaker.ui.panels.rawtxt;
 
 import com.sandy.jnmaker.ui.panels.rawtxt.noteautocreator.*;
+import com.sandy.jnmaker.ui.panels.rawtxt.noteautocreator.mcqbulk.MultiChoiceBulkAutoCreator;
 import com.sandy.jnmaker.ui.panels.rawtxt.noteautocreator.mcqgroup.MultiChoiceGroupAutoCreator;
 
 public class NotesAutoCreator {
@@ -23,6 +24,10 @@ public class NotesAutoCreator {
 
     public static String autoCreateMultiChoiceGroupNote( String input ) {
         return new MultiChoiceGroupAutoCreator( input ).createNote() ;
+    }
+
+    public static String autoCreateMultiChoiceBulkNote( String input ) {
+        return new MultiChoiceBulkAutoCreator( input ).createNote() ;
     }
 
     public static String autoCreateMultiChoiceNote( String input ) {

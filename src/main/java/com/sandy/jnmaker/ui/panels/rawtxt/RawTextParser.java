@@ -73,8 +73,9 @@ public class RawTextParser {
                              line.startsWith( "@chem_compound" ) ||
                              line.startsWith( "@false"         ) ||
                              line.startsWith( "@choice_group"  ) ||
+                             line.startsWith( "@choice_bulk"   ) ||
                              line.startsWith( "@def"           ) ||
-                             line.startsWith( "@context" ) ) {
+                             line.startsWith( "@context"       ) ) {
 
                         inMultiLineContext = true ;
                         sb = new StringBuilder() ;

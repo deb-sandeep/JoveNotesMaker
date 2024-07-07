@@ -226,6 +226,9 @@ public class MainFrame extends AbstractMainFrame {
         else if( noteType == NoteType.CHOICE_GROUP ) {
             autoCreatedNote = autoCreateMultiChoiceGroupNote( selectedText ) ;
         }
+        else if( noteType == NoteType.CHOICE_BULK ) {
+            autoCreatedNote = autoCreateMultiChoiceBulkNote( selectedText ) ;
+        }
         else if( noteType == NoteType.CHEM_COMPOUND ) {
             autoCreatedNote = autoCreateChemCompoundNote( selectedText ) ;
         }

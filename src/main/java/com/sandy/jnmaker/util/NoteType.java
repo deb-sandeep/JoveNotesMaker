@@ -21,6 +21,7 @@ public enum NoteType {
     CHEM_COMPOUND,
     CHEM_EQUATION,
     CHOICE_GROUP,
+    CHOICE_BULK,
     SECTION,
     RTC,
 }
