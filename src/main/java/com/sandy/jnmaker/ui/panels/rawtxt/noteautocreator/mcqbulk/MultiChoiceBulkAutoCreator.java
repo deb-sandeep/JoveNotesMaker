@@ -22,20 +22,21 @@ public class MultiChoiceBulkAutoCreator {
     private static final String ALSO_KEYWORD = "@also " ;
     private static final int ALSO_KEYWORD_LEN = ALSO_KEYWORD.length() ;
 
-    private final String input ;
+    private final String rawInput ;
     
-    // Key = Option
+    // Key = The categories of bulk choices. Lines with # header
     // Value = List of categories for which this option is valid.
-    private Map<String, Set<String>> rawData = new HashMap<>() ;
+    // Mapping of the categories versus a set of valid values for those categories
+    private final Map<String, Set<String>> parsedInputMap = new HashMap<>() ;
     
-    private String caption ;
-    private List<MCQ>    mcqs          = new ArrayList<>() ;
-    private List<String> allCategories = new ArrayList<>() ;
+    private       String       caption ;
+    private final List<MCQ>    mcqs          = new ArrayList<>() ;
+    private final List<String> allCategories = new ArrayList<>() ;
     
-    public MultiChoiceBulkAutoCreator( String input ) {
-        this.input = input ;
+    public MultiChoiceBulkAutoCreator( String rawInput ) {
+        this.rawInput = rawInput;
         parseMatchingInput() ;
-        createDataStructures() ;
+        createBulkMCQs() ;
     }
 
     private void parseMatchingInput() {
@@ -43,7 +44,7 @@ public class MultiChoiceBulkAutoCreator {
         String line;
         String currentCategory = null ;
         
-        BufferedReader br = new BufferedReader( new StringReader( input ) ) ;
+        BufferedReader br = new BufferedReader( new StringReader( rawInput ) ) ;
         
         boolean firstLine = true ;
         
@@ -93,18 +94,19 @@ public class MultiChoiceBulkAutoCreator {
             throw new IllegalArgumentException( "Can't add valid option for empty category." ) ;
         }
         
-        Set<String> categories = rawData.computeIfAbsent( validOption, k -> new HashSet<>() ) ;
+        Set<String> categories = parsedInputMap.computeIfAbsent( validOption, k -> new HashSet<>() ) ;
         categories.add( category ) ;
     }
     
-    private void createDataStructures() {
+    private void createBulkMCQs() {
 
-        for( String option : rawData.keySet() ) {
+        for( String option : parsedInputMap.keySet() ) {
 
-            Set<String> correctCategories = rawData.get( option ) ;
+            Set<String> correctCategories = parsedInputMap.get( option ) ;
             int numCorrectCategories = 1 ;
             if( correctCategories.size() > 1 ) {
-                numCorrectCategories = ThreadLocalRandom.current().nextInt( 0, correctCategories.size()-1 )+1 ;
+                numCorrectCategories = ThreadLocalRandom.current()
+                                                        .nextInt( 0, correctCategories.size()-1 )+1 ;
             }
             
             for( int i=0; i<correctCategories.size(); i++ ) {
@@ -112,14 +114,20 @@ public class MultiChoiceBulkAutoCreator {
                 mcq.addOption( new MCQOption( correctCategories.toArray( new String[0] )[i], true ) ) ;
                 addRandomCorrectCategories( mcq, correctCategories, Math.min( numCorrectCategories, MAX_OPTIONS ) ) ;
                 addRandomWrongCategories( mcq, correctCategories ) ;
-                mcqs.add( mcq ) ;
+                if( mcq.getNumOptions() > 1 ) {
+                    mcqs.add( mcq ) ;
+                }
             }
         }
     }
     
-    private void addRandomCorrectCategories( MCQ mcq, Set<String> correctCategories, int numCorrectCategories ) {
+    private void addRandomCorrectCategories( MCQ mcq,
+                                             Set<String> correctCategories,
+                                             int numCorrectCategories ) {
+        
         int iterNo = 0 ;
         List<String> correctCategoryList = List.of( correctCategories.toArray( new String[0] ) ) ;
+        
         while( mcq.getNumOptions() < numCorrectCategories &&
                iterNo < MAX_WRONG_OPTION_ITERATIONS ) {
             
