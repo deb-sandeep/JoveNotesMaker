@@ -413,6 +413,10 @@ public class RawTextPanel extends JPanel implements WordSource {
                 selectedText = selectedText.substring( "@qa".length() ).trim() ;
                 main.createNote( selectedText, NoteType.QA ) ;
             }
+            else if( selectedText.startsWith( "@mqa" ) ) {
+                selectedText = selectedText.substring( "@mqa".length() ).trim() ;
+                main.createNote( selectedText, NoteType.QA ) ;
+            }
             else if( selectedText.startsWith( "@match" ) ) {
                 selectedText = selectedText.substring( "@match".length() ).trim() ;
                 main.createNote( selectedText, NoteType.MATCHING ) ;

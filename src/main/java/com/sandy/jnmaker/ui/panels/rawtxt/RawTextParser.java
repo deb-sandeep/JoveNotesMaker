@@ -67,6 +67,7 @@ public class RawTextParser {
                         }
                     }
                     else if( line.startsWith( "@qa "           ) ||
+                             line.startsWith( "@mqa"           ) ||
                              line.startsWith( "@match"         ) ||
                              line.startsWith( "@choice"        ) ||
                              line.startsWith( "@as-is"         ) ||

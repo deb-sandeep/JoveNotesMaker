@@ -16,7 +16,7 @@ public class QAAutoCreator {
 
     public String createNote() {
 
-        String[] parts = input.split( "\\R", 2 ) ;
+        String[] parts = extractQuestionAndAnswer() ;
 
         if( parts.length == 2 ) {
 
@@ -48,5 +48,12 @@ public class QAAutoCreator {
         }
 
         return null ;
+    }
+    
+    private String[] extractQuestionAndAnswer() {
+        if( input.contains( "\n~~\n" ) ) {
+            return input.split( "\n~~\n" ) ;
+        }
+        return input.split( "\\R", 2 ) ;
     }
 }
