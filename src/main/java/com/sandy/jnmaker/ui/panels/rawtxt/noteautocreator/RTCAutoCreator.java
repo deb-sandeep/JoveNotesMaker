@@ -84,7 +84,8 @@ public class RTCAutoCreator {
             else if( selectedText.startsWith( "@def" ) ) {
                 return autoCreateDefinitionNote( stripTag( selectedText ) ) ;
             }
-            else if( selectedText.startsWith( "@qa" ) ) {
+            else if( selectedText.startsWith( "@qa" ) ||
+                     selectedText.startsWith( "@mqa" ) ) {
                 return autoCreateQANote( stripTag( selectedText ) ) ;
             }
             else if( selectedText.startsWith( "@match" ) ) {

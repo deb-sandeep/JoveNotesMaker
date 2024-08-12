@@ -51,7 +51,7 @@ public class MatchingAutoCreator {
                 }
 
                 if( line.contains( "=" ) ) {
-                    String[] parts = line.split( "=" ) ;
+                    String[] parts = line.split( "=", 2 ) ;
                     String[] candidate = new String[2] ;
 
                     candidate[0] = parts[0].trim() ;
