@@ -15,7 +15,7 @@ public class TrueFalseAutoCreator {
 
         String[] lines = input.split( "\\R" ) ;
 
-        String retVal = "@true_false \"" + escapeQuotes( lines[0] ) + "\"\n" ;
+        String retVal = "@true_false \"" + formatText( lines[0], true ) + "\"\n" ;
 
         if( lines.length == 1 ) {
             retVal += "true\n";
